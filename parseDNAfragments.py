@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 """ 
-This script was initially written by Leonardo and then rewritten by 
+This script was initially written by Leonardo and then improved by 
 Annette Lien (a.lien@posteo.de) (12.09.2022)
 
 usage: parseDNAfragments.py [-h] [-o EXPORT_PATH] [-nf NFRAGS] [-fl FRAGLEN]
@@ -19,9 +19,9 @@ optional arguments:
   -h, --help            show this help message and exit
   -o EXPORT_PATH, --out EXPORT_PATH
                         Path for the output csv file
-  -nf NFRAGS, --nfrags NFRAGS
+  -n NFRAGS, --nfrags NFRAGS
                         nfrags
-  -fl FRAGLEN, --fraglen FRAGLEN
+  -l FRAGLEN, --fraglen FRAGLEN
                         fraglen
   -t PROGRAM_NAME, --tool PROGRAM_NAME
                         Name of the program used for trimming
@@ -64,9 +64,10 @@ def parse_arguments():
     """
     """
     parser = argparse.ArgumentParser(
-        description="Performs analysis of the reconstructed reads."
+        description="Performs analysis of the reconstructed reads. "
                     "If the results should be exported, all the optional "
                     "arguments must be supplied.")
+    
     # required arguments
     parser.add_argument(
         "templates_path", type=str, 
@@ -74,15 +75,16 @@ def parse_arguments():
     parser.add_argument(
         "readm_path", type=str, 
         help='fastq file of the trimmed and merged reads')
+    
     # optional arguments, only needed if exporting the results
     parser.add_argument(
         "-o", "--out", action="store", type=str, required=False,
         dest="export_path", help="Path for the output csv file")
     parser.add_argument(
-        "-nf", "--nfrags", action="store", type=int, required=False,
+        "-n", "--nfrags", action="store", type=int, required=False,
         help="nfrags")  
     parser.add_argument(
-        "-fl", "--fraglen", action="store", type=int, required=False,
+        "-l", "--fraglen", action="store", type=int, required=False,
         help="fraglen") 
     parser.add_argument(
         "-t", "--tool", action="store", type=str, required=False,
@@ -90,22 +92,38 @@ def parse_arguments():
 
     args = parser.parse_args()
 
-    if len(sys.argv) == 3:
-        return args.templates_path, args.readm_path
-    elif len(sys.argv) == 7:
-        return (args.templates_path, 
-                args.readm_path, 
-                args.export_path, 
-                args.nfrags, 
-                args.fraglen, 
-                args.program_name
-        )
+    optional_arguments = [
+        args.export_path, 
+        args.nfrags, 
+        args.fraglen, 
+        args.program_name
+    ]
+    
+    if set(optional_arguments) == {None}:
+        # no optional arguments have been passed
+        return [args.templates_path, args.readm_path]
+    elif None not in optional_arguments:
+        # all optional arguments have been passed
+        return [args.templates_path, args.readm_path] + optional_arguments
     else:
+        # only some optional arguments have been passed
+        print("parseDNAfragments.py: error: only some optional arguments have "
+              "been passed")
         parser.print_help()
         sys.exit(2)
 
 
-def load_initial(templates_path):
+def _is_gzipped(path):
+    """
+    check if a file is gzipped. query the "magic numbers" and see if 
+    they match those of gzip. 
+    See https://stackoverflow.com/a/47080739/5666087 
+    """
+    with open(path, "rb") as f:
+        return f.read(2) == b'\x1f\x8b'
+
+
+def load_initial(path):
     """
     Loads a zipped fasta file.
     Returns a dict file, with the headers as keys and another dict as 
@@ -115,14 +133,15 @@ def load_initial(templates_path):
     """
     templates = {}
     templates_cnt = 0
-    with gzip.open(templates_path, 'rb') as f:
-        lines = []
-        for line in f:
-            lines.append(line.rstrip())
-            if len(lines) == 2:
-                templates[lines[0][1:]] = {'sequence': lines[1]}
-                templates_cnt += 1
-                lines = []
+    f = gzip.open(path, 'rb') if _is_gzipped(path) else open(path, 'rb')
+    lines = []
+    for line in f:
+        lines.append(line.rstrip())
+        if len(lines) == 2:
+            templates[lines[0][1:]] = {'sequence': lines[1]}
+            templates_cnt += 1
+            lines = []
+    f.close()
     # Note from annette:
     # I think templates_cnt is not nesseccary, because 
     # templates_cnt should be equal len(templates)
@@ -153,7 +172,7 @@ def _process_fastq_entry(lines):
     return reading
 
 
-def load_readm(readm_path, templates):
+def load_readm(path, templates):
     """
     Loads a zipped fastq file. Ignores unmerged reads.
     Returns a list of dicts. Each dict has the header of a sequence as 
@@ -161,20 +180,21 @@ def load_readm(readm_path, templates):
     "-" addition at the end of the header line
     """
     merged_reads = []
-    with gzip.open(readm_path, 'rb') as f:
-        lines = []
-        for line in f:
-            lines.append(line.rstrip())
-            if len(lines) == 4:
-                # don't consider forward (@F_) or reverse (@R_) reads
-                # reads processed with AdapterRemoval have a @M_
-                #
-                if not lines[0].startswith((b'@F_', b'@R_')):
-                    # Create a dict of the fastq entry
-                    reading = _process_fastq_entry(lines)
-                    if templates.get(reading['name']) is not None:
-                        merged_reads.append(reading)
-                lines = []
+    f = gzip.open(path, 'rb') if _is_gzipped(path) else open(path, 'rb')
+    lines = []
+    for line in f:
+        lines.append(line.rstrip())
+        if len(lines) == 4:
+            # don't consider forward (@F_) or reverse (@R_) reads
+            # reads processed with AdapterRemoval have a @M_
+            #
+            if not lines[0].startswith((b'@F_', b'@R_')):
+                # Create a dict of the fastq entry
+                reading = _process_fastq_entry(lines)
+                if templates.get(reading['name']) is not None:
+                    merged_reads.append(reading)
+            lines = []
+    f.close()
     return merged_reads
 
 
@@ -258,7 +278,7 @@ def main(args):
     divergences = results[2]
     divergences_cnt = len(divergences)
     if len(reads) != 0:
-        divergent_reads_percent = _in_percentage(divergences_cnt/len(reads))
+        divergent_reads_percent = _in_percentage(divergences_cnt, len(reads))
         avg_divergence = sum(divergences)/len(reads) # NT changes per read
         avg_divergence_percent = _in_percentage(
             avg_divergence, templates_length) # NT changes per NT (%)
@@ -268,30 +288,31 @@ def main(args):
         avg_divergence_percent = 'NA'
 
 
-    #################### Print results ####################
+    #################### Print or export results ####################
 
-    print(f"{os.path.basename(readm_path)}:")
-    print(f"Dropped reads: {dropped_reads_cnt} of {templates_cnt} total "
-          f"sequences ({dropped_reads_percent}%)")
-    print(f"Incorrect length reads: {incorrect_length_cnt} of {templates_cnt} "
-          f"total sequences ({incorrect_length_percent}%)")
-    print(f"Perfectly reconstructed fragments (edit distance = 0 and correct "
-          f"length): {perfectly_reconstructed_cnt} of {templates_cnt} total "
-          f"sequences ({perfectly_reconstructed_percent}%)")
-    if len(reads) != 0:
-        print(f"Divergent reads (edit distance > 0): {divergences_cnt} of "
-              f"{len(reads)}  merged (non-dropped) reads "
-              f"({divergent_reads_percent}%)")
-        print(f"Average divergence (edit distance): {round(avg_divergence, 3)}"
-              f" of {templates_length} nucleotides ({avg_divergence_percent}%)\n")
+    if len(args) == 2:
+        print(f"{os.path.basename(readm_path)}:")
+        print(f"Dropped reads: {dropped_reads_cnt} of {templates_cnt} total "
+              f"sequences ({dropped_reads_percent}%)")
+        print(f"Incorrect length reads: {incorrect_length_cnt} of "
+              f"{templates_cnt} total sequences ({incorrect_length_percent}%)")
+        print(f"Perfectly reconstructed fragments (edit distance = 0 and "
+              f"correct length): {perfectly_reconstructed_cnt} of "
+              f"{templates_cnt} total sequences "
+              f"({perfectly_reconstructed_percent}%)")
+        if len(reads) != 0:
+            print(f"Divergent reads (edit distance > 0): {divergences_cnt} of "
+                  f"{len(reads)} merged (non-dropped) reads "
+                  f"({divergent_reads_percent}%)")
+            print(f"Average divergence (edit distance): "
+                  f"{round(avg_divergence, 3)} of {templates_length} "
+                  f"nucleotides ({avg_divergence_percent}%)\n")
 
-    #################### Export results to CSV ####################
-
-    if len(args) == 7:
-        export_path = args[3]
-        nfrags = args[4]
-        fraglen = args[5]
-        program_name = args[6]
+    elif len(args) == 6:
+        export_path = args[2]
+        nfrags = args[3]
+        fraglen = args[4]
+        program_name = args[5]
         with open(export_path, 'w') as f:
             f.write(
                 "program,filename,nfrags,fraglen,total_sequences,total_reads,"

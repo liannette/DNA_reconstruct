@@ -39,7 +39,6 @@ OUTDIR_EVA = OUTDIR + "evaluation/"
 FRAGSIM = "/home/ctools/gargammel/src/fragSim"
 ADPTSIM = "/home/ctools/gargammel/src/adptSim"
 ART = "/home/ctools/gargammel/art_src_MountRainier_Linux/art_illumina"
-
 LEEHOM = "/home/ctools/leeHom-1.2.15/src/leeHom"
 ADPTREM = "/home/ctools/adapterremoval-2.3.2/build/AdapterRemoval"
 CLIPMERGE = "/home/ctools/ClipAndMerge-1.7.8/build/libs/ClipAndMerge-1.7.8.jar"
@@ -49,6 +48,9 @@ BBMERGE = "/home/ctools/bbmap_38_91/bbmerge.sh"
 FASTP = "/home/ctools/fastp/fastp"
 SEQPREP = "/home/ctools/SeqPrep-1.3.2/SeqPrep"
 
+# path to evaluation script
+EVAL_SCRIPT = "/home/projects/DNA_reconstruct/parseDNAfragments.py"
+
 # path to genome and adapter sequences
 IN_FILE = "/home/databases/genomes/Homo_sapiens/CHM13_T2T/CHM13_T2T.fa"
 ADPT_FILE = "/home/projects/DNA_reconstruct/gabrieldir/adapters.fa"
@@ -57,6 +59,9 @@ ADPT_FILE = "/home/projects/DNA_reconstruct/gabrieldir/adapters.fa"
 ADPT1 = "AGATCGGAAGAGCACACGTCTGAACTCCAGTCACCGATTCGATCTCGTATGCCGTCTTCTGCTTG"
 ADPT2 = "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATTT"
 
+# conda environment
+CONDA_ENV = "/net/node07/home/projects/DNA_reconstruct/conda_env.yaml"
+
 
 ### Run all
 
@@ -64,7 +69,37 @@ ADPT2 = "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATTT"
 rule all:
     input:
         expand(
-            OUTDIR_EVA + "leeHom/gen_n{n}_l{l}_leehom.csv",
+            OUTDIR_EVA + "leeHom/gen_n{n}_l{l}_lh.csv",
+            n=NUMFRAGS,
+            l=LENGTHS,
+        ),
+        expand(
+            OUTDIR_EVA + "AdapterRemoval/gen_n{n}_l{l}_ar.csv",
+            n=NUMFRAGS,
+            l=LENGTHS,
+        ),
+        expand(
+            OUTDIR_EVA + "ClipAndMerge/gen_n{n}_l{l}_cm.csv",
+            n=NUMFRAGS,
+            l=LENGTHS,
+        ),
+        expand(
+            OUTDIR_EVA + "seqtk_adna/gen_n{n}_l{l}_at.csv",
+            n=NUMFRAGS,
+            l=LENGTHS,
+        ),
+        expand(
+            OUTDIR_EVA + "bbmerge/gen_n{n}_l{l}_bb.csv",
+            n=NUMFRAGS,
+            l=LENGTHS,
+        ),
+        expand(
+            OUTDIR_EVA + "fastp/gen_n{n}_l{l}_fp.csv",
+            n=NUMFRAGS,
+            l=LENGTHS,
+        ),
+        expand(
+            OUTDIR_EVA + "SeqPrep/gen_n{n}_l{l}_sp.csv",
             n=NUMFRAGS,
             l=LENGTHS,
         ),
@@ -224,7 +259,7 @@ rule AdapterRemoval:
         # number of threades is by default 1
         (
             "{ADPTREM}"
-            #" --gzip"
+            # " --gzip"
             " --collapse"
             " --minlength 1"
             " --adapter1 {ADPT1}"
@@ -274,10 +309,10 @@ rule seqtk_adna_trim:
     wildcard_constraints:
         n="\d+",
         l="\d+",
-    #params:
+    # params:
     #    out_pe=OUTDIR_REC + "seqtk_adna_trim/gen_n{n}_l{l}_at",
     benchmark:
-        OUTDIR_BEN + "seqtk_adna-trim/gen_n{n}_l{l}_at.tsv",
+        OUTDIR_BEN + "seqtk_adna-trim/gen_n{n}_l{l}_at.tsv"
     shell:
         # seqtk mergepe: interleave two paired-end FASTA/Q files
         # adna-trim:
@@ -290,7 +325,7 @@ rule seqtk_adna_trim:
             " {ADNA}"
             " -l 1"
             " -t 1"
-            #" -p {params.out_pe}"
+            # " -p {params.out_pe}"
             " -"
             " > {output}"
         )
@@ -308,9 +343,8 @@ rule bbmerge:
     wildcard_constraints:
         n="\d+",
         l="\d+",
-    params:
     benchmark:
-        OUTDIR_BEN + "bbmerge/gen_n{n}_l{l}_bb.tsv",
+        OUTDIR_BEN + "bbmerge/gen_n{n}_l{l}_bb.tsv"
     shell:
         # t=1           : Set threads to 1
         # outu=<file>   : File for unmerged reads.
@@ -319,8 +353,8 @@ rule bbmerge:
             " in1={input.s1}"
             " in2={input.s2}"
             " out={output.m}"
-            #" outu1={output.u1}"
-            #" outu2={output.u2}"
+            # " outu1={output.u1}"
+            # " outu2={output.u2}"
             " adapter={ADPT_FILE}"
             " t=1"
             " mininsert=1"
@@ -345,7 +379,7 @@ rule fastp:
     params:
         out_prefix=OUTDIR_REC + "fastp/gen_n{n}_l{l}",
     benchmark:
-        OUTDIR_BEN + "fastp/gen_n{n}_l{l}_fp.tsv",
+        OUTDIR_BEN + "fastp/gen_n{n}_l{l}_fp.tsv"
     shell:
         # takes phread33 as input
         (
@@ -358,12 +392,12 @@ rule fastp:
             " --merged_out {output.m}"
             " --disable_length_filtering"
             " --length_required 1"
-            #" --out1 {output.u1}"
-            #" --out2 {output.u2}"
+            # " --out1 {output.u1}"
+            # " --out2 {output.u2}"
             " --json /dev/null"
             " --html /dev/null"
         )
-    
+
 
 rule SeqPrep:
     """Reconstruction using SeqPrep"""
@@ -416,7 +450,79 @@ rule evaluate:
         fp=OUTDIR_REC + "fastp/gen_n{n}_l{l}_fp.fq",
         sp=OUTDIR_REC + "SeqPrep/gen_n{n}_l{l}_sp.fq.gz",
     output:
-        lh_out=OUTDIR_EVA + "leeHom/gen_n{n}_l{l}_leehom.csv",
+        lh_out=OUTDIR_EVA + "leeHom/gen_n{n}_l{l}_lh.csv",
+        ar_out=OUTDIR_EVA + "AdapterRemoval/gen_n{n}_l{l}_ar.csv",
+        cm_out=OUTDIR_EVA + "ClipAndMerge/gen_n{n}_l{l}_cm.csv",
+        at_out=OUTDIR_EVA + "seqtk_adna/gen_n{n}_l{l}_at.csv",
+        bb_out=OUTDIR_EVA + "bbmerge/gen_n{n}_l{l}_bb.csv",
+        fp_out=OUTDIR_EVA + "fastp/gen_n{n}_l{l}_fp.csv",
+        sp_out=OUTDIR_EVA + "SeqPrep/gen_n{n}_l{l}_sp.csv",
+    wildcard_constraints:
+        n="\d+",
+        l="\d+",
+    conda:
+        "/net/node07/home/projects/DNA_reconstruct/conda_env.yaml"
     run:
-        shell("touch {output.lh_out}")
-
+        shell(
+            "python {EVAL_SCRIPT}"
+            " --out {output.lh_out}"
+            " --nfrags {wildcards.n}"
+            " --fraglen {wildcards.l}"
+            " --tool leeHom"
+            " {input.orig}"
+            " {input.lh}"
+        )
+        shell(
+            "python {EVAL_SCRIPT}"
+            " --out {output.ar_out}"
+            " --nfrags {wildcards.n}"
+            " --fraglen {wildcards.l}"
+            " --tool AdapterRemoval"
+            " {input.orig}"
+            " {input.ar}"
+        )
+        shell(
+            "python {EVAL_SCRIPT}"
+            " --out {output.cm_out}"
+            " --nfrags {wildcards.n}"
+            " --fraglen {wildcards.l}"
+            " --tool ClipAndMerge"
+            " {input.orig}"
+            " {input.cm}"
+        )
+        shell(
+            "python {EVAL_SCRIPT}"
+            " --out {output.at_out}"
+            " --nfrags {wildcards.n}"
+            " --fraglen {wildcards.l}"
+            " --tool seqtk_adna_trim"
+            " {input.orig}"
+            " {input.at}"
+        )
+        shell(
+            "python {EVAL_SCRIPT}"
+            " --out {output.bb_out}"
+            " --nfrags {wildcards.n}"
+            " --fraglen {wildcards.l}"
+            " --tool bbmerge"
+            " {input.orig}"
+            " {input.bb}"
+        )
+        shell(
+            "python {EVAL_SCRIPT}"
+            " --out {output.fp_out}"
+            " --nfrags {wildcards.n}"
+            " --fraglen {wildcards.l}"
+            " --tool fastp"
+            " {input.orig}"
+            " {input.fp}"
+        )
+        shell(
+            "python {EVAL_SCRIPT}"
+            " --out {output.sp_out}"
+            " --nfrags {wildcards.n}"
+            " --fraglen {wildcards.l}"
+            " --tool SeqPrep"
+            " {input.orig}"
+            " {input.sp}"
+        )
