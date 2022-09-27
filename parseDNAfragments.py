@@ -185,9 +185,7 @@ def load_readm(path, templates):
     for line in f:
         lines.append(line.rstrip())
         if len(lines) == 4:
-            # don't consider forward (@F_) or reverse (@R_) reads
-            # reads processed with AdapterRemoval have a @M_
-            #
+            # skip unmerged reads
             if not lines[0].startswith((b'@F_', b'@R_')):
                 # Create a dict of the fastq entry
                 reading = _process_fastq_entry(lines)
