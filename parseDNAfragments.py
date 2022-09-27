@@ -139,7 +139,7 @@ def _clean_up_fastq_header(header):
         # AdapterRemoval, ClipAndMerge
         defname = header.split(b'@M_',1)[1].rsplit(b'-',1)[0]
     else:
-        # leeHom, seqtk/adna, bbmerge, fastp
+        # leeHom, seqtk/adna, bbmerge, fastp, SeqPrep
         defname = header.split(b'@',1)[1].rsplit(b'-',1)[0]
     return defname
 

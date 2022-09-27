@@ -10,6 +10,7 @@ what happens in such a case.
 
 TO DO
 - add gzip
+- delete unneccessary variables
 - Check if the merged output file really contains only merged reads by
   comparing with leonardos files (header of the reads):
   bbmerge, adna-trim 
@@ -46,6 +47,7 @@ SEQTK = "/home/ctools/seqtk-1.3/seqtk"
 ADNA = "/home/ctools/adna/adna-trim"
 BBMERGE = "/home/ctools/bbmap_38_91/bbmerge.sh"
 FASTP = "/home/ctools/fastp/fastp"
+SEQPREP = "/home/ctools/SeqPrep-1.3.2/SeqPrep"
 
 # path to genome and adapter sequences
 IN_FILE = "/home/databases/genomes/Homo_sapiens/CHM13_T2T/CHM13_T2T.fa"
@@ -362,6 +364,44 @@ rule fastp:
             " --html /dev/null"
         )
     
+
+rule SeqPrep:
+    """Reconstruction using SeqPrep"""
+    input:
+        s1=OUTDIR_SIM + "gen_n{n}_l{l}_s1.fq",
+        s2=OUTDIR_SIM + "gen_n{n}_l{l}_s2.fq",
+    output:
+        m=OUTDIR_REC + "SeqPrep/gen_n{n}_l{l}_sp.fq.gz",
+        #u1=OUTDIR_REC + "SeqPrep/gen_n{n}_l{l}_sp.R1fq.gz",
+        #u2=OUTDIR_REC + "SeqPrep/gen_n{n}_l{l}_sp.R2fq.gz",
+    wildcard_constraints:
+        n="\d+",
+        l="\d+",
+    benchmark:
+        OUTDIR_BEN + "SeqPrep/gen_n{n}_l{l}_sp.tsv"
+    shell:
+        # The output is always gziped compressed.
+        # -f <first read input fastq filename>
+        # -r <second read input fastq filename>
+        # -s <perform merging and output the merged reads to this file>
+        # -1 <first read output fastq filename>
+        # -2 <second read output fastq filename>
+        # -L <Minimum length of a trimmed/merged read; default = 30>
+        # -A <forward read primer/adapter sequence to trim>
+        # -B <reverse read primer/adapter sequence to trim>
+        (
+            "{SEQPREP}"
+            " -f {input.s1}"
+            " -r {input.s2}"
+            " -s {output.m}"
+            " -1 /dev/null"
+            " -2 /dev/null"
+            " -L 1"
+            " -A {ADPT1}"
+            " -B {ADPT2}"
+        )
+
+
 ### Evaluate trimming performance
 
 
@@ -374,6 +414,7 @@ rule evaluate:
         at=OUTDIR_REC + "seqtk_adna-trim/gen_n{n}_l{l}_at.fq",
         bb=OUTDIR_REC + "bbmerge/gen_n{n}_l{l}_bb.fq",
         fp=OUTDIR_REC + "fastp/gen_n{n}_l{l}_fp.fq",
+        sp=OUTDIR_REC + "SeqPrep/gen_n{n}_l{l}_sp.fq.gz",
     output:
         lh_out=OUTDIR_EVA + "leeHom/gen_n{n}_l{l}_leehom.csv",
     run:
