@@ -4,16 +4,18 @@
 This script was initially written by Leonardo and then improved by 
 Annette Lien (a.lien@posteo.de) (12.09.2022)
 
-usage: parseDNAfragments.py [-h] [-o EXPORT_PATH] [-nf NFRAGS] [-fl FRAGLEN]
+usage: parseDNAfragments.py [-h] [-o EXPORT_PATH] [-n NFRAGS] [-l FRAGLEN]
                             [-t PROGRAM_NAME]
-                            templates_path readm_path
+                            orig_fragments.fa reads_m.fq
 
-Performs analysis of the reconstructed reads.If the results should be
+Performs analysis of the reconstructed reads. If the results should be
 exported, all the optional arguments must be supplied.
 
 positional arguments:
-  templates_path        fasta file of the simulated DNA templates
-  readm_path            fastq file of the trimmed and merged reads
+  orig_fragments.fa     gzipped or unzipped fasta file of the simulated DNA
+                        templates.
+  reads_m.fq            gzipped or unzipped fastq file of the trimmed and
+                        merged reads
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -70,11 +72,11 @@ def parse_arguments():
     
     # required arguments
     parser.add_argument(
-        "templates_path", type=str, 
-        help='fasta file of the simulated DNA templates')
+        "orig_fragments.fa", type=str, 
+        help='gzipped or unzipped fasta file of the simulated DNA templates. ')
     parser.add_argument(
-        "readm_path", type=str, 
-        help='fastq file of the trimmed and merged reads')
+        "reads_m.fq", type=str, 
+        help='gzipped or unzipped fastq file of the trimmed and merged reads')
     
     # optional arguments, only needed if exporting the results
     parser.add_argument(
