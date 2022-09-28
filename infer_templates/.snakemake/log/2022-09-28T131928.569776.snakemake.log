@@ -1,0 +1,2 @@
+SyntaxError in line 440 of /net/node07/home/projects/DNA_reconstruct/infer_templates/snakefile:
+EOF in multi-line statement (snakefile, line 440)

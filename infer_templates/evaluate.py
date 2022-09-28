@@ -66,10 +66,10 @@ def parse_arguments():
     
     # required arguments
     parser.add_argument(
-        "orig_fragments.fa", type=str, 
+        "-in1", "--templates", action="store", type=str, dest="templates_path",
         help='gzipped or unzipped fasta file of the simulated DNA templates. ')
     parser.add_argument(
-        "reads_m.fq", type=str, 
+        "-in2", "--reads", action="store", type=str, dest="readm_path",
         help='gzipped or unzipped fastq file of the trimmed and merged reads')
     
     # optional arguments, only needed if exporting the results

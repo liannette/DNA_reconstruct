@@ -1,6 +1,7 @@
 .conda/*
 .snakemake/*
-.git*
+.git/*
 gabrieldir/*
 leonardos_project/*
-output/
+*/output/*
+playfile.py

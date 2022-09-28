@@ -25,11 +25,11 @@ Unclear Phred Score offset of adna-trim, bbmerge
 SEED = 2718
 
 # fragment variables
-LENGTHS = [100]  # list(range(1, 250+1)) + [1000]
-NUMFRAGS = 2  # 1000000
+LENGTHS = [10, 20, 50, 100, 250, 1000]  # list(range(1, 250+1)) + [1000]
+NUMFRAGS = 50  # 1000000
 
 # paths for output directories
-OUTDIR = "/net/node07/home/projects/DNA_reconstruct/output/"
+OUTDIR = "/net/node07/home/projects/DNA_reconstruct/infer_templates/output/"
 OUTDIR_BEN = OUTDIR + "benchmarks/"
 OUTDIR_SIM = OUTDIR + "simulations/"
 OUTDIR_REC = OUTDIR + "reconstructions/"
@@ -49,7 +49,7 @@ FASTP = "/home/ctools/fastp/fastp"
 SEQPREP = "/home/ctools/SeqPrep-1.3.2/SeqPrep"
 
 # path to evaluation script
-EVAL_SCRIPT = "/home/projects/DNA_reconstruct/parseDNAfragments.py"
+EVAL_SCRIPT = "/home/projects/DNA_reconstruct/infer_templates/evaluate.py"
 
 # path to genome and adapter sequences
 IN_FILE = "/home/databases/genomes/Homo_sapiens/CHM13_T2T/CHM13_T2T.fa"
@@ -148,7 +148,13 @@ rule add_adapters:
     shell:
         # -l        : Desired read length
         # -artp     : Output reads as ART with wrap-around
-        ("{ADPTSIM}" " -l 125" " -artp" " {output} {input}")
+        (
+            "{ADPTSIM}" 
+            " -l 125" 
+            " -artp" 
+            " {output}"
+            " {input}"
+        )
 
 
 rule simulate_reads:
@@ -167,7 +173,7 @@ rule simulate_reads:
     wildcard_constraints:
         n="\d+",
         l="\d+",
-    shell:
+    run:
         # --insRate     : insertion rate
         # -dr           : deletion rate
         # --seqSys      : HS25: Illumina HiSeq 2500 (125bp, 150bp)
@@ -180,7 +186,7 @@ rule simulate_reads:
         # --rndSeed     : the seed for random number generator, use a
         #                 fixed seed to generate two identical datasets
         #                 from different runs
-        (
+        shell(
             "{ART}"
             " --insRate 0 --insRate2 0"
             " -dr 0 -dr2 0"
@@ -194,7 +200,7 @@ rule simulate_reads:
             " --rndSeed {SEED}"
             " -i {input} -o {params.out_prefix}"
         )
-
+        shell("gzip {input}")
 
 ### Reconstruction aka trimming
 
@@ -206,22 +212,22 @@ rule leeHom:
         s2=OUTDIR_SIM + "gen_n{n}_l{l}_s2.fq",
     output:
         OUTDIR_REC + "leeHom/gen_n{n}_l{l}_lh.fq.gz",
-        OUTDIR_REC + "leeHom/gen_n{n}_l{l}_lh_r1.fq.gz",
-        OUTDIR_REC + "leeHom/gen_n{n}_l{l}_lh_r2.fq.gz",
-        OUTDIR_REC + "leeHom/gen_n{n}_l{l}_lh.fail.fq.gz",
-        OUTDIR_REC + "leeHom/gen_n{n}_l{l}_lh_r1.fail.fq.gz",
-        OUTDIR_REC + "leeHom/gen_n{n}_l{l}_lh_r2.fail.fq.gz",
     wildcard_constraints:
         n="\d+",
         l="\d+",
     params:
         out_prefix=OUTDIR_REC + "leeHom/gen_n{n}_l{l}_lh",
+        rm1=OUTDIR_REC + "leeHom/gen_n{n}_l{l}_lh_r1.fq.gz",
+        rm2=OUTDIR_REC + "leeHom/gen_n{n}_l{l}_lh_r2.fq.gz",
+        rm3=OUTDIR_REC + "leeHom/gen_n{n}_l{l}_lh.fail.fq.gz",
+        rm4=OUTDIR_REC + "leeHom/gen_n{n}_l{l}_lh_r1.fail.fq.gz",
+        rm5=OUTDIR_REC + "leeHom/gen_n{n}_l{l}_lh_r2.fail.fq.gz",
     benchmark:
         OUTDIR_BEN + "leeHom/gen_n{n}_l{l}_lh.tsv"
-    shell:
+    run:
         # (default : PHRED33)
         # -t [threads]            Use multiple cores (default : 1)
-        (
+        shell(
             "{LEEHOM}"
             " --adapterFirstRead {ADPT1}"
             " --adapterSecondRead {ADPT2}"
@@ -229,6 +235,14 @@ rule leeHom:
             " -fq1 {input.s1}"
             " -fq2 {input.s2}"
             " -fqo {params.out_prefix}"
+        )
+        shell(
+            "rm"
+            " {params.rm1}"
+            " {params.rm2}"
+            " {params.rm3}"
+            " {params.rm4}"
+            " {params.rm5}"
         )
 
 
@@ -238,26 +252,32 @@ rule AdapterRemoval:
         s1=OUTDIR_SIM + "gen_n{n}_l{l}_s1.fq",
         s2=OUTDIR_SIM + "gen_n{n}_l{l}_s2.fq",
     output:
-        OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.pair1.truncated",
-        OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.pair2.truncated",
-        OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.singleton.truncated",
-        OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.discarded",
-        OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.collapsed.truncated",
+        #OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.pair1.truncated",
+        #OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.pair2.truncated",
+        #OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.singleton.truncated",
+        #OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.discarded",
+        #OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.collapsed.truncated",
         OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.collapsed",
     wildcard_constraints:
         n="\d+",
         l="\d+",
     params:
         out_prefix=OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar",
+        rm1=OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.pair1.truncated",
+        rm2=OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.pair2.truncated",
+        rm3=OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.singleton.truncated",
+        rm4=OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.discarded",
+        rm5=OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.collapsed.truncated",
+        rm6=OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.settings",
     benchmark:
         OUTDIR_BEN + "AdapterRemoval/gen_n{n}_l{l}_ar.tsv"
-    shell:
+    run:
         # --seed SEED
         #   Sets the RNG seed used when choosing between bases with 
         #   equal Phred scores.
         # Phred is by default 33
         # number of threades is by default 1
-        (
+        shell(
             "{ADPTREM}"
             # " --gzip"
             " --collapse"
@@ -269,6 +289,16 @@ rule AdapterRemoval:
             " --basename {params.out_prefix}"
             " --seed {SEED}"
         )
+        shell(
+            "rm"
+            " {params.rm1}"
+            " {params.rm2}"
+            " {params.rm3}"
+            " {params.rm4}"
+            " {params.rm5}"
+            " {params.rm6}"
+        )
+        
 
 
 rule ClipAndMerge:
@@ -440,6 +470,7 @@ rule SeqPrep:
 
 
 rule evaluate:
+    "Run the evaluation script and zip all fasta and fastq files"
     input:
         orig=OUTDIR_SIM + "gen_n{n}_l{l}.fa",
         lh=OUTDIR_REC + "leeHom/gen_n{n}_l{l}_lh.fq.gz",
@@ -457,72 +488,91 @@ rule evaluate:
         bb_out=OUTDIR_EVA + "bbmerge/gen_n{n}_l{l}_bb.csv",
         fp_out=OUTDIR_EVA + "fastp/gen_n{n}_l{l}_fp.csv",
         sp_out=OUTDIR_EVA + "SeqPrep/gen_n{n}_l{l}_sp.csv",
+    params:
+        sim_r1=OUTDIR_SIM + "gen_n{n}_l{l}_s1.fq",
+        sim_r2=OUTDIR_SIM + "gen_n{n}_l{l}_s2.fq",
     wildcard_constraints:
         n="\d+",
         l="\d+",
     conda:
         "/net/node07/home/projects/DNA_reconstruct/conda_env.yaml"
     run:
+        shell("gzip {params.sim_r1}")
+        shell("gzip {params.sim_r2}")
+
         shell(
             "python {EVAL_SCRIPT}"
             " --out {output.lh_out}"
             " --nfrags {wildcards.n}"
             " --fraglen {wildcards.l}"
             " --tool leeHom"
-            " {input.orig}"
-            " {input.lh}"
+            " --templates {input.orig}"
+            " --reads {input.lh}"
         )
+
         shell(
             "python {EVAL_SCRIPT}"
             " --out {output.ar_out}"
             " --nfrags {wildcards.n}"
             " --fraglen {wildcards.l}"
             " --tool AdapterRemoval"
-            " {input.orig}"
-            " {input.ar}"
+            " --templates {input.orig}"
+            " --reads {input.ar}"
         )
+        shell("gzip {input.ar}")
+
         shell(
             "python {EVAL_SCRIPT}"
             " --out {output.cm_out}"
             " --nfrags {wildcards.n}"
             " --fraglen {wildcards.l}"
             " --tool ClipAndMerge"
-            " {input.orig}"
-            " {input.cm}"
+            " --templates {input.orig}"
+            " --reads {input.cm}"
         )
+        shell("gzip {input.cm}")
+
         shell(
             "python {EVAL_SCRIPT}"
             " --out {output.at_out}"
             " --nfrags {wildcards.n}"
             " --fraglen {wildcards.l}"
             " --tool seqtk_adna_trim"
-            " {input.orig}"
-            " {input.at}"
+            " --templates {input.orig}"
+            " --reads {input.at}"
         )
+        shell("gzip {input.at}")
+
         shell(
             "python {EVAL_SCRIPT}"
             " --out {output.bb_out}"
             " --nfrags {wildcards.n}"
             " --fraglen {wildcards.l}"
             " --tool bbmerge"
-            " {input.orig}"
-            " {input.bb}"
+            " --templates {input.orig}"
+            " --reads {input.bb}"
         )
+        shell("gzip {input.bb}")
+
         shell(
             "python {EVAL_SCRIPT}"
             " --out {output.fp_out}"
             " --nfrags {wildcards.n}"
             " --fraglen {wildcards.l}"
             " --tool fastp"
-            " {input.orig}"
-            " {input.fp}"
+            " --templates {input.orig}"
+            " --reads {input.fp}"
         )
+        shell("gzip {input.fp}")
+
         shell(
             "python {EVAL_SCRIPT}"
             " --out {output.sp_out}"
             " --nfrags {wildcards.n}"
             " --fraglen {wildcards.l}"
             " --tool SeqPrep"
-            " {input.orig}"
-            " {input.sp}"
+            " --templates {input.orig}"
+            " --reads {input.sp}"
         )
+
+        shell("gzip {input.orig}")

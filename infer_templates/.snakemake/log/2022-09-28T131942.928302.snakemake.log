@@ -1,0 +1,4 @@
+Building DAG of jobs...
+MissingInputException in line 429 of /net/node07/home/projects/DNA_reconstruct/infer_templates/snakefile:
+Missing input files for rule evaluate:
+/net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/AdapterRemoval/gen_n10_l10_lh.fq.gz

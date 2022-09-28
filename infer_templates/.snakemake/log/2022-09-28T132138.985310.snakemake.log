@@ -1,0 +1,3 @@
+WildcardError in line 82 of /net/node07/home/projects/DNA_reconstruct/infer_templates/snakefile:
+No values given for wildcard 'trim_tool'.
+  File "/net/node07/home/projects/DNA_reconstruct/infer_templates/snakefile", line 82, in <module>

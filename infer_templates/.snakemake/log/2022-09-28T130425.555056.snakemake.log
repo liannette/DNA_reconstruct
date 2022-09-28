@@ -1,0 +1,140 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 16
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	AdapterRemoval
+	1	ClipAndMerge
+	1	SeqPrep
+	1	all
+	1	bbmerge
+	6	evaluate
+	1	fastp
+	1	leeHom
+	1	seqtk_adna_trim
+	14
+
+[Wed Sep 28 13:04:26 2022]
+rule evaluate:
+    input: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/simulations/gen_n50_l100.fa, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/leeHom/gen_n50_l100_lh.fq.gz, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/AdapterRemoval/gen_n50_l100_ar.collapsed, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/ClipAndMerge/gen_n50_l100_cm.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/seqtk_adna-trim/gen_n50_l100_at.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/bbmerge/gen_n50_l100_bb.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/fastp/gen_n50_l100_fp.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/SeqPrep/gen_n50_l100_sp.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/leeHom/gen_n50_l100_lh.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/AdapterRemoval/gen_n50_l100_ar.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/ClipAndMerge/gen_n50_l100_cm.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/seqtk_adna/gen_n50_l100_at.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/bbmerge/gen_n50_l100_bb.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/fastp/gen_n50_l100_fp.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/SeqPrep/gen_n50_l100_sp.csv
+    jobid: 4
+    wildcards: n=50, l=100
+
+[Wed Sep 28 13:04:26 2022]
+rule seqtk_adna_trim:
+    input: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/simulations/gen_n50_l1000_s1.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/simulations/gen_n50_l1000_s2.fq
+    output: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/seqtk_adna-trim/gen_n50_l1000_at.fq
+    jobid: 51
+    benchmark: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/benchmarks/seqtk_adna-trim/gen_n50_l1000_at.tsv
+    wildcards: n=50, l=1000
+
+
+[Wed Sep 28 13:04:26 2022]
+rule bbmerge:
+    input: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/simulations/gen_n50_l1000_s1.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/simulations/gen_n50_l1000_s2.fq
+    output: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/bbmerge/gen_n50_l1000_bb.fq
+    jobid: 52
+    benchmark: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/benchmarks/bbmerge/gen_n50_l1000_bb.tsv
+    wildcards: n=50, l=1000
+
+
+[Wed Sep 28 13:04:26 2022]
+rule fastp:
+    input: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/simulations/gen_n50_l1000_s1.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/simulations/gen_n50_l1000_s2.fq
+    output: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/fastp/gen_n50_l1000_fp.fq
+    jobid: 53
+    benchmark: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/benchmarks/fastp/gen_n50_l1000_fp.tsv
+    wildcards: n=50, l=1000
+
+
+[Wed Sep 28 13:04:26 2022]
+rule ClipAndMerge:
+    input: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/simulations/gen_n50_l1000_s1.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/simulations/gen_n50_l1000_s2.fq
+    output: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/ClipAndMerge/gen_n50_l1000_cm.fq
+    jobid: 50
+    benchmark: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/benchmarks/ClipAndMerge/gen_n50_l1000_cm.tsv
+    wildcards: n=50, l=1000
+
+
+[Wed Sep 28 13:04:26 2022]
+[Wed Sep 28 13:04:26 2022]
+rule evaluate:
+    input: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/simulations/gen_n50_l250.fa, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/leeHom/gen_n50_l250_lh.fq.gz, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/AdapterRemoval/gen_n50_l250_ar.collapsed, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/ClipAndMerge/gen_n50_l250_cm.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/seqtk_adna-trim/gen_n50_l250_at.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/bbmerge/gen_n50_l250_bb.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/fastp/gen_n50_l250_fp.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/SeqPrep/gen_n50_l250_sp.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/leeHom/gen_n50_l250_lh.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/AdapterRemoval/gen_n50_l250_ar.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/ClipAndMerge/gen_n50_l250_cm.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/seqtk_adna/gen_n50_l250_at.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/bbmerge/gen_n50_l250_bb.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/fastp/gen_n50_l250_fp.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/SeqPrep/gen_n50_l250_sp.csv
+    jobid: 5
+    wildcards: n=50, l=250
+Finished job 51.
+
+1 of 14 steps (7%) done
+[Wed Sep 28 13:04:27 2022]
+Finished job 53.
+2 of 14 steps (14%) done
+
+[Wed Sep 28 13:04:27 2022]
+[Wed Sep 28 13:04:27 2022]
+Finished job 52.
+rule evaluate:
+    input: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/simulations/gen_n50_l50.fa, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/leeHom/gen_n50_l50_lh.fq.gz, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/AdapterRemoval/gen_n50_l50_ar.collapsed, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/ClipAndMerge/gen_n50_l50_cm.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/seqtk_adna-trim/gen_n50_l50_at.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/bbmerge/gen_n50_l50_bb.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/fastp/gen_n50_l50_fp.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/SeqPrep/gen_n50_l50_sp.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/leeHom/gen_n50_l50_lh.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/AdapterRemoval/gen_n50_l50_ar.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/ClipAndMerge/gen_n50_l50_cm.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/seqtk_adna/gen_n50_l50_at.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/bbmerge/gen_n50_l50_bb.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/fastp/gen_n50_l50_fp.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/SeqPrep/gen_n50_l50_sp.csv
+    jobid: 3
+    wildcards: n=50, l=50
+3 of 14 steps (21%) done
+
+[Wed Sep 28 13:04:27 2022]
+Finished job 50.
+4 of 14 steps (29%) done
+
+[Wed Sep 28 13:04:27 2022]
+rule leeHom:
+    input: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/simulations/gen_n50_l1000_s1.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/simulations/gen_n50_l1000_s2.fq
+    output: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/leeHom/gen_n50_l1000_lh.fq.gz, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/leeHom/gen_n50_l1000_lh_r1.fq.gz, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/leeHom/gen_n50_l1000_lh_r2.fq.gz, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/leeHom/gen_n50_l1000_lh.fail.fq.gz, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/leeHom/gen_n50_l1000_lh_r1.fail.fq.gz, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/leeHom/gen_n50_l1000_lh_r2.fail.fq.gz
+    jobid: 48
+    benchmark: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/benchmarks/leeHom/gen_n50_l1000_lh.tsv
+    wildcards: n=50, l=1000
+
+
+[Wed Sep 28 13:04:28 2022]
+rule evaluate:
+    input: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/simulations/gen_n50_l10.fa, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/leeHom/gen_n50_l10_lh.fq.gz, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/AdapterRemoval/gen_n50_l10_ar.collapsed, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/ClipAndMerge/gen_n50_l10_cm.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/seqtk_adna-trim/gen_n50_l10_at.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/bbmerge/gen_n50_l10_bb.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/fastp/gen_n50_l10_fp.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/SeqPrep/gen_n50_l10_sp.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/leeHom/gen_n50_l10_lh.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/AdapterRemoval/gen_n50_l10_ar.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/ClipAndMerge/gen_n50_l10_cm.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/seqtk_adna/gen_n50_l10_at.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/bbmerge/gen_n50_l10_bb.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/fastp/gen_n50_l10_fp.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/SeqPrep/gen_n50_l10_sp.csv
+    jobid: 1
+    wildcards: n=50, l=10
+
+[Wed Sep 28 13:04:28 2022]
+rule evaluate:
+    input: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/simulations/gen_n50_l20.fa, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/leeHom/gen_n50_l20_lh.fq.gz, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/AdapterRemoval/gen_n50_l20_ar.collapsed, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/ClipAndMerge/gen_n50_l20_cm.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/seqtk_adna-trim/gen_n50_l20_at.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/bbmerge/gen_n50_l20_bb.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/fastp/gen_n50_l20_fp.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/SeqPrep/gen_n50_l20_sp.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/leeHom/gen_n50_l20_lh.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/AdapterRemoval/gen_n50_l20_ar.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/ClipAndMerge/gen_n50_l20_cm.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/seqtk_adna/gen_n50_l20_at.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/bbmerge/gen_n50_l20_bb.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/fastp/gen_n50_l20_fp.csv, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/evaluation/SeqPrep/gen_n50_l20_sp.csv
+    jobid: 2
+    wildcards: n=50, l=20
+
+[Wed Sep 28 13:04:28 2022]
+rule AdapterRemoval:
+    input: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/simulations/gen_n50_l1000_s1.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/simulations/gen_n50_l1000_s2.fq
+    output: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/AdapterRemoval/gen_n50_l1000_ar.pair1.truncated, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/AdapterRemoval/gen_n50_l1000_ar.pair2.truncated, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/AdapterRemoval/gen_n50_l1000_ar.singleton.truncated, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/AdapterRemoval/gen_n50_l1000_ar.discarded, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/AdapterRemoval/gen_n50_l1000_ar.collapsed.truncated, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/AdapterRemoval/gen_n50_l1000_ar.collapsed
+    jobid: 49
+    benchmark: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/benchmarks/AdapterRemoval/gen_n50_l1000_ar.tsv
+    wildcards: n=50, l=1000
+
+
+[Wed Sep 28 13:04:29 2022]
+rule SeqPrep:
+    input: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/simulations/gen_n50_l1000_s1.fq, /net/node07/home/projects/DNA_reconstruct/infer_templates/output/simulations/gen_n50_l1000_s2.fq
+    output: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/reconstructions/SeqPrep/gen_n50_l1000_sp.fq.gz
+    jobid: 54
+    benchmark: /net/node07/home/projects/DNA_reconstruct/infer_templates/output/benchmarks/SeqPrep/gen_n50_l1000_sp.tsv
+    wildcards: n=50, l=1000
+
+[Wed Sep 28 13:04:29 2022]
+Finished job 54.
+5 of 14 steps (36%) done
+[Wed Sep 28 13:04:30 2022]
+Finished job 48.
+6 of 14 steps (43%) done
+[Wed Sep 28 13:04:30 2022]
+Finished job 49.
+7 of 14 steps (50%) done
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /net/node07/home/projects/DNA_reconstruct/infer_templates/.snakemake/log/2022-09-28T130425.555056.snakemake.log
