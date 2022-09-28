@@ -1,0 +1,9 @@
+.ssh/*
+.vscode-server/*
+.cache/*
+.bash*
+.emacs
+.google_authenticator
+.viminfo
+.Xauthority
+qrcode.png
