@@ -4,4 +4,5 @@
 gabrieldir/*
 leonardos_project/*
 */output/*
+*/.snakemake/*
 playfile.py
