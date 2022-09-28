@@ -4,18 +4,20 @@
 This script was initially written by Leonardo and then improved by 
 Annette Lien (a.lien@posteo.de) (12.09.2022)
 
-usage: parseDNAfragments.py [-h] [-o EXPORT_PATH] [-n NFRAGS] [-l FRAGLEN]
-                            [-t PROGRAM_NAME]
+------------------------------------------------------------------------
+
+usage: parseDNAfragments.py [-h] [-o EXPORT_PATH] [-n NFRAGS]
+                            [-l FRAGLEN] [-t PROGRAM_NAME]
                             orig_fragments.fa reads_m.fq
 
 Performs analysis of the reconstructed reads. If the results should be
 exported, all the optional arguments must be supplied.
 
 positional arguments:
-  orig_fragments.fa     gzipped or unzipped fasta file of the simulated DNA
-                        templates.
-  reads_m.fq            gzipped or unzipped fastq file of the trimmed and
-                        merged reads
+  orig_fragments.fa     gzipped or unzipped fasta file of the simulated
+                        DNA templates.
+  reads_m.fq            gzipped or unzipped fastq file of the trimmed 
+                        and merged reads
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -28,31 +30,23 @@ optional arguments:
   -t PROGRAM_NAME, --tool PROGRAM_NAME
                         Name of the program used for trimming
 
------------------------------------------------------------------------
-leonardos notes
+------------------------------------------------------------------------
 
 We report:
 - Are there missing reads? Dropped due to low quality or something?
 - how many times we got the length right?
 - the divergence between original and predicted sequence?
 
-Probably have to adjust some parameters for the trimming algorithms if
-a program has a high rate of dropping reads.
+If a program has a high rate of dropping reads, is might be neccessary
+to adjust some parameters of the trimming algorithms.
 
-Now the difficulty is that the order of b the reads might not be the
-same. What I would suggest is a dictionary using the definition lines
-where the value would be the original sequence. The other difficulty
-is that certain programs modify the def line by adding for example M_
-for merged reads.
+It might happen that you have a collision i.e. the same sequence got
+sampled twice. It is unlikely but I would not worry about it.
 
-ok, also, it might happen that you have a collision i.e. we sampled
-the same sequence twice. It is unlikely but I would not worry about
-it.
-
-Ok great, a potential pitfall is that it is possible that certain
-programs might not output the same number of sequences that they take
-in. If that is the case will have to modify the commands in order to
-output all of the sequences. 
+A potential pitfall is that it is possible that certain programs might
+not output the same number of sequences that they take in. If that is 
+the case will have to modify the commands in order to output all of the 
+sequences. 
 """
 
 
