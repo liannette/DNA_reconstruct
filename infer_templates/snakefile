@@ -25,17 +25,27 @@ Unclear Phred Score offset of adna-trim, bbmerge
 SEED = 2718
 
 # fragment variables
-LENGTHS = [10, 20, 50, 100, 250, 1000]  # list(range(1, 250+1)) + [1000]
-NUMFRAGS = 50  # 1000000
+#LENGTHS = list(range(1, 250+1)) + [1000]
+#NUMFRAGS = 1000000
+LENGTHS = [10, 20, 50, 100, 250, 1000] 
+NUMFRAGS = 50
 
-# paths for output directories
+
+
+# Input genome and adapter sequences
+IN_FILE = "/home/databases/genomes/Homo_sapiens/CHM13_T2T/CHM13_T2T.fa"
+ADPT_FILE = "/home/projects/DNA_reconstruct/input_files/adapters.fa"
+ADPT1 = "AGATCGGAAGAGCACACGTCTGAACTCCAGTCACCGATTCGATCTCGTATGCCGTCTTCTGCTTG"
+ADPT2 = "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATTT"
+
+# output directories
 OUTDIR = "/net/node07/home/projects/DNA_reconstruct/infer_templates/output/"
 OUTDIR_BEN = OUTDIR + "benchmarks/"
 OUTDIR_SIM = OUTDIR + "simulations/"
 OUTDIR_REC = OUTDIR + "reconstructions/"
 OUTDIR_EVA = OUTDIR + "evaluation/"
 
-# paths to tools
+# tools
 FRAGSIM = "/home/ctools/gargammel/src/fragSim"
 ADPTSIM = "/home/ctools/gargammel/src/adptSim"
 ART = "/home/ctools/gargammel/art_src_MountRainier_Linux/art_illumina"
@@ -48,16 +58,8 @@ BBMERGE = "/home/ctools/bbmap_38_91/bbmerge.sh"
 FASTP = "/home/ctools/fastp/fastp"
 SEQPREP = "/home/ctools/SeqPrep-1.3.2/SeqPrep"
 
-# path to evaluation script
-EVAL_SCRIPT = "/home/projects/DNA_reconstruct/infer_templates/evaluate.py"
-
-# path to genome and adapter sequences
-IN_FILE = "/home/databases/genomes/Homo_sapiens/CHM13_T2T/CHM13_T2T.fa"
-ADPT_FILE = "/home/projects/DNA_reconstruct/gabrieldir/adapters.fa"
-
-# adapter sequences
-ADPT1 = "AGATCGGAAGAGCACACGTCTGAACTCCAGTCACCGATTCGATCTCGTATGCCGTCTTCTGCTTG"
-ADPT2 = "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATTT"
+# evaluation script
+EVAL_SCRIPT = "/home/projects/DNA_reconstruct/eval_infer_templates.py"
 
 # conda environment
 CONDA_ENV = "/net/node07/home/projects/DNA_reconstruct/conda_env.yaml"
@@ -84,7 +86,7 @@ rule all:
             l=LENGTHS,
         ),
         expand(
-            OUTDIR_EVA + "seqtk_adna/gen_n{n}_l{l}_at.csv",
+            OUTDIR_EVA + "seqtk_adna_trim/gen_n{n}_l{l}_at.csv",
             n=NUMFRAGS,
             l=LENGTHS,
         ),
@@ -200,9 +202,9 @@ rule simulate_reads:
             " --rndSeed {SEED}"
             " -i {input} -o {params.out_prefix}"
         )
-        shell("gzip {input}")
 
-### Reconstruction aka trimming
+
+### Reconstruction
 
 
 rule leeHom:
@@ -252,11 +254,6 @@ rule AdapterRemoval:
         s1=OUTDIR_SIM + "gen_n{n}_l{l}_s1.fq",
         s2=OUTDIR_SIM + "gen_n{n}_l{l}_s2.fq",
     output:
-        #OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.pair1.truncated",
-        #OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.pair2.truncated",
-        #OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.singleton.truncated",
-        #OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.discarded",
-        #OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.collapsed.truncated",
         OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.collapsed",
     wildcard_constraints:
         n="\d+",
@@ -275,11 +272,9 @@ rule AdapterRemoval:
         # --seed SEED
         #   Sets the RNG seed used when choosing between bases with 
         #   equal Phred scores.
-        # Phred is by default 33
-        # number of threades is by default 1
+        # number of threads is by default 1
         shell(
             "{ADPTREM}"
-            # " --gzip"
             " --collapse"
             " --minlength 1"
             " --adapter1 {ADPT1}"
@@ -300,7 +295,6 @@ rule AdapterRemoval:
         )
         
 
-
 rule ClipAndMerge:
     """Reconstruction using ClipAndMerge"""
     input:
@@ -315,8 +309,9 @@ rule ClipAndMerge:
         OUTDIR_BEN + "ClipAndMerge/gen_n{n}_l{l}_cm.tsv"
     shell:
         # Phred Score offset default: 33
-        # -rm_no_partner : Remove reads with no pairing partner after
-        #                  adapter clipping. (default: false)
+        # -u FORWARD_FILE REVERSE_FILE  : Write unmerged forward and 
+        #                   reverse reads to extra files. the regular
+        #                   output file then only contains merged reads!
         (
             "java -jar {CLIPMERGE}"
             " -in1 {input.s1}"
@@ -325,7 +320,7 @@ rule ClipAndMerge:
             " -r {ADPT2}"
             " -o {output}"
             " -l 1"
-            " -rm_no_partner"
+            #" -rm_no_partner"
         )
 
 
@@ -335,14 +330,12 @@ rule seqtk_adna_trim:
         s1=OUTDIR_SIM + "gen_n{n}_l{l}_s1.fq",
         s2=OUTDIR_SIM + "gen_n{n}_l{l}_s2.fq",
     output:
-        OUTDIR_REC + "seqtk_adna-trim/gen_n{n}_l{l}_at.fq",
+        OUTDIR_REC + "seqtk_adna_trim/gen_n{n}_l{l}_at.fq",
     wildcard_constraints:
         n="\d+",
         l="\d+",
-    # params:
-    #    out_pe=OUTDIR_REC + "seqtk_adna_trim/gen_n{n}_l{l}_at",
     benchmark:
-        OUTDIR_BEN + "seqtk_adna-trim/gen_n{n}_l{l}_at.tsv"
+        OUTDIR_BEN + "seqtk_adna_trim/gen_n{n}_l{l}_at.tsv"
     shell:
         # seqtk mergepe: interleave two paired-end FASTA/Q files
         # adna-trim:
@@ -351,11 +344,11 @@ rule seqtk_adna_trim:
         # -p STR       output PE reads to STR.R[12].fq.gz [default: discard pe]
         (
             "{SEQTK} mergepe"
-            " {input.s1} {input.s2} |"
+            " {input.s1}"
+            " {input.s2} |"
             " {ADNA}"
             " -l 1"
             " -t 1"
-            # " -p {params.out_pe}"
             " -"
             " > {output}"
         )
@@ -368,8 +361,8 @@ rule bbmerge:
         s2=OUTDIR_SIM + "gen_n{n}_l{l}_s2.fq",
     output:
         m=OUTDIR_REC + "bbmerge/gen_n{n}_l{l}_bb.fq",
-        #u1=OUTDIR_REC + "bbmerge/gen_n{n}_l{l}_bb.R1.fq"
-        #u2=OUTDIR_REC + "bbmerge/gen_n{n}_l{l}_bb.R2.fq"
+        #u1=OUTDIR_REC + "bbmerge/gen_n{n}_l{l}_bb.R1.fq",
+        #u2=OUTDIR_REC + "bbmerge/gen_n{n}_l{l}_bb.R2.fq",
     wildcard_constraints:
         n="\d+",
         l="\d+",
@@ -406,8 +399,6 @@ rule fastp:
     wildcard_constraints:
         n="\d+",
         l="\d+",
-    params:
-        out_prefix=OUTDIR_REC + "fastp/gen_n{n}_l{l}",
     benchmark:
         OUTDIR_BEN + "fastp/gen_n{n}_l{l}_fp.tsv"
     shell:
@@ -476,7 +467,7 @@ rule evaluate:
         lh=OUTDIR_REC + "leeHom/gen_n{n}_l{l}_lh.fq.gz",
         ar=OUTDIR_REC + "AdapterRemoval/gen_n{n}_l{l}_ar.collapsed",
         cm=OUTDIR_REC + "ClipAndMerge/gen_n{n}_l{l}_cm.fq",
-        at=OUTDIR_REC + "seqtk_adna-trim/gen_n{n}_l{l}_at.fq",
+        at=OUTDIR_REC + "seqtk_adna_trim/gen_n{n}_l{l}_at.fq",
         bb=OUTDIR_REC + "bbmerge/gen_n{n}_l{l}_bb.fq",
         fp=OUTDIR_REC + "fastp/gen_n{n}_l{l}_fp.fq",
         sp=OUTDIR_REC + "SeqPrep/gen_n{n}_l{l}_sp.fq.gz",
@@ -484,7 +475,7 @@ rule evaluate:
         lh_out=OUTDIR_EVA + "leeHom/gen_n{n}_l{l}_lh.csv",
         ar_out=OUTDIR_EVA + "AdapterRemoval/gen_n{n}_l{l}_ar.csv",
         cm_out=OUTDIR_EVA + "ClipAndMerge/gen_n{n}_l{l}_cm.csv",
-        at_out=OUTDIR_EVA + "seqtk_adna/gen_n{n}_l{l}_at.csv",
+        at_out=OUTDIR_EVA + "seqtk_adna_trim/gen_n{n}_l{l}_at.csv",
         bb_out=OUTDIR_EVA + "bbmerge/gen_n{n}_l{l}_bb.csv",
         fp_out=OUTDIR_EVA + "fastp/gen_n{n}_l{l}_fp.csv",
         sp_out=OUTDIR_EVA + "SeqPrep/gen_n{n}_l{l}_sp.csv",
@@ -495,13 +486,13 @@ rule evaluate:
         n="\d+",
         l="\d+",
     conda:
-        "/net/node07/home/projects/DNA_reconstruct/conda_env.yaml"
+        CONDA_ENV
     run:
         shell("gzip {params.sim_r1}")
         shell("gzip {params.sim_r2}")
 
         shell(
-            "python {EVAL_SCRIPT}"
+            "python3 {EVAL_SCRIPT}"
             " --out {output.lh_out}"
             " --nfrags {wildcards.n}"
             " --fraglen {wildcards.l}"
@@ -511,7 +502,7 @@ rule evaluate:
         )
 
         shell(
-            "python {EVAL_SCRIPT}"
+            "python3 {EVAL_SCRIPT}"
             " --out {output.ar_out}"
             " --nfrags {wildcards.n}"
             " --fraglen {wildcards.l}"
@@ -522,7 +513,7 @@ rule evaluate:
         shell("gzip {input.ar}")
 
         shell(
-            "python {EVAL_SCRIPT}"
+            "python3 {EVAL_SCRIPT}"
             " --out {output.cm_out}"
             " --nfrags {wildcards.n}"
             " --fraglen {wildcards.l}"
@@ -533,7 +524,7 @@ rule evaluate:
         shell("gzip {input.cm}")
 
         shell(
-            "python {EVAL_SCRIPT}"
+            "python3 {EVAL_SCRIPT}"
             " --out {output.at_out}"
             " --nfrags {wildcards.n}"
             " --fraglen {wildcards.l}"
@@ -544,7 +535,7 @@ rule evaluate:
         shell("gzip {input.at}")
 
         shell(
-            "python {EVAL_SCRIPT}"
+            "python3 {EVAL_SCRIPT}"
             " --out {output.bb_out}"
             " --nfrags {wildcards.n}"
             " --fraglen {wildcards.l}"
@@ -555,7 +546,7 @@ rule evaluate:
         shell("gzip {input.bb}")
 
         shell(
-            "python {EVAL_SCRIPT}"
+            "python3 {EVAL_SCRIPT}"
             " --out {output.fp_out}"
             " --nfrags {wildcards.n}"
             " --fraglen {wildcards.l}"
@@ -566,7 +557,7 @@ rule evaluate:
         shell("gzip {input.fp}")
 
         shell(
-            "python {EVAL_SCRIPT}"
+            "python3 {EVAL_SCRIPT}"
             " --out {output.sp_out}"
             " --nfrags {wildcards.n}"
             " --fraglen {wildcards.l}"

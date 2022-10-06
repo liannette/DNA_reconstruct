@@ -1,8 +1,8 @@
 .conda/*
-.snakemake/*
 .git/*
 gabrieldir/*
 leonardos_project/*
 */output/*
 */.snakemake/*
 playfile.py
+__pycache__/
