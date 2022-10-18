@@ -5,29 +5,7 @@ This script was initially written by Leonardo and then improved by
 Annette Lien (a.lien@posteo.de) (12.09.2022)
 
 ------------------------------------------------------------------------
-
-usage: evaluate.py [-h] -in1 TEMPLATES_PATH -in2 READM_PATH [-o EXPORT_PATH]
-                   [-n NFRAGS] [-l FRAGLEN] [-t PROGRAM_NAME]
-
-Performs analysis of the reconstructed reads. If the results should be
-exported, all the optional arguments must be supplied.
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -in1 TEMPLATES_PATH, --templates TEMPLATES_PATH
-                        gzipped or unzipped fasta file of the simulated DNA
-                        templates.
-  -in2 READM_PATH, --reads READM_PATH
-                        gzipped or unzipped fastq file of the trimmed and
-                        merged reads
-  -o EXPORT_PATH, --out EXPORT_PATH
-                        Path for the output csv file
-  -n NFRAGS, --nfrags NFRAGS
-                        nfrags
-  -l FRAGLEN, --fraglen FRAGLEN
-                        fraglen
-  -t PROGRAM_NAME, --tool PROGRAM_NAME
-                        Name of the program used for trimming
+Put help here
 
 ------------------------------------------------------------------------
 
@@ -74,67 +52,42 @@ def parse_arguments():
         "-in2", "--reads", action="store", type=str,  required=True, 
         dest="readm_path", help='gzipped or unzipped fastq file of the '
                                 'trimmed and merged reads')
-    
+    parser.add_argument(
+        "-l", "--fraglen", action="store", type=int, required=True,
+        help="fraglen") 
+    parser.add_argument(
+        "-n", "--nfrags", action="store", type=int, required=True,
+        help="nfrags")  
+
     # optional arguments, only needed if exporting the results
     parser.add_argument(
         "-o", "--out", action="store", type=str, required=False,
         dest="export_path", help="Path for the output csv file")
     parser.add_argument(
-        "-n", "--nfrags", action="store", type=int, required=False,
-        help="nfrags")  
-    parser.add_argument(
-        "-l", "--fraglen", action="store", type=int, required=False,
-        help="fraglen") 
-    parser.add_argument(
         "-t", "--tool", action="store", type=str, required=False,
-        dest="program_name", help="Name of the program used for trimming")
+        dest="tool_name", help="Name of the tool used for trimming")
 
     args = parser.parse_args()
-
-    optional_arguments = [
-        args.export_path, 
+    required_arguments = [
+        args.templates_path, 
+        args.readm_path,
         args.nfrags, 
-        args.fraglen, 
-        args.program_name
-    ]
+        args.fraglen,
+        ]
+    optional_arguments = [args.export_path, args.tool_name]
     
     if set(optional_arguments) == {None}:
         # no optional arguments have been passed
-        return [args.templates_path, args.readm_path]
+        return required_arguments
     elif None not in optional_arguments:
         # all optional arguments have been passed
-        return [args.templates_path, args.readm_path] + optional_arguments
+        return required_arguments + optional_arguments
     else:
         # only some optional arguments have been passed
         print("parseDNAfragments.py: error: only some optional arguments have "
               "been passed")
         parser.print_help()
         sys.exit(2)
-
-
-def load_fasta(path):
-    """
-    Loads a zipped or unzipped fasta file.
-    Returns a dict file, with the headers as keys and another dict as 
-    value. The nested dict has the string "sequence" as key and the 
-    actual DNA sequence as value.
-    Removes the first character of the header (should be >)
-    """
-    templates = {}
-    templates_cnt = 0
-    f = gzip.open(path, 'rb') if common._is_gzipped(path) else open(path, 'rb')
-    lines = []
-    for line in f:
-        lines.append(line.rstrip())
-        if len(lines) == 2:
-            templates[lines[0][1:]] = {'sequence': lines[1]}
-            templates_cnt += 1
-            lines = []
-    f.close()
-    # Note from annette:
-    # I think templates_cnt is not nesseccary, because 
-    # templates_cnt should be equal len(templates)
-    return templates, templates_cnt
 
 
 def _levenshtein_distance(template_seq, read_seq):
@@ -174,57 +127,52 @@ def analyze_merged_reads(merged_reads, templates):
     return perfectly_reconstructed_cnt, incorrect_length_cnt, divergences
 
 
-def _get_template_sequence_length(templates):
-    """
-    All sequences in templates have the same length
-    """
-    return len(next(iter(templates.values()))['sequence'])
-
-
-def _in_percentage(cnt, total_cnt):
+def _percentage(cnt, total_cnt):
     return round(cnt/total_cnt*100, 3)
 
 
-def main(args):
+def main(template_path, readm_path, nfrags, fraglen, export_path, tool_name):
 
     # Load files --------------------------------------------------------------
 
-    template_path = args[0]
-    templates, templates_cnt = load_fasta(template_path)
-    
-    readm_path = args[1]
+    templates = common.load_fasta(template_path)
+
+    # Check for duplicate fragments
+    if len(templates) != nfrags:
+        print(f"ATTENTION: number of total_sequences is {len(templates)}," 
+              f"but the nfrags is {nfrags}. Possible reason: duplicate "
+              "fragments")
+
+    reads = common.load_fastq(readm_path)
     # seperator: this character and all charaters to the right of it
     # will be removed from the fastq header
     seperator = b'-'
-    reads = common.load_merged_fastq(readm_path, templates, seperator)
-
+    reads = common.clean_merged_reads(reads, templates, seperator)
 
     # Analysis and Results ----------------------------------------------------
 
-    # all templates are assumed to have the same length
-    templates_length = _get_template_sequence_length(templates)
-
     # Dropped reads
-    dropped_reads_cnt = templates_cnt - len(reads)
-    dropped_reads_percent = _in_percentage(dropped_reads_cnt, templates_cnt)
+    dropped_reads_cnt = len(templates) - len(reads)
+    dropped_reads_percent = _percentage(dropped_reads_cnt, len(templates))
 
     results = analyze_merged_reads(reads, templates)
     # Perfectly reconstructed
     perfectly_reconstructed_cnt = results[0]
-    perfectly_reconstructed_percent = _in_percentage(
-        perfectly_reconstructed_cnt, templates_cnt)
+    perfectly_reconstructed_percent = _percentage(
+        perfectly_reconstructed_cnt, len(templates))
     # Incorrect length
     incorrect_length_cnt = results[1]
-    incorrect_length_percent = _in_percentage(incorrect_length_cnt, 
-                                               templates_cnt)
+    incorrect_length_percent = _percentage(incorrect_length_cnt, 
+                                               len(templates))
     # Divergence
     divergences = results[2]
     divergences_cnt = len(divergences)
     if len(reads) != 0:
-        divergent_reads_percent = _in_percentage(divergences_cnt, len(reads))
-        avg_divergence = sum(divergences)/len(reads) # NT changes per read
-        avg_divergence_percent = _in_percentage(
-            avg_divergence, templates_length) # NT changes per NT (%)
+        divergent_reads_percent = _percentage(divergences_cnt, len(reads))
+        # NT changes per read
+        avg_divergence = sum(divergences)/len(reads)
+        # NT changes per NT (%)
+        avg_divergence_percent = _percentage(avg_divergence, fraglen) 
     else:
         avg_divergence = 'NA'
         divergent_reads_percent = 'NA'
@@ -233,29 +181,26 @@ def main(args):
 
     #################### Print or export results ####################
 
-    if len(args) == 2:
+    if export_path is None:
         print(f"{os.path.basename(readm_path)}:")
-        print(f"Dropped reads: {dropped_reads_cnt} of {templates_cnt} total "
+        print(f"Dropped reads: {dropped_reads_cnt} of {len(templates)} total "
               f"sequences ({dropped_reads_percent}%)")
         print(f"Incorrect length reads: {incorrect_length_cnt} of "
-              f"{templates_cnt} total sequences ({incorrect_length_percent}%)")
+              f"{len(templates)} total sequences ({incorrect_length_percent}%)")
         print(f"Perfectly reconstructed fragments (edit distance = 0 and "
               f"correct length): {perfectly_reconstructed_cnt} of "
-              f"{templates_cnt} total sequences "
+              f"{len(templates)} total sequences "
               f"({perfectly_reconstructed_percent}%)")
         if len(reads) != 0:
             print(f"Divergent reads (edit distance > 0): {divergences_cnt} of "
                   f"{len(reads)} merged (non-dropped) reads "
                   f"({divergent_reads_percent}%)")
             print(f"Average divergence (edit distance): "
-                  f"{round(avg_divergence, 3)} of {templates_length} "
+                  f"{round(avg_divergence, 3)} of {fraglen} "
                   f"nucleotides ({avg_divergence_percent}%)\n")
 
-    elif len(args) == 6:
-        export_path = args[2]
-        nfrags = args[3]
-        fraglen = args[4]
-        program_name = args[5]
+    else:
+            
         with open(export_path, 'w') as f:
             f.write(
                 "program,filename,nfrags,fraglen,total_sequences,total_reads,"
@@ -264,11 +209,11 @@ def main(args):
                 "incorrect_length_percentage,divergent_reads_percentage,"
                 "average_divergence_percentage,perfectly_reconstructed,"
                 "perfectly_reconstructed_percentage\n")
-            f.write(f"{program_name},"
+            f.write(f"{tool_name},"
                     f"{os.path.basename(readm_path)},"
                     f"{nfrags},"
                     f"{fraglen},"
-                    f"{templates_cnt},"
+                    f"{len(templates)},"
                     f"{len(reads)},"
                     f"{dropped_reads_cnt},"
                     f"{incorrect_length_cnt},"
@@ -285,4 +230,4 @@ def main(args):
 if __name__ == "__main__":
 
     args = parse_arguments()
-    main(args)
+    main(*args)

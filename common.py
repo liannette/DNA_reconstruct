@@ -9,52 +9,88 @@ def _is_gzipped(path):
     """
     with open(path, "rb") as f:
         return f.read(2) == b'\x1f\x8b'
-    
 
-def _clean_up_fastq_header(header, seperator):
+
+def load_fasta(path):
     """
-    Removes the "@M_"/"@" at the start of the header line.
-    Removes characters from the end of the line up to the 
-    seperator.
+    Loads a zipped or unzipped fasta file.
+    Returns a dict file, with the headers as keys and another dict as 
+    value. The nested dict has the string "sequence" as key and the 
+    actual DNA sequence as value.
+    Removes the first character of the header (should be >)
     """
-    # make definition name uniform for dict lookup
-    if header.startswith(b'@M_'):
-        # AdapterRemoval, ClipAndMerge
-        defname = header.split(b'@M_', 1)[1].rsplit(seperator, 1)[0]
-    else:
-        # leeHom, seqtk/adna, bbmerge, fastp, SeqPrep
-        defname = header.split(b'@', 1)[1].rsplit(seperator, 1)[0]
-    return defname
+    templates = {}
+    f = gzip.open(path, 'rb') if _is_gzipped(path) else open(path, 'rb')
+    lines = []
+    for line in f:
+        lines.append(line.rstrip())
+        if len(lines) == 2:
+            templates[lines[0][1:]] = {'sequence': lines[1]}
+            lines = []
+    f.close()
+    return templates
 
 
-def _process_fastq_entry(lines, seperator):
+def _process_fastq_entry(lines):
     """ Returns a dict of the fastq entry """
     keys = ['name', 'sequence', 'optional', 'quality']
-    reading = {k: v for k, v in zip(keys, lines)}
-    # make definition name uniform for dict lookup
-    reading['name'] = _clean_up_fastq_header(lines[0], seperator)
-    return reading
+    read = {key: value for key, value in zip(keys, lines)}
+    return read
 
 
-def load_merged_fastq(path, templates, seperator):
+def load_fastq(path):
     """
-    Loads a zipped fastq file. Ignores unmerged reads.
-    Returns a list of dicts. Each dict has the header of a sequence as 
-    key. Header is without the "@M_"/"@" at the start and without the 
-    "-" addition at the end of the header line
+    Loads a zipped or unzipped fastq file.
+    Returns a list of dicts. Each dict the following keys, one for each 
+    line of a fastq entry: name, sequence, optional, quality. 
     """
-    merged_reads = []
+    reads = []
     f = gzip.open(path, 'rb') if _is_gzipped(path) else open(path, 'rb')
     lines = []
     for line in f:
         lines.append(line.rstrip())
         if len(lines) == 4:
-            # skip unmerged reads
-            if not lines[0].startswith((b'@F_', b'@R_')):
-                # Create a dict of the fastq entry
-                reading = _process_fastq_entry(lines, seperator)
-                if templates.get(reading['name']) is not None:
-                    merged_reads.append(reading)
+            # Create a dict of the fastq entry
+            reads.append(_process_fastq_entry(lines))
             lines = []
     f.close()
+    return reads
+
+
+def _clean_up_fastq_header(header, seperator):
+    """
+    Cleans up the header by removes additions that is added to the
+    header of original template by the trimming programs:
+    - Removes the "@M_"/"@" at the start of the header line.
+    - Removes characters from the end of the line up to the seperator.
+    """
+     # remove the addition at the beginning of the header
+    if header.startswith(b'@M_'):
+        # AdapterRemoval, ClipAndMerge
+        clean_header = header.split(b'@M_', 1)[1]
+    elif header.startswith(b'@'):
+        # leeHom, seqtk/adna, bbmerge, fastp, SeqPrep
+        clean_header = header.split(b'@', 1)[1]
+    # remove the addition at the end of the header
+    clean_header = clean_header.rsplit(seperator, 1)[0]
+    return clean_header
+
+
+def clean_merged_reads(reads, templates, seperator):
+    """
+    - Removes unmerged reads (header starting with @F_ or @R_.) 
+    - Cleans up the header by removes additions that is added to the
+    header of original template by the trimming programs, such as 
+    "@M_"/"@" at the start and something at the end of the header.
+    - Removes reads that can not be assigned to a template 
+    """
+    merged_reads = []
+    for read in reads:
+        # discard unmerged reads
+        if not read["name"].startswith((b'@F_', b'@R_')):
+            # Clean up header
+            read["name"] = _clean_up_fastq_header(read["name"], seperator)
+            # discard reads that can not be assigned to a template
+            if templates.get(read["name"]) is not None:
+                merged_reads.append(read)
     return merged_reads
