@@ -1,3 +1,6 @@
+# This file contains functions that are commonly used by python scripts
+# in the subfolders  
+
 import gzip
 
 
