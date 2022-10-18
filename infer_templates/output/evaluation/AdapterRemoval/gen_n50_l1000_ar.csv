@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen,total_sequences,total_reads,dropped_reads,incorrect_length_reads,divergent_reads,average_divergence,dropped_reads_percentage,incorrect_length_percentage,divergent_reads_percentage,average_divergence_percentage,perfectly_reconstructed,perfectly_reconstructed_percentage
+AdapterRemoval,gen_n50_l1000_ar.collapsed,50,1000,50,2,48,2,2,839.5,96.0,4.0,100.0,83.95,0,0.0
