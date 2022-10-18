@@ -2,7 +2,8 @@
 .git/*
 gabrieldir/*
 leonardos_project/*
-*/output/*
+*/output/reconstructions/*
+*/output/simulations/*
 */.snakemake/*
 playfile.py
 __pycache__/
