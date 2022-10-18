@@ -50,7 +50,11 @@ rule all:
             OUTDIR_PLOT + "/{tool_name}_{match_type}.png",
             tool_name=TOOLNAMES,
             match_type=["match", "mismatch"]
-        )
+            ),
+        expand(
+            OUTDIR_PLOT + "/combined/{tool_name}.png",
+            tool_name=TOOLNAMES,
+            )
 
 
 ### Reconstruction
@@ -326,6 +330,7 @@ rule plot:
     input:
         OUTDIR_EVA + "/{tool_name}_qs.csv"
     output:
+        OUTDIR_PLOT + "/combined/{tool_name}.png",
         OUTDIR_PLOT + "/{tool_name}_match.png",
         OUTDIR_PLOT + "/{tool_name}_mismatch.png"
     run:

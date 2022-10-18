@@ -1,9 +1,9 @@
 import argparse
-
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import pandas as pd
+from PIL import Image
 
 
 # functions heatmap and annotate_heatmap taken from 
@@ -26,7 +26,6 @@ def parse_arguments():
         help="path of the output directory")  
 
     args = parser.parse_args()
-
     return args.infile, args.outdir
     
 
@@ -197,6 +196,21 @@ def create_plots(df_type, program, match_type, outdir):
                 dpi='figure', 
                 format="png")
     
+    
+def combine_plots(program, outdir):
+    
+    #paths to the plots
+    plot1 = f"{outdir}/{program}_match.png"
+    plot2 = f"{outdir}/{program}_mismatch.png"
+    # opening up of images
+    img1 = Image.open(plot1)
+    img2 = Image.open(plot2)
+    # new image
+    img_new = Image.new("RGB", (2650, 1500), "white")
+    img_new.paste(img1, (0, 0))
+    img_new.paste(img2, (1250, 0))
+    img_new.save(f"{outdir}/combined/{program}.png")
+
 
 def main(infile, outdir):
     
@@ -206,6 +220,7 @@ def main(infile, outdir):
             mask = (df["program"] == program) & (df["type"] == match_type)
             df_type = df[mask]
             create_plots(df_type, program, match_type, outdir)
+        combine_plots(program, outdir)
             
         
 if __name__ == "__main__":
