@@ -1,4 +1,0 @@
-Building DAG of jobs...
-WildcardError in line 251 of /net/node07/home/projects/DNA_reconstruct/merge_quality/snakefile:
-Wildcards in input files cannot be determined from output files:
-'ending'

@@ -1,5 +1,0 @@
-Building DAG of jobs...
-MissingInputException in line 239 of /net/node07/home/projects/DNA_reconstruct/qcScores/snakefile:
-Missing input files for rule evaluate:
-/net/node07/home/projects/DNA_reconstruct/qcScores/output/reconstructions/fastp/qcscores_fp.fq
-/net/node07/home/projects/DNA_reconstruct/qcScores/output/reconstructions/AdapterRemoval/qcscores_ar.collapsed

@@ -7,4 +7,4 @@ leonardos_project/*
 playfile.py
 __pycache__/
 list_serv1_13minus7
-.gitignore
+*/.snakemake/*

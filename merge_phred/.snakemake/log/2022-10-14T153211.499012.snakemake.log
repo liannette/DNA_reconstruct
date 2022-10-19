@@ -1,5 +1,0 @@
-Building DAG of jobs...
-MissingInputException in line 49 of /home/projects/DNA_reconstruct/merge_quality/snakefile:
-Missing input files for rule leeHom:
-/home/projects/DNA_reconstruct/merge_quality/input/qscores_s2.fq.gz
-/home/projects/DNA_reconstruct/merge_quality/input/qscores_s1.fq.gz
