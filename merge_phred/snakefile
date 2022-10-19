@@ -8,7 +8,7 @@ TOOLNAMES = [
     ]
 
 # project directory
-PROJECTDIR = "/net/node07/home/projects/DNA_reconstruct/merge_quality"
+PROJECTDIR = "/net/node07/home/projects/DNA_reconstruct/merge_phred"
 
 IN_1 = PROJECTDIR + "/input/qscores_s1.fq.gz"
 IN_2 = PROJECTDIR + "/input/qscores_s2.fq.gz"
