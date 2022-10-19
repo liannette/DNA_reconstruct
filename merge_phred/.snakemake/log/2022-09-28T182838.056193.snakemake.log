@@ -1,0 +1,103 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 16
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	AdapterRemoval
+	1	ClipAndMerge
+	1	SeqPrep
+	1	all
+	1	bbmerge
+	1	evaluate
+	1	fastp
+	1	leeHom
+	1	merge_csv
+	1	seqtk_adna_trim
+	10
+
+[Wed Sep 28 18:28:38 2022]
+rule ClipAndMerge:
+    input: /home/projects/DNA_reconstruct/gabrieldir/qcScores/qcscores_s1.fq.gz, /home/projects/DNA_reconstruct/gabrieldir/qcScores/qcscores_s2.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/qcScores/output/reconstructions/ClipAndMerge/qcscores_cm.fq
+    jobid: 5
+    benchmark: /net/node07/home/projects/DNA_reconstruct/qcScores/output/benchmarks/ClipAndMerge/qcscores_cm.tsv
+
+
+[Wed Sep 28 18:28:38 2022]
+rule fastp:
+    input: /home/projects/DNA_reconstruct/gabrieldir/qcScores/qcscores_s1.fq.gz, /home/projects/DNA_reconstruct/gabrieldir/qcScores/qcscores_s2.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/qcScores/output/reconstructions/fastp/qcscores_fp.fq
+    jobid: 8
+    benchmark: /net/node07/home/projects/DNA_reconstruct/qcScores/output/benchmarks/fastp/qcscores_fp.tsv
+
+
+[Wed Sep 28 18:28:38 2022]
+rule seqtk_adna_trim:
+    input: /home/projects/DNA_reconstruct/gabrieldir/qcScores/qcscores_s1.fq.gz, /home/projects/DNA_reconstruct/gabrieldir/qcScores/qcscores_s2.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/qcScores/output/reconstructions/seqtk_adna_trim/qcscores_at.fq
+    jobid: 6
+    benchmark: /net/node07/home/projects/DNA_reconstruct/qcScores/output/benchmarks/seqtk_adna_trim/qcscores_at.tsv
+
+
+[Wed Sep 28 18:28:38 2022]
+rule bbmerge:
+    input: /home/projects/DNA_reconstruct/gabrieldir/qcScores/qcscores_s1.fq.gz, /home/projects/DNA_reconstruct/gabrieldir/qcScores/qcscores_s2.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/qcScores/output/reconstructions/bbmerge/qcscores_bb.fq
+    jobid: 7
+    benchmark: /net/node07/home/projects/DNA_reconstruct/qcScores/output/benchmarks/bbmerge/qcscores_bb.tsv
+
+
+[Wed Sep 28 18:28:38 2022]
+rule AdapterRemoval:
+    input: /home/projects/DNA_reconstruct/gabrieldir/qcScores/qcscores_s1.fq.gz, /home/projects/DNA_reconstruct/gabrieldir/qcScores/qcscores_s2.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/qcScores/output/reconstructions/AdapterRemoval/qcscores_ar.collapsed
+    jobid: 4
+    benchmark: /net/node07/home/projects/DNA_reconstruct/qcScores/output/benchmarks/AdapterRemoval/qcscores_ar.tsv
+
+[Wed Sep 28 18:28:38 2022]
+rule SeqPrep:
+    input: /home/projects/DNA_reconstruct/gabrieldir/qcScores/qcscores_s1.fq.gz, /home/projects/DNA_reconstruct/gabrieldir/qcScores/qcscores_s2.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/qcScores/output/reconstructions/SeqPrep/qcscores_sp.fq.gz
+    jobid: 9
+    benchmark: /net/node07/home/projects/DNA_reconstruct/qcScores/output/benchmarks/SeqPrep/qcscores_sp.tsv
+
+[Wed Sep 28 18:28:38 2022]
+Finished job 6.
+1 of 10 steps (10%) done
+
+[Wed Sep 28 18:28:38 2022]
+rule leeHom:
+    input: /home/projects/DNA_reconstruct/gabrieldir/qcScores/qcscores_s1.fq.gz, /home/projects/DNA_reconstruct/gabrieldir/qcScores/qcscores_s2.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/qcScores/output/reconstructions/leeHom/qcscores_lh.fq.gz
+    jobid: 3
+    benchmark: /net/node07/home/projects/DNA_reconstruct/qcScores/output/benchmarks/leeHom/qcscores_lh.tsv
+
+[Wed Sep 28 18:28:39 2022]
+Finished job 8.
+2 of 10 steps (20%) done
+[Wed Sep 28 18:28:39 2022]
+Finished job 7.
+3 of 10 steps (30%) done
+[Wed Sep 28 18:28:39 2022]
+Finished job 5.
+4 of 10 steps (40%) done
+[Wed Sep 28 18:28:39 2022]
+Finished job 4.
+5 of 10 steps (50%) done
+[Wed Sep 28 18:28:40 2022]
+Finished job 9.
+6 of 10 steps (60%) done
+[Wed Sep 28 18:28:42 2022]
+Finished job 3.
+7 of 10 steps (70%) done
+
+[Wed Sep 28 18:28:42 2022]
+rule evaluate:
+    input: /net/node07/home/projects/DNA_reconstruct/qcScores/output/reconstructions/leeHom/qcscores_lh.fq.gz, /net/node07/home/projects/DNA_reconstruct/qcScores/output/reconstructions/AdapterRemoval/qcscores_ar.collapsed, /net/node07/home/projects/DNA_reconstruct/qcScores/output/reconstructions/ClipAndMerge/qcscores_cm.fq, /net/node07/home/projects/DNA_reconstruct/qcScores/output/reconstructions/seqtk_adna_trim/qcscores_at.fq, /net/node07/home/projects/DNA_reconstruct/qcScores/output/reconstructions/bbmerge/qcscores_bb.fq, /net/node07/home/projects/DNA_reconstruct/qcScores/output/reconstructions/fastp/qcscores_fp.fq, /net/node07/home/projects/DNA_reconstruct/qcScores/output/reconstructions/SeqPrep/qcscores_sp.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/qcScores/output/evaluation/leeHom_qcs.csv, /net/node07/home/projects/DNA_reconstruct/qcScores/output/evaluation/AdapterRemoval_qcs.csv, /net/node07/home/projects/DNA_reconstruct/qcScores/output/evaluation/ClipAndMerge_qcs.csv, /net/node07/home/projects/DNA_reconstruct/qcScores/output/evaluation/seqtk_adna_trim_qcs.csv, /net/node07/home/projects/DNA_reconstruct/qcScores/output/evaluation/bbmerge_qcs.csv, /net/node07/home/projects/DNA_reconstruct/qcScores/output/evaluation/fastp_qcs.csv, /net/node07/home/projects/DNA_reconstruct/qcScores/output/evaluation/SeqPrep_qcs.csv
+    jobid: 2
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /net/node07/home/projects/DNA_reconstruct/qcScores/.snakemake/log/2022-09-28T182838.056193.snakemake.log

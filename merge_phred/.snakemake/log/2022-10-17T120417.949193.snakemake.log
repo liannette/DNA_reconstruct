@@ -1,0 +1,67 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 20
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	AdapterRemoval
+	1	ClipAndMerge
+	1	all
+	1	evaluate
+	1	fastp
+	1	merge_csv
+	1	seqtk_adna_trim
+	7
+
+[Mon Oct 17 12:04:18 2022]
+rule AdapterRemoval:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s1.fq.gz, /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s2.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/AdapterRemoval/qscores_ar.collapsed
+    jobid: 4
+    benchmark: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/benchmarks/AdapterRemoval/qscores_ar.tsv
+
+[Mon Oct 17 12:04:18 2022]
+rule seqtk_adna_trim:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s1.fq.gz, /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s2.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/seqtk_adna_trim/qscores_at.fq
+    jobid: 6
+    benchmark: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/benchmarks/seqtk_adna_trim/qscores_at.tsv
+
+
+[Mon Oct 17 12:04:18 2022]
+rule ClipAndMerge:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s1.fq.gz, /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s2.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/ClipAndMerge/qscores_cm.fq
+    jobid: 5
+    benchmark: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/benchmarks/ClipAndMerge/qscores_cm.tsv
+
+
+[Mon Oct 17 12:04:18 2022]
+rule fastp:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s1.fq.gz, /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s2.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/fastp/qscores_fp.fq
+    jobid: 8
+    benchmark: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/benchmarks/fastp/qscores_fp.tsv
+
+[Mon Oct 17 12:04:18 2022]
+Finished job 6.
+1 of 7 steps (14%) done
+[Mon Oct 17 12:04:19 2022]
+Finished job 8.
+2 of 7 steps (29%) done
+[Mon Oct 17 12:04:19 2022]
+Finished job 4.
+3 of 7 steps (43%) done
+[Mon Oct 17 12:04:19 2022]
+Finished job 5.
+4 of 7 steps (57%) done
+
+[Mon Oct 17 12:04:19 2022]
+rule evaluate:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/leeHom/qscores_lh.fq.gz, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/AdapterRemoval/qscores_ar.collapsed, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/ClipAndMerge/qscores_cm.fq, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/seqtk_adna_trim/qscores_at.fq, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/bbmerge/qscores_bb.fq, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/fastp/qscores_fp.fq, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/SeqPrep/qscores_sp.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/leeHom_qcs.csv, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/AdapterRemoval_qcs.csv, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/ClipAndMerge_qcs.csv, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/seqtk_adna_trim_qcs.csv, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/bbmerge_qcs.csv, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/fastp_qcs.csv, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/SeqPrep_qcs.csv
+    jobid: 2
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /net/node07/home/projects/DNA_reconstruct/merge_quality/.snakemake/log/2022-10-17T120417.949193.snakemake.log

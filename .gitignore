@@ -4,7 +4,6 @@ gabrieldir/*
 leonardos_project/*
 */output/reconstructions/*
 */output/simulations/*
-*/.snakemake/*
 playfile.py
 __pycache__/
 list_serv1_13minus7

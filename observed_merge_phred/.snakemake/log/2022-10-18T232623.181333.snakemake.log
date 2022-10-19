@@ -1,0 +1,42 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 16
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	4	AdapterRemoval
+	4	ClipAndMerge
+	4	SeqPrep
+	1	add_adapters
+	1	all
+	4	bbmerge
+	20	evaluate_unzipped
+	8	evaluate_zipped
+	4	fastp
+	4	leeHom
+	1	merge_csv
+	4	seqtk_adna_trim
+	1	simulate_fragments
+	4	simulate_reads
+	64
+
+[Tue Oct 18 23:26:23 2022]
+rule simulate_fragments:
+    input: /home/databases/genomes/Homo_sapiens/CHM13_T2T/CHM13_T2T.fa
+    output: /net/node07/home/projects/DNA_reconstruct/empiric_merge_quality/output/simulations/gen_n10000000_l120.fa
+    jobid: 30
+    benchmark: /net/node07/home/projects/DNA_reconstruct/empiric_merge_quality/output/benchmarks/simulations/gen_n10000000_l120.tsv
+    wildcards: n=10000000, l=120
+
+Terminating processes on user request, this might take some time.
+[Tue Oct 18 23:27:09 2022]
+Error in rule simulate_fragments:
+    jobid: 30
+    output: /net/node07/home/projects/DNA_reconstruct/empiric_merge_quality/output/simulations/gen_n10000000_l120.fa
+    shell:
+        /home/ctools/gargammel/src/fragSim -n 10000000 -l 120 /home/databases/genomes/Homo_sapiens/CHM13_T2T/CHM13_T2T.fa > /net/node07/home/projects/DNA_reconstruct/empiric_merge_quality/output/simulations/gen_n10000000_l120.fa
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Removing output files of failed job simulate_fragments since they might be corrupted:
+/net/node07/home/projects/DNA_reconstruct/empiric_merge_quality/output/simulations/gen_n10000000_l120.fa
+Complete log: /net/node07/home/projects/DNA_reconstruct/empiric_merge_quality/.snakemake/log/2022-10-18T232623.181333.snakemake.log

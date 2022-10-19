@@ -1,0 +1,41 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	all
+	1	evaluate_unzipped
+	1	merge_csv
+	3
+
+[Mon Oct 17 15:19:53 2022]
+rule evaluate_unzipped:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/bbmerge/qscores_merged.fq
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/bbmerge_qcs.csv
+    jobid: 6
+    wildcards: tool_name=bbmerge
+
+[Mon Oct 17 15:20:16 2022]
+Finished job 6.
+1 of 3 steps (33%) done
+
+[Mon Oct 17 15:20:17 2022]
+rule merge_csv:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/leeHom_qcs.csv, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/AdapterRemoval_qcs.csv, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/ClipAndMerge_qcs.csv, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/seqtk_adna_trim_qcs.csv, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/bbmerge_qcs.csv, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/fastp_qcs.csv, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/SeqPrep_qcs.csv
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/all_qcs.csv
+    jobid: 1
+
+[Mon Oct 17 15:20:17 2022]
+Finished job 1.
+2 of 3 steps (67%) done
+
+[Mon Oct 17 15:20:17 2022]
+localrule all:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/all_qcs.csv
+    jobid: 0
+
+[Mon Oct 17 15:20:17 2022]
+Finished job 0.
+3 of 3 steps (100%) done
+Complete log: /net/node07/home/projects/DNA_reconstruct/merge_quality/.snakemake/log/2022-10-17T151953.435066.snakemake.log

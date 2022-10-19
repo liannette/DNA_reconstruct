@@ -1,0 +1,5 @@
+Building DAG of jobs...
+MissingInputException in line 49 of /net/node07/home/projects/DNA_reconstruct/qcScores/snakefile:
+Missing input files for rule leeHom:
+/home/projects/DNA_reconstruct/qcScores/input/qcscores_s1.fq.gz
+/home/projects/DNA_reconstruct/qcScores/input/qcscores_s2.fq.gz

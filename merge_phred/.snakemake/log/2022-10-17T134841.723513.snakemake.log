@@ -1,0 +1,4 @@
+Building DAG of jobs...
+MissingInputException in line 270 of /net/node07/home/projects/DNA_reconstruct/merge_quality/snakefile:
+Missing input files for rule evaluate_unzipped:
+/net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/AdapterRemoval/qscores_merged.fq.gz

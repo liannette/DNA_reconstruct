@@ -1,0 +1,112 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	AdapterRemoval
+	1	ClipAndMerge
+	1	SeqPrep
+	1	all
+	1	bbmerge
+	5	evaluate_unzipped
+	2	evaluate_zipped
+	1	fastp
+	1	leeHom
+	1	merge_csv
+	1	seqtk_adna_trim
+	5	zip_reconstruction
+	21
+
+[Mon Oct 17 13:50:03 2022]
+rule seqtk_adna_trim:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s1.fq.gz, /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s2.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/seqtk_adna_trim/qscores_merged.fq
+    jobid: 18
+    benchmark: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/benchmarks/seqtk_adna_trim/qscores_merged.tsv
+
+
+[Mon Oct 17 13:50:03 2022]
+rule ClipAndMerge:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s1.fq.gz, /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s2.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/ClipAndMerge/qscores_merged.fq
+    jobid: 17
+    benchmark: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/benchmarks/ClipAndMerge/qscores_merged.tsv
+
+
+[Mon Oct 17 13:50:04 2022]
+rule leeHom:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s1.fq.gz, /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s2.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/leeHom/qscores_merged.fq.gz
+    jobid: 2
+    benchmark: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/benchmarks/leeHom/qscores_merged.tsv
+
+[Mon Oct 17 13:50:04 2022]
+rule fastp:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s1.fq.gz, /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s2.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/fastp/qscores_merged.fq
+    jobid: 20
+    benchmark: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/benchmarks/fastp/qscores_merged.tsv
+
+
+[Mon Oct 17 13:50:04 2022]
+rule AdapterRemoval:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s1.fq.gz, /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s2.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/AdapterRemoval/qscores_merged.fq
+    jobid: 16
+    benchmark: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/benchmarks/AdapterRemoval/qscores_merged.tsv
+
+[Mon Oct 17 13:50:04 2022]
+rule SeqPrep:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s1.fq.gz, /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s2.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/SeqPrep/qscores_merged.fq.gz
+    jobid: 8
+    benchmark: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/benchmarks/SeqPrep/qscores_merged.tsv
+
+[Mon Oct 17 13:50:04 2022]
+Finished job 18.
+1 of 21 steps (5%) done
+
+[Mon Oct 17 13:50:04 2022]
+rule bbmerge:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s1.fq.gz, /net/node07/home/projects/DNA_reconstruct/merge_quality/input/qscores_s2.fq.gz
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/bbmerge/qscores_merged.fq, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/bbmerge/qscores_pe1.fq, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/bbmerge/qscores_pe2.fq
+    jobid: 19
+    benchmark: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/benchmarks/bbmerge/qscores_merged.tsv
+
+
+[Mon Oct 17 13:50:04 2022]
+rule zip_reconstruction:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/seqtk_adna_trim/qscores_merged.fq
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/seqtk_adna_trim/qscores_merged.fq.gz
+    jobid: 5
+    wildcards: tool_name=seqtk_adna_trim
+
+[Mon Oct 17 13:50:05 2022]
+rule evaluate_unzipped:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/reconstructions/seqtk_adna_trim/qscores_merged.fq
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/seqtk_adna_trim_qcs.csv
+    jobid: 12
+    wildcards: tool_name=seqtk_adna_trim
+
+[Mon Oct 17 13:50:05 2022]
+Finished job 20.
+2 of 21 steps (10%) done
+[Mon Oct 17 13:50:05 2022]
+Finished job 5.
+3 of 21 steps (14%) done
+[Mon Oct 17 13:50:06 2022]
+Finished job 8.
+4 of 21 steps (19%) done
+[Mon Oct 17 13:50:06 2022]
+Finished job 17.
+5 of 21 steps (24%) done
+[Mon Oct 17 13:50:07 2022]
+Finished job 19.
+6 of 21 steps (29%) done
+[Mon Oct 17 13:50:07 2022]
+Finished job 2.
+7 of 21 steps (33%) done
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /net/node07/home/projects/DNA_reconstruct/merge_quality/.snakemake/log/2022-10-17T135003.596125.snakemake.log

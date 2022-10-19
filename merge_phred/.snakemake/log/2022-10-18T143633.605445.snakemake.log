@@ -1,0 +1,3 @@
+NameError in line 50 of /net/node07/home/projects/DNA_reconstruct/merge_quality/snakefile:
+name 'OUTDIR_PLOTS' is not defined
+  File "/net/node07/home/projects/DNA_reconstruct/merge_quality/snakefile", line 50, in <module>

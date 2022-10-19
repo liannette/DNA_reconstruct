@@ -1,0 +1,29 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 20
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	all
+	1	merge_csv
+	2
+
+[Fri Oct 14 17:42:14 2022]
+rule merge_csv:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/leeHom_qcs.csv, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/AdapterRemoval_qcs.csv, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/ClipAndMerge_qcs.csv, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/seqtk_adna_trim_qcs.csv, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/bbmerge_qcs.csv, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/fastp_qcs.csv, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/SeqPrep_qcs.csv
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/all_qcs.csv
+    jobid: 1
+
+[Fri Oct 14 17:42:14 2022]
+Finished job 1.
+1 of 2 steps (50%) done
+
+[Fri Oct 14 17:42:14 2022]
+localrule all:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/all_qcs.csv
+    jobid: 0
+
+[Fri Oct 14 17:42:14 2022]
+Finished job 0.
+2 of 2 steps (100%) done
+Complete log: /net/node07/home/projects/DNA_reconstruct/merge_quality/.snakemake/log/2022-10-14T174213.927648.snakemake.log

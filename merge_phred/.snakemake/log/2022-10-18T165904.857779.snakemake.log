@@ -1,0 +1,90 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 40
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	all
+	7	plot
+	8
+
+[Tue Oct 18 16:59:05 2022]
+rule plot:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/SeqPrep_qs.csv
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/SeqPrep.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/SeqPrep_match.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/SeqPrep_mismatch.png
+    jobid: 8
+    wildcards: tool_name=SeqPrep
+
+[Tue Oct 18 16:59:05 2022]
+rule plot:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/AdapterRemoval_qs.csv
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/AdapterRemoval.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/AdapterRemoval_match.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/AdapterRemoval_mismatch.png
+    jobid: 3
+    wildcards: tool_name=AdapterRemoval
+
+[Tue Oct 18 16:59:05 2022]
+rule plot:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/ClipAndMerge_qs.csv
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/ClipAndMerge.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/ClipAndMerge_match.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/ClipAndMerge_mismatch.png
+    jobid: 4
+    wildcards: tool_name=ClipAndMerge
+
+[Tue Oct 18 16:59:05 2022]
+rule plot:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/fastp_qs.csv
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/fastp.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/fastp_match.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/fastp_mismatch.png
+    jobid: 7
+    wildcards: tool_name=fastp
+
+[Tue Oct 18 16:59:06 2022]
+rule plot:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/leeHom_qs.csv
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/leeHom.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/leeHom_match.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/leeHom_mismatch.png
+    jobid: 2
+    wildcards: tool_name=leeHom
+
+[Tue Oct 18 16:59:06 2022]
+rule plot:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/bbmerge_qs.csv
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/bbmerge.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/bbmerge_match.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/bbmerge_mismatch.png
+    jobid: 6
+    wildcards: tool_name=bbmerge
+
+[Tue Oct 18 16:59:06 2022]
+rule plot:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/seqtk_adna_trim_qs.csv
+    output: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/seqtk_adna_trim.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/seqtk_adna_trim_match.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/seqtk_adna_trim_mismatch.png
+    jobid: 5
+    wildcards: tool_name=seqtk_adna_trim
+
+[Tue Oct 18 16:59:18 2022]
+Finished job 8.
+1 of 8 steps (12%) done
+[Tue Oct 18 16:59:18 2022]
+Finished job 3.
+2 of 8 steps (25%) done
+[Tue Oct 18 16:59:19 2022]
+Finished job 4.
+3 of 8 steps (38%) done
+[Tue Oct 18 16:59:19 2022]
+Finished job 7.
+4 of 8 steps (50%) done
+[Tue Oct 18 16:59:19 2022]
+Finished job 5.
+5 of 8 steps (62%) done
+[Tue Oct 18 16:59:19 2022]
+Finished job 6.
+6 of 8 steps (75%) done
+[Tue Oct 18 16:59:19 2022]
+Finished job 2.
+7 of 8 steps (88%) done
+
+[Tue Oct 18 16:59:19 2022]
+localrule all:
+    input: /net/node07/home/projects/DNA_reconstruct/merge_quality/output/evaluation/all_qs.csv, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/leeHom.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/leeHom_match.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/leeHom_mismatch.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/AdapterRemoval.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/AdapterRemoval_match.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/AdapterRemoval_mismatch.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/ClipAndMerge.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/ClipAndMerge_match.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/ClipAndMerge_mismatch.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/seqtk_adna_trim.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/seqtk_adna_trim_match.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/seqtk_adna_trim_mismatch.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/bbmerge.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/bbmerge_match.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/bbmerge_mismatch.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/fastp.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/fastp_match.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/fastp_mismatch.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/SeqPrep.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/SeqPrep_match.png, /net/node07/home/projects/DNA_reconstruct/merge_quality/output/plots/SeqPrep_mismatch.png
+    jobid: 0
+
+[Tue Oct 18 16:59:19 2022]
+Finished job 0.
+8 of 8 steps (100%) done
+Complete log: /net/node07/home/projects/DNA_reconstruct/merge_quality/.snakemake/log/2022-10-18T165904.857779.snakemake.log
