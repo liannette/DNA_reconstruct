@@ -7,6 +7,8 @@ import pandas as pd
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 import common
+import numpy as np
+import scipy.stats as st
 
 
 def parse_arguments():
@@ -107,33 +109,60 @@ def process_merged_reads(merged_reads, templates):
     return phred_counter
 
 
-def get_results(phred_counter):
+def p_mismatch(n_total, n_mismatch):
+    if n_total == 0:
+        p = np.NAN
+    else:
+        p = n_mismatch/n_total
+    return p
+
+
+def margin_of_error(n_total, p, alpha=0.01):
+    """ value of maximum error given alpha for normal distribution """
+    # z score of normal distribution
+    z_value = st.norm.ppf(1 - alpha/2)
+    # standard error of an estimate of a sample proportion
+    stderr = math.sqrt( p*(1-p) / n_total )
+    return z_value * stderr
+
+
+def p_error_2_phred(p_err, max_observed_phred=100):
+    # probability of incorrect base call
+    if p_err <= 0:
+        phred_observed = max_observed_phred
+    elif p_err == 1:
+        phred_observed = 0
+    else: 
+        phred_observed = -10 * math.log10(p_err)
+    return phred_observed
+
+
+def get_results(phred_counter, alpha):
     # set a maximum value for the observed phred, this is needed if the
     # observed error rate is 0
-    max_observed_phred = 100
+    max_phred = 100
     
     results = []
     for phred_value in sorted(phred_counter.keys()):
         n_matches = phred_counter[phred_value]["match_cnt"]
         n_mismatches = phred_counter[phred_value]["mismatch_cnt"]
         n_total = n_mismatches + n_matches
-        
-        # probability of incorrect base call
-        p_error = n_mismatches/n_total
-        if p_error == 0:
-            phred_observed = max_observed_phred
-        elif p_error == 1:
-            phred_observed = 0
-        else: 
-            phred_observed = -10 * math.log10(p_error)
+        p_mm = p_mismatch(n_total, n_mismatches)
+        err_margin = margin_of_error(n_total, p_mm)
+        observed_phred_mean = p_error_2_phred(p_mm, max_phred)
+        observed_phred_lower = p_error_2_phred(p_mm+err_margin, max_phred)
+        observed_phred_higher = p_error_2_phred(p_mm-err_margin, max_phred)
+            
         results.append(
             [
                 phred_value, 
-                round(phred_observed), 
                 n_matches, 
                 n_mismatches, 
                 n_total, 
-                phred_observed
+                observed_phred_mean, 
+                observed_phred_lower,
+                observed_phred_higher,
+                alpha
                 ]
             )
     return results
@@ -162,7 +191,7 @@ def main(template_path, readm_path, nfrags, fraglen, qualityshift,
     # Analysis ----------------------------------------------------------------
 
     phred_counter = process_merged_reads(merged_reads, templates)
-    results = get_results(phred_counter)
+    results = get_results(phred_counter, alpha=0.01)
 
 
     # Export results ----------------------------------------------------------
@@ -173,11 +202,13 @@ def main(template_path, readm_path, nfrags, fraglen, qualityshift,
             results, 
             columns=[
                 'predicted_phred', 
-                'observed_phred', 
                 'n_matches', 
                 'n_mismatches', 
                 'n_total', 
-                'observed_phred_unrounded'
+                'observed_phred_mean'
+                'observed_phred_lower'
+                'observed_phred_higher'
+                'alpha'
                 ]
             )
         df.set_index('predicted_phred', inplace=True)

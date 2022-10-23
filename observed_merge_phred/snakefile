@@ -7,7 +7,7 @@ TOOLNAMES = [
     "bbmerge", "fastp", "SeqPrep"
     ]
 QS = ["0", "-10", "-20", "-30"]
-NUMFRAGS = 10000000
+NUMFRAGS = 100000000
 LENGTH = 120
 
 # project directory
@@ -50,7 +50,10 @@ MERGE_SCRIPT = PROJECTDIR + "/merge_csv.sh"
 
 rule all:
     input:
-        OUTDIR_EVA + "/all_merged.csv"
+        expand(
+            OUTDIR_PLOT + "/{tool_name}.png",
+            tool_name=TOOLNAMES,
+        ),
     run:
         shell("gzip {OUTDIR_REC}/*/*")
         shell("gzip {OUTDIR_SIM}/*")
@@ -267,7 +270,7 @@ rule AdapterRemoval:
             " --collapse"
             " --minlength 1"
             " --minalignmentlength 10"
-            #" --qualitymax 93"
+            " --qualitymax 93"
             " --adapter1 {ADPT1}"
             " --adapter2 {ADPT2}"
             " --file1 {input.s1}"
@@ -534,3 +537,15 @@ rule merge_csv:
         OUTDIR_EVA + "/all_merged.csv",
     run:
         shell("{MERGE_SCRIPT}")
+
+
+rule plot:
+    input:
+        OUTDIR_EVA + "/all_merged.csv"
+    output:
+        OUTDIR_PLOT + "/{tool_name}.png"
+        shell(
+            "python3 {PLOT_SCRIPT}"
+            " -i {input}"
+            " -o {OUTDIR_PLOT}"
+        )
