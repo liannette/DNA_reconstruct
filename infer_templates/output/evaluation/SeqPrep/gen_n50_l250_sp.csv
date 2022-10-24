@@ -1,2 +1,0 @@
-program,filename,nfrags,fraglen,total_sequences,total_reads,dropped_reads,incorrect_length_reads,divergent_reads,average_divergence,dropped_reads_percentage,incorrect_length_percentage,divergent_reads_percentage,average_divergence_percentage,perfectly_reconstructed,perfectly_reconstructed_percentage
-SeqPrep,gen_n50_l250_sp.fq.gz,50,250,50,0,50,0,0,NA,100.0,0.0,NA,NA,0,0.0

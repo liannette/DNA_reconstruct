@@ -1,2 +1,0 @@
-program,filename,nfrags,fraglen,total_sequences,total_reads,dropped_reads,incorrect_length_reads,divergent_reads,average_divergence,dropped_reads_percentage,incorrect_length_percentage,divergent_reads_percentage,average_divergence_percentage,perfectly_reconstructed,perfectly_reconstructed_percentage
-ClipAndMerge,gen_n50_l20_cm.fq,50,20,50,49,1,0,1,0.02040816326530612,2.0,0.0,2.041,0.102,48,96.0
