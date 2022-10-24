@@ -240,7 +240,7 @@ def main(template_path, readm_path, nfrags, fraglen, export_path, tool_name):
                 "total_reads,"
                 "dropped_reads,"
                 "incorrect_length_reads,"
-                "divergent_with_correct_length_cnt,"
+                "correct_len_incorrect_seq_reads,"
                 "perfectly_reconstructed,"
                 "divergent_reads,"
                 "average_divergence,"
