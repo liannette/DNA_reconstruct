@@ -109,8 +109,10 @@ def analyze_merged_reads(merged_reads, templates):
             number of reads that have the incorrect length
 
     """
-    perfectly_reconstructed_cnt = 0
+    dropped_reads_cnt = len(templates) - len(merged_reads)
     incorrect_length_cnt = 0
+    divergent_with_correct_length_cnt = 0
+    perfectly_reconstructed_cnt = 0
     divergences = []
 
     for read in merged_reads:
@@ -120,13 +122,30 @@ def analyze_merged_reads(merged_reads, templates):
         if read_seq == template_seq:
             perfectly_reconstructed_cnt += 1
         else:
+            # length change
+            if len(template_seq) == len(read_seq):
+                divergent_with_correct_length_cnt += 1
+            else:
+                incorrect_length_cnt += 1
             # edit distance
             divergences.append(_levenshtein_distance(template_seq, read_seq))
-            # length change
-            if len(template_seq) != len(read_seq):
-                incorrect_length_cnt += 1
+            
+    if len(merged_reads) != 0:
+        # Average number NT changes per merged read
+        avg_divergence = sum(divergences) / len(merged_reads)
+    else:
+        avg_divergence = 'NA'
 
-    return perfectly_reconstructed_cnt, incorrect_length_cnt, divergences
+    results = [
+        dropped_reads_cnt, 
+        incorrect_length_cnt, 
+        divergent_with_correct_length_cnt, 
+        perfectly_reconstructed_cnt,
+        divergences, 
+        avg_divergence,
+        ]     
+    
+    return results
 
 
 def _percentage(cnt, total_cnt):
@@ -153,30 +172,38 @@ def main(template_path, readm_path, nfrags, fraglen, export_path, tool_name):
 
     # Analysis and Results ----------------------------------------------------
 
-    # Dropped reads
-    dropped_reads_cnt = len(templates) - len(reads)
-    dropped_reads_percent = _percentage(dropped_reads_cnt, len(templates))
 
     results = analyze_merged_reads(reads, templates)
-    # Perfectly reconstructed
-    perfectly_reconstructed_cnt = results[0]
-    perfectly_reconstructed_percent = _percentage(
-        perfectly_reconstructed_cnt, len(templates))
+    # Dropped reads
+    dropped_reads_cnt = results[0]
     # Incorrect length
     incorrect_length_cnt = results[1]
-    incorrect_length_percent = _percentage(incorrect_length_cnt, 
-                                               len(templates))
-    # Divergence
-    divergences = results[2]
+    # Right lenght but other sequence
+    divergent_with_correct_length_cnt = results[2]
+    # Perfectly reconstructed
+    perfectly_reconstructed_cnt = results[3]
+    # list of all divergences
+    divergences = results[4]
+    # Average number NT changes per merged read
+    avg_divergence = results[5]
+    # Number of difergent reads
     divergences_cnt = len(divergences)
+    assert divergences_cnt == (incorrect_length_cnt 
+                               + divergent_with_correct_length_cnt)
+    
+    # Percentages
+    perfectly_reconstructed_percent = _percentage(perfectly_reconstructed_cnt, 
+                                                  len(templates))
+    dropped_reads_percent = _percentage(dropped_reads_cnt, 
+                                        len(templates))
+    incorrect_length_percent = _percentage(incorrect_length_cnt, 
+                                           len(templates))
     if len(reads) != 0:
+        # Percent of non-dropped reads that are not perfectly reconstucted
         divergent_reads_percent = _percentage(divergences_cnt, len(reads))
-        # NT changes per read
-        avg_divergence = sum(divergences)/len(reads)
         # NT changes per NT (%)
         avg_divergence_percent = _percentage(avg_divergence, fraglen) 
     else:
-        avg_divergence = 'NA'
         divergent_reads_percent = 'NA'
         avg_divergence_percent = 'NA'
 
@@ -205,12 +232,24 @@ def main(template_path, readm_path, nfrags, fraglen, export_path, tool_name):
             
         with open(export_path, 'w') as f:
             f.write(
-                "program,filename,nfrags,fraglen,total_sequences,total_reads,"
-                "dropped_reads,incorrect_length_reads,divergent_reads,"
-                "average_divergence,dropped_reads_percentage,"
-                "incorrect_length_percentage,divergent_reads_percentage,"
-                "average_divergence_percentage,perfectly_reconstructed,"
-                "perfectly_reconstructed_percentage\n")
+                "program,"
+                "filename,"
+                "nfrags,"
+                "fraglen,"
+                "total_sequences,"
+                "total_reads,"
+                "dropped_reads,"
+                "incorrect_length_reads,"
+                "divergent_with_correct_length_cnt,"
+                "perfectly_reconstructed,"
+                "divergent_reads,"
+                "average_divergence,"
+                "dropped_reads_percentage,"
+                "incorrect_length_percentage,"
+                "divergent_reads_percentage,"
+                "average_divergence_percentage,"
+                "perfectly_reconstructed_percentage"
+                "\n")
             f.write(f"{tool_name},"
                     f"{os.path.basename(readm_path)},"
                     f"{nfrags},"
@@ -219,13 +258,14 @@ def main(template_path, readm_path, nfrags, fraglen, export_path, tool_name):
                     f"{len(reads)},"
                     f"{dropped_reads_cnt},"
                     f"{incorrect_length_cnt},"
+                    f"{divergent_with_correct_length_cnt}",
+                    f"{perfectly_reconstructed_cnt},"
                     f"{divergences_cnt},"
                     f"{avg_divergence},"
                     f"{dropped_reads_percent},"
                     f"{incorrect_length_percent},"
                     f"{divergent_reads_percent},"
                     f"{avg_divergence_percent},"
-                    f"{perfectly_reconstructed_cnt},"
                     f"{perfectly_reconstructed_percent}")
 
 
