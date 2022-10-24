@@ -1,0 +1,6 @@
+program,filename,nfrags,fraglen,total_sequences,total_reads,dropped_reads,incorrect_length_reads,divergent_reads,average_divergence,dropped_reads_percentage,incorrect_length_percentage,divergent_reads_percentage,average_divergence_percentage,perfectly_reconstructed,perfectly_reconstructed_percentage
+ClipAndMerge,gen_n100_l120_merged.fq,100,120,100,99,1,0,7,0.08080808080808081,1.0,0.0,7.071,0.067,92,92.0
+ClipAndMerge,gen_n100_l125_merged.fq,100,125,100,98,2,0,6,0.061224489795918366,2.0,0.0,6.122,0.049,92,92.0
+ClipAndMerge,gen_n100_l130_merged.fq,100,130,100,91,9,0,9,0.0989010989010989,9.0,0.0,9.89,0.076,82,82.0
+ClipAndMerge,gen_n100_l200_merged.fq,100,200,100,75,25,0,18,0.28,25.0,0.0,24.0,0.14,57,57.0
+ClipAndMerge,gen_n100_l50_merged.fq,100,50,100,100,0,0,1,0.01,0.0,0.0,1.0,0.02,99,99.0

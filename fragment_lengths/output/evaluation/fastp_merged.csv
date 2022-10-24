@@ -1,0 +1,6 @@
+program,filename,nfrags,fraglen,total_sequences,total_reads,dropped_reads,incorrect_length_reads,divergent_reads,average_divergence,dropped_reads_percentage,incorrect_length_percentage,divergent_reads_percentage,average_divergence_percentage,perfectly_reconstructed,perfectly_reconstructed_percentage
+fastp,gen_n100_l120_merged.fq,100,120,100,100,0,1,18,0.2,0.0,1.0,18.0,0.167,82,82.0
+fastp,gen_n100_l125_merged.fq,100,125,100,100,0,0,16,0.17,0.0,0.0,16.0,0.136,84,84.0
+fastp,gen_n100_l130_merged.fq,100,130,100,100,0,0,19,0.2,0.0,0.0,19.0,0.154,81,81.0
+fastp,gen_n100_l200_merged.fq,100,200,100,100,0,0,33,0.38,0.0,0.0,33.0,0.19,67,67.0
+fastp,gen_n100_l50_merged.fq,100,50,100,100,0,0,3,0.04,0.0,0.0,3.0,0.08,97,97.0
