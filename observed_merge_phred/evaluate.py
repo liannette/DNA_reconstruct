@@ -205,10 +205,10 @@ def main(template_path, readm_path, nfrags, fraglen, qualityshift,
                 'n_matches', 
                 'n_mismatches', 
                 'n_total', 
-                'observed_phred_mean'
-                'observed_phred_lower'
-                'observed_phred_higher'
-                'alpha'
+                'observed_phred_mean',
+                'observed_phred_lower',
+                'observed_phred_higher',
+                'alpha',
                 ]
             )
         df.set_index('predicted_phred', inplace=True)

@@ -44,7 +44,7 @@ def plot_observed_vs_predicted_phred(df_program, program, alpha, outdir):
         plot_confidence_interval(x, mean, lower, upper, color="k")
 
     # Add alpha information (used to calculate conf interval)
-    ax.text(35, 5, f"alpha = {alpha}",)
+    ax.text(df_program.index[-1]-5, 2, f"alpha = {alpha}",)
     # Show all values on x axes
     plt.xticks(df_program.index, size="x-small")
     # Set x axes limits
@@ -63,9 +63,6 @@ def plot_observed_vs_predicted_phred(df_program, program, alpha, outdir):
                 dpi='figure', 
                 format="png")
     
-
-
-
 
 def main(infile, outdir):
     

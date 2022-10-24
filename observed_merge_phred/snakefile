@@ -7,7 +7,7 @@ TOOLNAMES = [
     "bbmerge", "fastp", "SeqPrep"
     ]
 QS = ["0", "-10", "-20", "-30"]
-NUMFRAGS = 100000000
+NUMFRAGS = 100000000    # 100 Mio
 LENGTH = 120
 
 # project directory
@@ -43,6 +43,7 @@ SEQPREP = "/home/ctools/SeqPrep-1.3.2/SeqPrep"
 # scripts
 EVAL_SCRIPT = PROJECTDIR + "/evaluate.py"
 MERGE_SCRIPT = PROJECTDIR + "/merge_csv.sh"
+PLOT_SCRIPT = PROJECTDIR + "/plot.py"
 
 
 ### Run all
@@ -544,6 +545,7 @@ rule plot:
         OUTDIR_EVA + "/all_merged.csv"
     output:
         OUTDIR_PLOT + "/{tool_name}.png"
+    run:
         shell(
             "python3 {PLOT_SCRIPT}"
             " -i {input}"
