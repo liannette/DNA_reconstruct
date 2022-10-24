@@ -168,7 +168,7 @@ rule simulate_reads:
             " -qs {wildcards.qs}"
             " -qs2 {wildcards.qs}"
             " --seqSys HS25"
-            " --len {wildcards.l}"
+            " --len 125"
             " --rcount 1"
             " --paired"
             " --amplicon"
@@ -339,6 +339,8 @@ rule seqtk_adna_trim:
     wildcard_constraints:
         n="\d+",
         l="\d+",
+    params:
+        u_prefix=OUTDIR_REC + "/seqtk_adna_trim/gen_n{n}_l{l}_unmerged",
     benchmark:
         OUTDIR_BEN + "/seqtk_adna_trim/gen_n{n}_l{l}_qs{qs}_merged.tsv"
     shell:
@@ -356,6 +358,7 @@ rule seqtk_adna_trim:
             " {ADNA}"
             " -l 1"
             " -t 1"
+            " -p {params.u_prefix}"
             " -"
             " > {output}"
         )
@@ -383,6 +386,7 @@ rule bbmerge:
         # minoverlap=12   Minimum number of overlapping bases to allow merging.
         # minoverlap0=8   Overlaps shorter than this will not be considered.
         #                 Must be less than or equal to minoverlap.
+        # outu=<file>   : File for unmerged reads.
         (
             "{BBMERGE}"
             " in1={input.s1}"
@@ -406,6 +410,8 @@ rule fastp:
         s2=OUTDIR_SIM + "/gen_n{n}_l{l}_qs{qs}_s2.fq",
     output:
         m=OUTDIR_REC + "/fastp/gen_n{n}_l{l}_qs{qs}_merged.fq",
+        u1=OUTDIR_REC + "/fastp/gen_n{n}_l{l}_qs{qs}_unmerged.R1.fq",
+        u2=OUTDIR_REC + "/fastp/gen_n{n}_l{l}_qs{qs}_unmerged.R2.fq",
     wildcard_constraints:
         n="\d+",
         l="\d+",
@@ -417,6 +423,12 @@ rule fastp:
         #           reads. This will affect overlap analysis based PE
         #           merge, adapter trimming and correction. 30 by
         #           default. (int [=30])
+        #   -L, --disable_length_filtering       
+        #           length filtering is enabled by default. If this
+        #           option is specified, length filtering is disabled
+        #   -l, --length_required                
+        #           reads shorter than length_required will be 
+        #           discarded, default is 15. (int [=15])    
         (
             "{FASTP}"
             " --merge "
@@ -428,6 +440,8 @@ rule fastp:
             " --disable_length_filtering"
             " --length_required 1"
             " --overlap_len_require 10" 
+            " --out1 {output.u1}"
+            " --out2 {output.u2}"
             " --json /dev/null"
             " --html /dev/null"
         )
@@ -440,6 +454,8 @@ rule SeqPrep:
         s2=OUTDIR_SIM + "/gen_n{n}_l{l}_qs{qs}_s2.fq",
     output:
         m=OUTDIR_REC + "/SeqPrep/gen_n{n}_l{l}_qs{qs}_merged.fq.gz",
+        u1=OUTDIR_REC + "/SeqPrep/gen_n{n}_l{l}_qs{qs}_merged.R1.fq.gz",
+        u2=OUTDIR_REC + "/SeqPrep/gen_n{n}_l{l}_qs{qs}_merged.R2.fq.gz",
     wildcard_constraints:
         n="\d+",
         l="\d+",
@@ -465,8 +481,8 @@ rule SeqPrep:
             " -f {input.s1}"
             " -r {input.s2}"
             " -s {output.m}"
-            " -1 /dev/null"
-            " -2 /dev/null"
+            " -1 {output.u1}"
+            " -2 {output.u2}"
             " -L 1"
             " -o 10"
             " -A {ADPT1}"
