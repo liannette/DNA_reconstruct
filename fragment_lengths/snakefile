@@ -619,8 +619,10 @@ rule plot:
             OUTDIR_PLOT + "/edit_distances_{tool_name}.png",
             tool_name=TOOLNAMES,
         ),
-    run:
-        shell(
+    conda:
+        CONDA_ENV
+    shell:
+        (
             "python3 {PLOT_SCRIPT}"
             " -i {input}"
             " -o {OUTDIR_PLOT}"
