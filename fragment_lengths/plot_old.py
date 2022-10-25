@@ -66,7 +66,7 @@ def plot_read_lengths(program, frag_len, dropped, incorrect_len,
                       correct_len_incorrect_seq, perfect, outdir):
       
     fig, (ax1, ax2) = plt.subplots(1, 2, sharey=True, facecolor='w', 
-                                   figsize=[10, 7], 
+                                   figsize=[12, 7], 
                                    gridspec_kw={'width_ratios': [0.98, 0.02]})
     
     for ax in (ax1, ax2):

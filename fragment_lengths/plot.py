@@ -66,7 +66,7 @@ def plot_edit_distance_plot(program, frag_len, dropped_percent, edit_distances,
                             outdir):
 
     fig, (ax1, ax2) = plt.subplots(1, 2, sharey=True, facecolor='w', 
-                                   figsize=[10, 7], 
+                                   figsize=[12, 7], 
                                    gridspec_kw={'width_ratios': [0.98, 0.02]})
     labels = [
         "prefectly reconstructed", 
