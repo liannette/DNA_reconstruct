@@ -151,7 +151,83 @@ def main(infile, outdir):
             outdir
             )
         
+
+def plot_read_lengths(program, frag_len, dropped, incorrect_len, 
+                      correct_len_incorrect_seq, perfect, outdir):
+      
+    fig, (ax1, ax2) = plt.subplots(1, 2, sharey=True, facecolor='w', 
+                                   figsize=[10, 7], 
+                                   gridspec_kw={'width_ratios': [0.98, 0.02]})
+    
+    for ax in (ax1, ax2):
+        width = 1
+        ax.bar(frag_len, dropped, width, label='not merged', color='#57106e')
+        bottom = copy.deepcopy(dropped)
+        ax.bar(frag_len, incorrect_len, width, bottom=bottom, 
+               label='incorrect length', color='#bc3754')
+        bottom += incorrect_len
+        ax.bar(frag_len, correct_len_incorrect_seq, width, bottom=bottom, 
+              label='correct len, incorrect seq', color='#f98e09')
+        bottom += correct_len_incorrect_seq
+        ax.bar(frag_len, perfect, width, bottom=bottom, 
+              label='perfectly reconstructed', color='#fcffa4')
+        bottom += perfect
+
+    # break axis
+    fig.subplots_adjust(wspace=0.03)
+    break_xaxis(ax1, ax2, (0, 253), (997, 1001))
+    # Set y axis limit
+    ax1.set_ylim(0, max(bottom))
+    # Add ticks
+    ax2.set_xticks([1000])
+    ax1.set_xticks(range(0,251,10))
+    ax1.set_yticks(range(0,101,10))
+    # Add a line at the read length
+    ax1.plot([125.5, 125.5], [0, 100], color='green', linestyle='--', lw=1)
+    ax1.text(124, 80, f"raw read length", color='green', fontsize=7,
+             rotation=90, rotation_mode='anchor')
+    # Add grid
+    ax1.grid(alpha=0.5)
+    ax2.grid(alpha=0.5)
+    # Add labels, title
+    ax1.set_xlabel('Fragment lengths')
+    ax1.set_ylabel('Percentage')
+    ax1.set_title(f"{program}, merged reads")
+    # Add legend and change order
+    handles, labels = plt.gca().get_legend_handles_labels()
+    order = [3, 2, 1, 0]
+    ax2.legend([handles[idx] for idx in order], [labels[idx] for idx in order],
+               loc='center left', bbox_to_anchor=(1, 0.5))
+
+    fig.tight_layout()
+    plt.savefig(f"{outdir}/edit_distances_{program}.png", 
+                dpi='figure', 
+                format="png")
+    #plt.show()
+    
+
+def main_old(infile, outdir):
+    
+    df = pd.read_csv(infile)
+    df = df.sort_values(by=['fraglen'])
+    for program in list(df["program"].unique()):
+        
+        # Only take data for one program 
+        df_program = df[df["program"] == program]
+        
+        frag_len = df_program["fraglen"]
+        dropped = df_program["dropped_reads_percentage"]
+        incorrect_len = df_program["incorrect_length_percentage"]
+        #correct_len_incorrect_seq = df_program["correct_len_incorrect_seq_percentage"]
+        correct_len_incorrect_seq = (df_program["divergent_reads"] - df_program["incorrect_length_reads"]) / df_program["nfrags"] * 100
+        perfect = df_program["perfectly_reconstructed_percentage"]
+        
+        plot_read_lengths(program, frag_len, dropped, incorrect_len,
+                          correct_len_incorrect_seq, perfect, outdir)
+    
+            
+        
 if __name__ == "__main__":
 
     args = parse_arguments()
-    main(*args)
+    main_old(*args)
