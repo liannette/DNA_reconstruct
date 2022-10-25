@@ -2,6 +2,7 @@ import argparse
 import pandas as pd
 from matplotlib import pyplot as plt
 import copy
+import math
 
 
 def parse_arguments():
@@ -20,21 +21,29 @@ def parse_arguments():
     return args.infile, args.outdir
 
 
-def get_edit_distance_matrix(df_program, num_categories):
+def get_edit_distance_matrix(df_program):
     # convert the edit_distance strings to a matrix for bar plotting
     nfrags = list(df_program["nfrags"])[0]
     edit_distance_matrix = []
     for row in df_program["edit_distances"]:
         # create the row of the matrx
-        occurences_per_edit_distance = num_categories * [0]
-        for element in row.split():
-            edit_dist, cnt = [int(x) for x in element.split(":")]
-            percent = round(cnt/nfrags*100, 3)
-            # edit distances bigger than the matrix will be put into the last row
-            if edit_dist >= num_categories:
-                occurences_per_edit_distance[-1] += percent
-            else:
-                occurences_per_edit_distance[int(edit_dist)] = percent
+        occurences_per_edit_distance = 8 * [0]
+        
+        # Skip rows that dont contain a string
+        if isinstance(row, str):
+            for element in row.split():
+                edit_dist, cnt = [int(x) for x in element.split(":")]
+                percent = round(cnt/nfrags*100, 3)
+                # edit distances bigger than the matrix will be put into the last row
+                if edit_dist < 5:
+                    occurences_per_edit_distance[int(edit_dist)] = percent
+                elif edit_dist <= 10:
+                    occurences_per_edit_distance[-1] += percent
+                elif edit_dist <= 20:
+                    occurences_per_edit_distance[-2] += percent
+                else:
+                    occurences_per_edit_distance[-3] += percent
+                    
         edit_distance_matrix.append(occurences_per_edit_distance)
     return list(enumerate(zip(*edit_distance_matrix)))
 
@@ -70,12 +79,14 @@ def plot_edit_distance_plot(program, frag_len, dropped_percent, edit_distances,
                                    gridspec_kw={'width_ratios': [0.98, 0.02]})
     labels = [
         "prefectly reconstructed", 
-        "edit distance = 1",
-        "edit distance = 2",
-        "edit distance = 3",
-        "edit distance = 4",
-        "edit distance = 5",
-        "edit distance = >6",
+        "edit distance: 1",
+        "edit distance: 2",
+        "edit distance: 3",
+        "edit distance: 4",
+        "edit distance: 5-10",
+        "edit distance: 11-20",
+        "edit distance: >20",
+        "not merged",
         ]
     colors = [
         "#fcffa4",
@@ -85,19 +96,23 @@ def plot_edit_distance_plot(program, frag_len, dropped_percent, edit_distances,
         "#9f2a63",
         "#65156e",
         "#280b53",
+        "#000004",
+        "tab:grey",
         ]
     width = 1
     
     for ax in (ax1, ax2):
-        # Plot unmerge reads
-        ax.bar(frag_len, dropped_percent, width, label='not merged', 
-               color='tab:grey')
-        bottom = copy.deepcopy(dropped_percent)
+        bottom = len(dropped_percent) * [0]
         # Plot divergent and perfectly reconstructed reads
         for i, percent in list(reversed(edit_distances)):
             ax.bar(frag_len, percent, width, bottom=bottom, 
                    label=labels[i], color=colors[i])
-            bottom += percent
+            bottom = [sum(x) for x in zip(bottom, percent)]
+        # Plot unmerge reads
+        ax.bar(frag_len, dropped_percent, width, bottom=bottom,
+               label=labels[-1], color=colors[-1])
+        bottom += [sum(x) for x in zip(bottom, dropped_percent)]
+
 
     # break axis
     fig.subplots_adjust(wspace=0.03)
@@ -141,7 +156,7 @@ def main(infile, outdir):
         nfrags = df_program["nfrags"]
         frag_len = df_program["fraglen"]
         dropped_percent = df_program["dropped_reads"] / nfrags * 100
-        edit_distances = get_edit_distance_matrix(df_program, num_categories=7)
+        edit_distances = get_edit_distance_matrix(df_program)
         
         plot_edit_distance_plot(
             program, 
