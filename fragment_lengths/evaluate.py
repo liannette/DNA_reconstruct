@@ -179,7 +179,7 @@ def main(template_path, readm_path, nfrags, fraglen, export_path, tool_name):
     # Incorrect length
     incorrect_length_cnt = results[1]
     # Right lenght but other sequence
-    divergent_with_correct_length_cnt = results[2]
+    correct_len_incorrect_seq_cnt = results[2]
     # Perfectly reconstructed
     perfectly_reconstructed_cnt = results[3]
     # list of all divergences
@@ -192,12 +192,14 @@ def main(template_path, readm_path, nfrags, fraglen, export_path, tool_name):
                                + divergent_with_correct_length_cnt)
     
     # Percentages
-    perfectly_reconstructed_percent = _percentage(perfectly_reconstructed_cnt, 
-                                                  len(templates))
     dropped_reads_percent = _percentage(dropped_reads_cnt, 
                                         len(templates))
     incorrect_length_percent = _percentage(incorrect_length_cnt, 
                                            len(templates))
+    incorrect_length_percent = _percentage(incorrect_length_cnt, 
+                                           len(templates)) 
+    perfectly_reconstructed_percent = _percentage(perfectly_reconstructed_cnt, 
+                                                  len(templates))
     if len(reads) != 0:
         # Percent of non-dropped reads that are not perfectly reconstucted
         divergent_reads_percent = _percentage(divergences_cnt, len(reads))
@@ -239,16 +241,17 @@ def main(template_path, readm_path, nfrags, fraglen, export_path, tool_name):
                 "total_sequences,"
                 "total_reads,"
                 "dropped_reads,"
-                "incorrect_length_reads,"
-                "correct_len_incorrect_seq_reads,"
+                "incorrect_length,"
+                "correct_len_incorrect_seq,"
                 "perfectly_reconstructed,"
-                "divergent_reads,"
-                "average_divergence,"
                 "dropped_reads_percentage,"
                 "incorrect_length_percentage,"
+                "correct_len_incorrect_seq_percentage",
+                "perfectly_reconstructed_percentage"
+                "divergent_reads,"
+                "average_divergence,"
                 "divergent_reads_percentage,"
                 "average_divergence_percentage,"
-                "perfectly_reconstructed_percentage"
                 "\n")
             f.write(f"{tool_name},"
                     f"{os.path.basename(readm_path)},"
@@ -258,15 +261,16 @@ def main(template_path, readm_path, nfrags, fraglen, export_path, tool_name):
                     f"{len(reads)},"
                     f"{dropped_reads_cnt},"
                     f"{incorrect_length_cnt},"
-                    f"{divergent_with_correct_length_cnt}",
+                    f"{correct_len_incorrect_seq_cnt},"
                     f"{perfectly_reconstructed_cnt},"
-                    f"{divergences_cnt},"
-                    f"{avg_divergence},"
                     f"{dropped_reads_percent},"
                     f"{incorrect_length_percent},"
+                    f"{correct_len_incorrect_seq_percent},"
+                    f"{perfectly_reconstructed_percent},"
+                    f"{divergences_cnt},"
+                    f"{avg_divergence},"
                     f"{divergent_reads_percent},"
-                    f"{avg_divergence_percent},"
-                    f"{perfectly_reconstructed_percent}")
+                    f"{avg_divergence_percent}")
 
 
 if __name__ == "__main__":
