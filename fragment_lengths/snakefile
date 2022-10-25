@@ -17,8 +17,8 @@ what happens in such a case.
 SEED = 2718
 
 # fragment variables
-LENGTH = [50, 120, 125, 130, 200]  #list(range(1, 250+1)) + [1000]
-NUMFRAGS = 100 #1000000
+LENGTH = list(range(1, 250+1)) + [1000]
+NUMFRAGS = 1000000
 TOOLNAMES = [
     "leeHom", "AdapterRemoval", "ClipAndMerge", "seqtk_adna_trim", 
     "bbmerge", "fastp", "SeqPrep"
@@ -65,12 +65,61 @@ ADPT2 = "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATTT"
 ### Run all
 
 
+
 rule all:
     input:
-        OUTDIR_EVA + "/all_merged.csv"
-    run:
-        shell("gzip {OUTDIR_REC}/*/*")
-        shell("gzip {OUTDIR_SIM}/*")
+        # Run the simulations
+        expand(
+            OUTDIR_SIM + "/gen_n{n}_l{l}_s1.fq",
+            n=NUMFRAGS,
+            l=LENGTH,
+        ),
+        # trimming/merging 
+        expand(
+            OUTDIR_REC + "/leeHom/gen_n{n}_l{l}_merged.fq.gz",
+            n=NUMFRAGS,
+            l=LENGTH,
+        ),
+        expand(
+            OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_merged.fq",
+            n=NUMFRAGS,
+            l=LENGTH,
+        ),
+        expand(
+            OUTDIR_REC + "/ClipAndMerge/gen_n{n}_l{l}_merged.fq",
+            n=NUMFRAGS,
+            l=LENGTH,
+        ),
+        expand(
+            OUTDIR_REC + "/seqtk_adna_trim/gen_n{n}_l{l}_merged.fq",
+            n=NUMFRAGS,
+            l=LENGTH,
+        ),
+        expand(
+            OUTDIR_REC + "/bbmerge/gen_n{n}_l{l}_merged.fq",
+            n=NUMFRAGS,
+            l=LENGTH,
+        ),
+        expand(
+            OUTDIR_REC + "/fastp/gen_n{n}_l{l}_merged.fq",
+            n=NUMFRAGS,
+            l=LENGTH,
+        ),
+        expand(
+            OUTDIR_REC + "/SeqPrep/gen_n{n}_l{l}_merged.fq.gz",
+            n=NUMFRAGS,
+            l=LENGTH,
+        ),
+        # # evaluation
+        # expand(OUTDIR_EVA + "/{tool_name}/gen_n{n}_l{l}.csv", 
+        #     tool_name=TOOLNAMES,
+        #     n=NUMFRAGS,
+        #     l=LENGTH,
+        # ),
+        # OUTDIR_EVA + "/all_merged.csv"
+    # run:
+    #     shell("gzip {OUTDIR_REC}/*/*")
+    #     shell("gzip {OUTDIR_SIM}/*")
 
 
 ### Simulation
