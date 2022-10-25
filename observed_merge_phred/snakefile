@@ -11,7 +11,9 @@ NUMFRAGS = 100000000    # 100 Mio
 LENGTH = 120
 
 # project directory
-PROJECTDIR = "/net/node07/home/projects/DNA_reconstruct/observed_merge_phred"
+#PROJECTDIR = "/net/node07/home/projects/DNA_reconstruct/observed_merge_phred"
+# for node07:
+PROJECTDIR = "/home/projects/DNA_reconstruct/observed_merge_phred"
 
 # Input genome and adapter sequences
 IN_FILE = "/home/databases/genomes/Homo_sapiens/CHM13_T2T/CHM13_T2T.fa"
@@ -237,7 +239,7 @@ rule AdapterRemoval:
         l="\d+",
     params:
         out_collapsed=OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_qs{qs}_merged.fq",
-        out_prefix=OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_qs{qs}_merged",
+        out_prefix=OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_qs{qs}_unmerged",
         rm1=OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_qs{qs}_merged.pair1.truncated",
         rm2=OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_qs{qs}_merged.pair2.truncated",
         rm3=OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_qs{qs}_merged.singleton.truncated",
@@ -340,7 +342,7 @@ rule seqtk_adna_trim:
         n="\d+",
         l="\d+",
     params:
-        u_prefix=OUTDIR_REC + "/seqtk_adna_trim/gen_n{n}_l{l}_unmerged",
+        u_prefix=OUTDIR_REC + "/seqtk_adna_trim/gen_n{n}_l{l}_qs{qs}_unmerged",
     benchmark:
         OUTDIR_BEN + "/seqtk_adna_trim/gen_n{n}_l{l}_qs{qs}_merged.tsv"
     shell:
@@ -400,6 +402,7 @@ rule bbmerge:
             " mininsert=1"
             " mininsert0=1"
             " minoverlap=10"
+            " minoverlap0=1"
         )
         
 
