@@ -549,8 +549,8 @@ rule SeqPrep:
 
 rule evaluate_zipped:
     "Run the evaluation script"
-    # resources:
-    #     mem_mb = 10000
+    resources:
+        mem_mb = 10000
     input:
         orig=OUTDIR_SIM + "/gen_n{n}_l{l}.fa",
         rec=OUTDIR_REC + "/{tool_name}/gen_n{n}_l{l}_merged.fq.gz",
@@ -574,8 +574,8 @@ rule evaluate_zipped:
 
 rule evaluate_unzipped:
     "Run the evaluation script for unzipped fasta files and then zip them"
-    # resources:
-    #     mem_mb = 10000
+    resources:
+        mem_mb = 10000
     input:
         orig=OUTDIR_SIM + "/gen_n{n}_l{l}.fa",
         rec=OUTDIR_REC + "/{tool_name}/gen_n{n}_l{l}_merged.fq",

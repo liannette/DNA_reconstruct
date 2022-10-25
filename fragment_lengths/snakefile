@@ -68,55 +68,55 @@ ADPT2 = "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATTT"
 
 rule all:
     input:
-        # Run the simulations
-        expand(
-            OUTDIR_SIM + "/gen_n{n}_l{l}_s1.fq",
-            n=NUMFRAGS,
-            l=LENGTH,
-        ),
-        # trimming/merging 
-        expand(
-            OUTDIR_REC + "/leeHom/gen_n{n}_l{l}_merged.fq.gz",
-            n=NUMFRAGS,
-            l=LENGTH,
-        ),
-        expand(
-            OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_merged.fq",
-            n=NUMFRAGS,
-            l=LENGTH,
-        ),
-        expand(
-            OUTDIR_REC + "/ClipAndMerge/gen_n{n}_l{l}_merged.fq",
-            n=NUMFRAGS,
-            l=LENGTH,
-        ),
-        expand(
-            OUTDIR_REC + "/seqtk_adna_trim/gen_n{n}_l{l}_merged.fq",
-            n=NUMFRAGS,
-            l=LENGTH,
-        ),
-        expand(
-            OUTDIR_REC + "/bbmerge/gen_n{n}_l{l}_merged.fq",
-            n=NUMFRAGS,
-            l=LENGTH,
-        ),
-        expand(
-            OUTDIR_REC + "/fastp/gen_n{n}_l{l}_merged.fq",
-            n=NUMFRAGS,
-            l=LENGTH,
-        ),
-        expand(
-            OUTDIR_REC + "/SeqPrep/gen_n{n}_l{l}_merged.fq.gz",
-            n=NUMFRAGS,
-            l=LENGTH,
-        ),
-        # evaluation
-        expand(OUTDIR_EVA + "/{tool_name}/gen_n{n}_l{l}.csv", 
-            tool_name=TOOLNAMES,
-            n=NUMFRAGS,
-            l=LENGTH,
-        ),
-        OUTDIR_EVA + "/all_merged.csv",
+        # # Run the simulations
+        # expand(
+        #     OUTDIR_SIM + "/gen_n{n}_l{l}_s1.fq",
+        #     n=NUMFRAGS,
+        #     l=LENGTH,
+        # ),
+        # # trimming/merging 
+        # expand(
+        #     OUTDIR_REC + "/leeHom/gen_n{n}_l{l}_merged.fq.gz",
+        #     n=NUMFRAGS,
+        #     l=LENGTH,
+        # ),
+        # expand(
+        #     OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_merged.fq",
+        #     n=NUMFRAGS,
+        #     l=LENGTH,
+        # ),
+        # expand(
+        #     OUTDIR_REC + "/ClipAndMerge/gen_n{n}_l{l}_merged.fq",
+        #     n=NUMFRAGS,
+        #     l=LENGTH,
+        # ),
+        # expand(
+        #     OUTDIR_REC + "/seqtk_adna_trim/gen_n{n}_l{l}_merged.fq",
+        #     n=NUMFRAGS,
+        #     l=LENGTH,
+        # ),
+        # expand(
+        #     OUTDIR_REC + "/bbmerge/gen_n{n}_l{l}_merged.fq",
+        #     n=NUMFRAGS,
+        #     l=LENGTH,
+        # ),
+        # expand(
+        #     OUTDIR_REC + "/fastp/gen_n{n}_l{l}_merged.fq",
+        #     n=NUMFRAGS,
+        #     l=LENGTH,
+        # ),
+        # expand(
+        #     OUTDIR_REC + "/SeqPrep/gen_n{n}_l{l}_merged.fq.gz",
+        #     n=NUMFRAGS,
+        #     l=LENGTH,
+        # ),
+        # # evaluation
+        # expand(OUTDIR_EVA + "/{tool_name}/gen_n{n}_l{l}.csv", 
+        #     tool_name=TOOLNAMES,
+        #     n=NUMFRAGS,
+        #     l=LENGTH,
+        # ),
+        # OUTDIR_EVA + "/all_merged.csv",
         # Plotting
         expand(
             OUTDIR_PLOT + "/edit_distances_{tool_name}.png",
@@ -549,8 +549,8 @@ rule SeqPrep:
 
 rule evaluate_zipped:
     "Run the evaluation script"
-    # resources:
-    #     mem_mb = 10000
+    resources:
+        mem_mb = 10000
     input:
         orig=OUTDIR_SIM + "/gen_n{n}_l{l}.fa",
         rec=OUTDIR_REC + "/{tool_name}/gen_n{n}_l{l}_merged.fq.gz",
@@ -574,8 +574,8 @@ rule evaluate_zipped:
 
 rule evaluate_unzipped:
     "Run the evaluation script for unzipped fasta files and then zip them"
-    # resources:
-    #     mem_mb = 10000
+    resources:
+        mem_mb = 10000
     input:
         orig=OUTDIR_SIM + "/gen_n{n}_l{l}.fa",
         rec=OUTDIR_REC + "/{tool_name}/gen_n{n}_l{l}_merged.fq",
