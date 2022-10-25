@@ -46,6 +46,8 @@ def load_fastq(path):
     Loads a zipped or unzipped fastq file.
     Returns a list of dicts. Each dict the following keys, one for each 
     line of a fastq entry: name, sequence, optional, quality. 
+    There will likely be some reads that have the same name, in case of
+    duplicate templates.
     """
     reads = []
     f = gzip.open(path, 'rb') if _is_gzipped(path) else open(path, 'rb')
