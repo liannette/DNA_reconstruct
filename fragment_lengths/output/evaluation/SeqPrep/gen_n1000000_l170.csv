@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen,total_sequences,total_reads,dropped_reads,avg_divergence_per_nt,edit_distances
+SeqPrep,gen_n1000000_l170_merged.fq.gz,1000000,170,999923,952030,47893,0.087,0:828040 1:115533 2:7916 3:376 4:9 25:1 38:1 40:1 46:13 47:6 48:8 49:7 50:8 51:4 52:10 53:9 54:13 55:5 56:22 59:1 60:1 61:1 64:3 65:2 66:2 68:4 69:5 70:23 71:6
