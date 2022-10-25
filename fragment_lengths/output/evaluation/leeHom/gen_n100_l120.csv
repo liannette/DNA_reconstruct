@@ -1,2 +1,0 @@
-program,filename,nfrags,fraglen,total_sequences,total_reads,dropped_reads,incorrect_length_reads,divergent_reads,average_divergence,dropped_reads_percentage,incorrect_length_percentage,divergent_reads_percentage,average_divergence_percentage,perfectly_reconstructed,perfectly_reconstructed_percentage
-leeHom,gen_n100_l120_merged.fq.gz,100,120,100,100,0,0,6,0.06,0.0,0.0,6.0,0.05,94,94.0

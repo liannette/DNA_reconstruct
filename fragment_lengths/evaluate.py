@@ -129,21 +129,13 @@ def analyze_merged_reads(merged_reads, templates):
                 incorrect_length_cnt += 1
             # edit distance
             divergences.append(_levenshtein_distance(template_seq, read_seq))
-            
-    if len(merged_reads) != 0:
-        # Average number NT changes per merged read
-        avg_divergence = sum(divergences) / len(merged_reads)
-    else:
-        avg_divergence = 'NA'
 
     results = [
         dropped_reads_cnt, 
         incorrect_length_cnt, 
         divergent_with_correct_length_cnt, 
         perfectly_reconstructed_cnt,
-        divergences, 
-        avg_divergence,
-        ]     
+        divergences]     
     
     return results
 
@@ -160,7 +152,7 @@ def main(template_path, readm_path, nfrags, fraglen, export_path, tool_name):
 
     # Check for duplicate fragments
     if len(templates) != nfrags:
-        print(f"ATTENTION: number of total_sequences is {len(templates)}," 
+        print(f"ATTENTION: number of total_sequences is {len(templates)}, " 
               f"but the nfrags is {nfrags}. Possible reason: duplicate "
               "fragments")
 
@@ -184,25 +176,27 @@ def main(template_path, readm_path, nfrags, fraglen, export_path, tool_name):
     perfectly_reconstructed_cnt = results[3]
     # list of all divergences
     divergences = results[4]
-    # Average number NT changes per merged read
-    avg_divergence = results[5]
     # Number of difergent reads
-    divergences_cnt = len(divergences)
-    assert divergences_cnt == (incorrect_length_cnt 
-                               + divergent_with_correct_length_cnt)
+    divergent_cnt = len(divergences)
+    assert divergent_cnt == (incorrect_length_cnt 
+                               + correct_len_incorrect_seq_cnt)
+    
+    if len(reads) != 0:
+        # Average number NT changes per merged read
+        avg_divergence = sum(divergences) / len(reads)
+    else:
+        avg_divergence = 'NA'
     
     # Percentages
-    dropped_reads_percent = _percentage(dropped_reads_cnt, 
-                                        len(templates))
-    incorrect_length_percent = _percentage(incorrect_length_cnt, 
-                                           len(templates))
-    incorrect_length_percent = _percentage(incorrect_length_cnt, 
-                                           len(templates)) 
+    dropped_reads_percent = _percentage(dropped_reads_cnt, nfrags)
+    incorrect_length_percent = _percentage(incorrect_length_cnt, nfrags)
+    correct_len_incorrect_seq_percent = _percentage(
+        correct_len_incorrect_seq_cnt, nfrags)
     perfectly_reconstructed_percent = _percentage(perfectly_reconstructed_cnt, 
-                                                  len(templates))
+                                                  nfrags)
     if len(reads) != 0:
         # Percent of non-dropped reads that are not perfectly reconstucted
-        divergent_reads_percent = _percentage(divergences_cnt, len(reads))
+        divergent_reads_percent = _percentage(divergent_cnt, len(reads))
         # NT changes per NT (%)
         avg_divergence_percent = _percentage(avg_divergence, fraglen) 
     else:
@@ -214,21 +208,21 @@ def main(template_path, readm_path, nfrags, fraglen, export_path, tool_name):
 
     if export_path is None:
         print(f"{os.path.basename(readm_path)}:")
-        print(f"Dropped reads: {dropped_reads_cnt} of {len(templates)} total "
+        print(f"Dropped reads: {dropped_reads_cnt} of {nfrags} total "
               f"sequences ({dropped_reads_percent}%)")
         print(f"Incorrect length reads: {incorrect_length_cnt} of "
-              f"{len(templates)} total sequences ({incorrect_length_percent}%)")
+              f"{nfrags} total sequences ({incorrect_length_percent}%)")
         print(f"Perfectly reconstructed fragments (edit distance = 0 and "
               f"correct length): {perfectly_reconstructed_cnt} of "
-              f"{len(templates)} total sequences "
+              f"{nfrags} total sequences "
               f"({perfectly_reconstructed_percent}%)")
-        if len(reads) != 0:
-            print(f"Divergent reads (edit distance > 0): {divergences_cnt} of "
-                  f"{len(reads)} merged (non-dropped) reads "
-                  f"({divergent_reads_percent}%)")
-            print(f"Average divergence (edit distance): "
-                  f"{round(avg_divergence, 3)} of {fraglen} "
-                  f"nucleotides ({avg_divergence_percent}%)\n")
+        # if len(reads) != 0:
+        #     print(f"Divergent reads (edit distance > 0): {divergent_cnt} of "
+        #           f"{len(reads)} merged (non-dropped) reads "
+        #           f"({divergent_reads_percent}%)")
+        #     print(f"Average divergence (edit distance): "
+        #           f"{round(avg_divergence, 3)} of {fraglen} "
+        #           f"nucleotides ({avg_divergence_percent}%)\n")
 
     else:
             
@@ -246,12 +240,12 @@ def main(template_path, readm_path, nfrags, fraglen, export_path, tool_name):
                 "perfectly_reconstructed,"
                 "dropped_reads_percentage,"
                 "incorrect_length_percentage,"
-                "correct_len_incorrect_seq_percentage",
-                "perfectly_reconstructed_percentage"
+                "correct_len_incorrect_seq_percentage,"
+                "perfectly_reconstructed_percentage,"
                 "divergent_reads,"
-                "average_divergence,"
-                "divergent_reads_percentage,"
-                "average_divergence_percentage,"
+                #"average_divergence,"
+                #"divergent_reads_percentage,"
+                #"average_divergence_percentage,"
                 "\n")
             f.write(f"{tool_name},"
                     f"{os.path.basename(readm_path)},"
@@ -267,10 +261,11 @@ def main(template_path, readm_path, nfrags, fraglen, export_path, tool_name):
                     f"{incorrect_length_percent},"
                     f"{correct_len_incorrect_seq_percent},"
                     f"{perfectly_reconstructed_percent},"
-                    f"{divergences_cnt},"
-                    f"{avg_divergence},"
-                    f"{divergent_reads_percent},"
-                    f"{avg_divergence_percent}")
+                    f"{divergent_cnt},"
+                    #f"{avg_divergence},"
+                    #f"{divergent_reads_percent},"
+                    #f"{avg_divergence_percent}"
+                    )
 
 
 if __name__ == "__main__":
