@@ -53,13 +53,73 @@ PLOT_SCRIPT = PROJECTDIR + "/plot.py"
 
 rule all:
     input:
+        # Run the simulations
+        expand(
+            OUTDIR_SIM + "/gen_n{n}_l{l}_qs{qs}_s1.fq",
+            n=NUMFRAGS,
+            l=LENGTH,
+            qs=QS,
+        ),
+        # trimming/merging 
+        expand(
+            OUTDIR_REC + "/leeHom/gen_n{n}_l{l}_qs{qs}_merged.fq.gz",
+            n=NUMFRAGS,
+            l=LENGTH,
+            qs=QS,
+        ),
+        expand(
+            OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_qs{qs}_merged.fq",
+            n=NUMFRAGS,
+            l=LENGTH,
+            qs=QS,
+        ),
+        expand(
+            OUTDIR_REC + "/ClipAndMerge/gen_n{n}_l{l}_qs{qs}_merged.fq",
+            n=NUMFRAGS,
+            l=LENGTH,
+            qs=QS,
+        ),
+        expand(
+            OUTDIR_REC + "/seqtk_adna_trim/gen_n{n}_l{l}_qs{qs}_merged.fq",
+            n=NUMFRAGS,
+            l=LENGTH,
+            qs=QS,
+        ),
+        expand(
+            OUTDIR_REC + "/bbmerge/gen_n{n}_l{l}_qs{qs}_merged.fq",
+            n=NUMFRAGS,
+            l=LENGTH,
+            qs=QS,
+        ),
+        expand(
+            OUTDIR_REC + "/fastp/gen_n{n}_l{l}_qs{qs}_merged.fq",
+            n=NUMFRAGS,
+            l=LENGTH,
+            qs=QS,
+        ),
+        expand(
+            OUTDIR_REC + "/SeqPrep/gen_n{n}_l{l}_qs{qs}_merged.fq.gz",
+            n=NUMFRAGS,
+            l=LENGTH,
+            qs=QS,
+        ),
+        # evaluation
+        expand(
+            OUTDIR_EVA + "/{tool_name}/gen_n{n}_l{l}_qs{qs}.csv",
+            tool_name=["fastp"], #TOOLNAMES,
+            n=NUMFRAGS,
+            l=LENGTH,
+            qs=["0"], #QS,
+        ),
+        OUTDIR_EVA + "/all_merged.csv",
+        # Plotting
         expand(
             OUTDIR_PLOT + "/{tool_name}.png",
             tool_name=TOOLNAMES,
         ),
-    run:
-        shell("gzip {OUTDIR_REC}/*/*")
-        shell("gzip {OUTDIR_SIM}/*")
+    # run:
+    #     shell("gzip {OUTDIR_REC}/*/*")
+    #     shell("gzip {OUTDIR_SIM}/*")
 
 
 ### Simulation
@@ -108,10 +168,10 @@ rule add_adapters:
     wildcard_constraints:
         n="\d+",
         l="\d+",
-    run:
+    shell:
         # -l        : Desired read length
         # -artp     : Output reads as ART with wrap-around
-        shell(
+        (
             "{ADPTSIM}" 
             " -l {wildcards.l}" 
             " -artp" 
@@ -137,7 +197,7 @@ rule simulate_reads:
     wildcard_constraints:
         n="\d+",
         l="\d+",
-    run:
+    shell:
         # --insRate     : insertion rate
         # -dr           : deletion rate
         # -qs           : the amount to shift every first-read quality 
@@ -161,7 +221,7 @@ rule simulate_reads:
         # --rndSeed     : the seed for random number generator, use a
         #                 fixed seed to generate two identical datasets
         #                 from different runs
-        shell(
+        (
             "{ART}"
             " --insRate 0"
             " --insRate2 0"
@@ -204,11 +264,11 @@ rule leeHom:
         rm5=OUTDIR_REC + "/leeHom/gen_n{n}_l{l}_qs{qs}_merged_r2.fail.fq.gz",
     benchmark:
         OUTDIR_BEN + "/leeHom/gen_n{n}_l{l}_qs{qs}_merged.tsv"
-    run:
+    shell:
         # (default : PHRED33)
         # -t [threads]            Use multiple cores (default : 1)
         # LeeHom outputs quality scores >41
-        shell(
+        (
             "{LEEHOM}"
             " --ancientdna"
             " --adapterFirstRead {ADPT1}"
@@ -248,7 +308,7 @@ rule AdapterRemoval:
         rm6=OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_qs{qs}_merged.settings",
     benchmark:
         OUTDIR_BEN + "/AdapterRemoval/gen_n{n}_l{l}_qs{qs}_merged.tsv"
-    run:
+    shell:
         # --minlength LENGTH
         #     Reads shorter than this length are discarded following trimming
         #     [default: 15].
@@ -268,7 +328,7 @@ rule AdapterRemoval:
         #     and Solexa scores [default: 41].
         #
         # number of threads is by default 1
-        shell(
+        (
             "{ADPTREM}"
             " --collapse"
             " --minlength 1"
@@ -498,8 +558,8 @@ rule SeqPrep:
 
 rule evaluate_zipped:
     "Run the evaluation script"
-    # resources:
-    #     mem_mb = 10000
+    resources:
+        mem_mb = 150000
     input:
         orig=OUTDIR_SIM + "/gen_n{n}_l{l}.fa",
         rec=OUTDIR_REC + "/{tool_name}/gen_n{n}_l{l}_qs{qs}_merged.fq.gz",
@@ -507,8 +567,8 @@ rule evaluate_zipped:
         OUTDIR_EVA + "/{tool_name}/gen_n{n}_l{l}_qs{qs}.csv"
     wildcard_constraints:
         tool_name="(leeHom|SeqPrep)",
-    run:
-        shell(
+    shell:
+        (
             "python3 {EVAL_SCRIPT}"
             " --out {output}"
             " --nfrags {wildcards.n}"
@@ -522,8 +582,8 @@ rule evaluate_zipped:
 
 rule evaluate_unzipped:
     "Run the evaluation script for unzipped fasta files and then zip them"
-    # resources:
-    #     mem_mb = 10000
+    resources:
+        mem_mb = 150000
     input:
         orig=OUTDIR_SIM + "/gen_n{n}_l{l}.fa",
         rec=OUTDIR_REC + "/{tool_name}/gen_n{n}_l{l}_qs{qs}_merged.fq",
@@ -531,8 +591,8 @@ rule evaluate_unzipped:
         OUTDIR_EVA + "/{tool_name}/gen_n{n}_l{l}_qs{qs}.csv"
     wildcard_constraints:
         tool_name="(AdapterRemoval|ClipAndMerge|seqtk_adna_trim|bbmerge|fastp)"
-    run:
-        shell(
+    shell:
+        (
             "python3 {EVAL_SCRIPT}"
             " --out {output}"
             " --nfrags {wildcards.n}"
@@ -555,8 +615,8 @@ rule merge_csv:
         ),
     output:  
         OUTDIR_EVA + "/all_merged.csv",
-    run:
-        shell("{MERGE_SCRIPT}")
+    shell:
+        ("{MERGE_SCRIPT}")
 
 
 rule plot:
@@ -564,8 +624,8 @@ rule plot:
         OUTDIR_EVA + "/all_merged.csv"
     output:
         OUTDIR_PLOT + "/{tool_name}.png"
-    run:
-        shell(
+    shell:
+        (
             "python3 {PLOT_SCRIPT}"
             " -i {input}"
             " -o {OUTDIR_PLOT}"
