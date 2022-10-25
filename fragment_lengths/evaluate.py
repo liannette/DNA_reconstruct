@@ -126,9 +126,11 @@ def main(template_path, readm_path, nfrags, fraglen, export_path, tool_name):
     # Number of dropped reads
     dropped_reads_cnt = len(templates) - len(reads)
     # NT change per NT (%)
-    avg_divergence_per_nt = sum(edit_dist_list) / len(reads) / fraglen * 100
-    avg_divergence_per_nt = round(avg_divergence_per_nt, 3)
-    
+    if len(reads) > 0:
+        avg_divergence_per_nt = sum(edit_dist_list) / len(reads) / fraglen * 100
+        avg_divergence_per_nt = round(avg_divergence_per_nt, 3)
+    else:
+        avg_divergence_per_nt = "NA"
 
 
     #################### export results ####################
