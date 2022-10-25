@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen,total_sequences,total_reads,dropped_reads,incorrect_length,correct_len_incorrect_seq,perfectly_reconstructed,dropped_reads_percentage,incorrect_length_percentage,correct_len_incorrect_seq_percentage,perfectly_reconstructed_percentage,divergent_reads,
+seqtk_adna_trim,gen_n1000000_l232_merged.fq,1000000,232,999927,982645,17282,2,295477,687166,1.728,0.0,29.548,68.717,295479,

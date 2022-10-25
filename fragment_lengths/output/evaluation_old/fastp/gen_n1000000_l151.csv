@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen,total_sequences,total_reads,dropped_reads,incorrect_length,correct_len_incorrect_seq,perfectly_reconstructed,dropped_reads_percentage,incorrect_length_percentage,correct_len_incorrect_seq_percentage,perfectly_reconstructed_percentage,divergent_reads,
+fastp,gen_n1000000_l151_merged.fq,1000000,151,999923,999999,-76,2217,169200,828582,-0.008,0.222,16.92,82.858,171417,

@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen,total_sequences,total_reads,dropped_reads,incorrect_length,correct_len_incorrect_seq,perfectly_reconstructed,dropped_reads_percentage,incorrect_length_percentage,correct_len_incorrect_seq_percentage,perfectly_reconstructed_percentage,divergent_reads,
+bbmerge,gen_n1000000_l222_merged.fq,1000000,222,999924,928584,71340,0,248860,679724,7.134,0.0,24.886,67.972,248860,

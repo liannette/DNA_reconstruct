@@ -110,16 +110,21 @@ rule all:
             n=NUMFRAGS,
             l=LENGTH,
         ),
-        # # evaluation
-        # expand(OUTDIR_EVA + "/{tool_name}/gen_n{n}_l{l}.csv", 
-        #     tool_name=TOOLNAMES,
-        #     n=NUMFRAGS,
-        #     l=LENGTH,
-        # ),
-        # OUTDIR_EVA + "/all_merged.csv"
-    # run:
-    #     shell("gzip {OUTDIR_REC}/*/*")
-    #     shell("gzip {OUTDIR_SIM}/*")
+        # evaluation
+        expand(OUTDIR_EVA + "/{tool_name}/gen_n{n}_l{l}.csv", 
+            tool_name=TOOLNAMES,
+            n=NUMFRAGS,
+            l=LENGTH,
+        ),
+        OUTDIR_EVA + "/all_merged.csv",
+        # Plotting
+        expand(
+            OUTDIR_PLOT + "/edit_distances_{tool_name}.png",
+            tool_name=TOOLNAMES,
+        ),
+    run:
+        shell("gzip {OUTDIR_REC}/*/*")
+        shell("gzip {OUTDIR_SIM}/*")
 
 
 ### Simulation
@@ -604,3 +609,19 @@ rule merge_csv:
         OUTDIR_EVA + "/all_merged.csv",
     run:
         shell("{MERGE_SCRIPT}")
+
+
+rule plot:
+    input:
+        OUTDIR_EVA + "/all_merged.csv"
+    output:
+        expand(
+            OUTDIR_PLOT + "/edit_distances_{tool_name}.png",
+            tool_name=TOOLNAMES,
+        ),
+    run:
+        shell(
+            "python3 {PLOT_SCRIPT}"
+            " -i {input}"
+            " -o {OUTDIR_PLOT}"
+        )

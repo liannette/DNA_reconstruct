@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen,total_sequences,total_reads,dropped_reads,incorrect_length,correct_len_incorrect_seq,perfectly_reconstructed,dropped_reads_percentage,incorrect_length_percentage,correct_len_incorrect_seq_percentage,perfectly_reconstructed_percentage,divergent_reads,
+leeHom,gen_n1000000_l196_merged.fq.gz,1000000,196,999940,999842,98,1238,195934,802670,0.01,0.124,19.593,80.267,197172,

@@ -60,36 +60,24 @@ def parse_arguments():
     parser.add_argument(
         "-n", "--nfrags", action="store", type=int, required=True,
         help="nfrags")  
-
-    # optional arguments, only needed if exporting the results
     parser.add_argument(
-        "-o", "--out", action="store", type=str, required=False,
+        "-o", "--out", action="store", type=str, required=True,
         dest="export_path", help="Path for the output csv file")
     parser.add_argument(
-        "-t", "--tool", action="store", type=str, required=False,
+        "-t", "--tool", action="store", type=str, required=True,
         dest="tool_name", help="Name of the tool used for trimming")
 
     args = parser.parse_args()
-    required_arguments = [
+    arguments = [
         args.templates_path, 
         args.readm_path,
         args.nfrags, 
         args.fraglen,
+        args.export_path, 
+        args.tool_name
         ]
-    optional_arguments = [args.export_path, args.tool_name]
     
-    if set(optional_arguments) == {None}:
-        # no optional arguments have been passed
-        return required_arguments
-    elif None not in optional_arguments:
-        # all optional arguments have been passed
-        return required_arguments + optional_arguments
-    else:
-        # only some optional arguments have been passed
-        print("parseDNAfragments.py: error: only some optional arguments have "
-              "been passed")
-        parser.print_help()
-        sys.exit(2)
+    return arguments
 
 
 def _levenshtein_distance(template_seq, read_seq):
@@ -100,48 +88,13 @@ def _levenshtein_distance(template_seq, read_seq):
     return edlib.align(template_seq, read_seq)['editDistance']
 
 
-def analyze_merged_reads(merged_reads, templates):
-    """
-    Returns:
-        list of
-            number of reads that have been perfectly reconstructed reads
-            list of divergences of the not perfectly reconstructed reads
-            number of reads that have the incorrect length
-
-    """
-    dropped_reads_cnt = len(templates) - len(merged_reads)
-    incorrect_length_cnt = 0
-    divergent_with_correct_length_cnt = 0
-    perfectly_reconstructed_cnt = 0
-    divergences = []
-
+def get_edit_distances(merged_reads, templates):
+    edit_distances = []
     for read in merged_reads:
         read_seq = read['sequence']
         template_seq = templates[read['name']]['sequence']
-
-        if read_seq == template_seq:
-            perfectly_reconstructed_cnt += 1
-        else:
-            # length change
-            if len(template_seq) == len(read_seq):
-                divergent_with_correct_length_cnt += 1
-            else:
-                incorrect_length_cnt += 1
-            # edit distance
-            divergences.append(_levenshtein_distance(template_seq, read_seq))
-
-    results = [
-        dropped_reads_cnt, 
-        incorrect_length_cnt, 
-        divergent_with_correct_length_cnt, 
-        perfectly_reconstructed_cnt,
-        divergences]     
-    
-    return results
-
-
-def _percentage(cnt, total_cnt):
-    return round(cnt/total_cnt*100, 3)
+        edit_distances.append(_levenshtein_distance(template_seq, read_seq))  
+    return edit_distances
 
 
 def main(template_path, readm_path, nfrags, fraglen, export_path, tool_name):
@@ -164,108 +117,44 @@ def main(template_path, readm_path, nfrags, fraglen, export_path, tool_name):
 
     # Analysis and Results ----------------------------------------------------
 
-
-    results = analyze_merged_reads(reads, templates)
-    # Dropped reads
-    dropped_reads_cnt = results[0]
-    # Incorrect length
-    incorrect_length_cnt = results[1]
-    # Right lenght but other sequence
-    correct_len_incorrect_seq_cnt = results[2]
-    # Perfectly reconstructed
-    perfectly_reconstructed_cnt = results[3]
-    # list of all divergences
-    divergences = results[4]
-    # Number of difergent reads
-    divergent_cnt = len(divergences)
-    assert divergent_cnt == (incorrect_length_cnt 
-                               + correct_len_incorrect_seq_cnt)
+    # edit distances of all reads
+    edit_dist_list = get_edit_distances(reads, templates)
+    edit_dist_string = ""
+    for edit_dist in sorted(set(edit_dist_list)):
+        edit_dist_string += f"{edit_dist}:"
+        edit_dist_string += f"{edit_dist_list.count(edit_dist)} "
+    # Number of dropped reads
+    dropped_reads_cnt = len(templates) - len(reads)
+    # NT change per NT (%)
+    avg_divergence_per_nt = sum(edit_dist_list) / len(reads) / fraglen * 100
+    avg_divergence_per_nt = round(avg_divergence_per_nt, 3)
     
-    if len(reads) != 0:
-        # Average number NT changes per merged read
-        avg_divergence = sum(divergences) / len(reads)
-    else:
-        avg_divergence = 'NA'
-    
-    # Percentages
-    dropped_reads_percent = _percentage(dropped_reads_cnt, nfrags)
-    incorrect_length_percent = _percentage(incorrect_length_cnt, nfrags)
-    correct_len_incorrect_seq_percent = _percentage(
-        correct_len_incorrect_seq_cnt, nfrags)
-    perfectly_reconstructed_percent = _percentage(perfectly_reconstructed_cnt, 
-                                                  nfrags)
-    if len(reads) != 0:
-        # Percent of non-dropped reads that are not perfectly reconstucted
-        divergent_reads_percent = _percentage(divergent_cnt, len(reads))
-        # NT changes per NT (%)
-        avg_divergence_percent = _percentage(avg_divergence, fraglen) 
-    else:
-        divergent_reads_percent = 'NA'
-        avg_divergence_percent = 'NA'
 
 
-    #################### Print or export results ####################
-
-    if export_path is None:
-        print(f"{os.path.basename(readm_path)}:")
-        print(f"Dropped reads: {dropped_reads_cnt} of {nfrags} total "
-              f"sequences ({dropped_reads_percent}%)")
-        print(f"Incorrect length reads: {incorrect_length_cnt} of "
-              f"{nfrags} total sequences ({incorrect_length_percent}%)")
-        print(f"Perfectly reconstructed fragments (edit distance = 0 and "
-              f"correct length): {perfectly_reconstructed_cnt} of "
-              f"{nfrags} total sequences "
-              f"({perfectly_reconstructed_percent}%)")
-        # if len(reads) != 0:
-        #     print(f"Divergent reads (edit distance > 0): {divergent_cnt} of "
-        #           f"{len(reads)} merged (non-dropped) reads "
-        #           f"({divergent_reads_percent}%)")
-        #     print(f"Average divergence (edit distance): "
-        #           f"{round(avg_divergence, 3)} of {fraglen} "
-        #           f"nucleotides ({avg_divergence_percent}%)\n")
-
-    else:
+    #################### export results ####################
             
-        with open(export_path, 'w') as f:
-            f.write(
-                "program,"
-                "filename,"
-                "nfrags,"
-                "fraglen,"
-                "total_sequences,"
-                "total_reads,"
-                "dropped_reads,"
-                "incorrect_length,"
-                "correct_len_incorrect_seq,"
-                "perfectly_reconstructed,"
-                "dropped_reads_percentage,"
-                "incorrect_length_percentage,"
-                "correct_len_incorrect_seq_percentage,"
-                "perfectly_reconstructed_percentage,"
-                "divergent_reads,"
-                #"average_divergence,"
-                #"divergent_reads_percentage,"
-                #"average_divergence_percentage,"
-                "\n")
-            f.write(f"{tool_name},"
-                    f"{os.path.basename(readm_path)},"
-                    f"{nfrags},"
-                    f"{fraglen},"
-                    f"{len(templates)},"
-                    f"{len(reads)},"
-                    f"{dropped_reads_cnt},"
-                    f"{incorrect_length_cnt},"
-                    f"{correct_len_incorrect_seq_cnt},"
-                    f"{perfectly_reconstructed_cnt},"
-                    f"{dropped_reads_percent},"
-                    f"{incorrect_length_percent},"
-                    f"{correct_len_incorrect_seq_percent},"
-                    f"{perfectly_reconstructed_percent},"
-                    f"{divergent_cnt},"
-                    #f"{avg_divergence},"
-                    #f"{divergent_reads_percent},"
-                    #f"{avg_divergence_percent}"
-                    )
+    with open(export_path, 'w') as f:
+        f.write(
+            "program,"
+            "filename,"
+            "nfrags,"
+            "fraglen,"
+            "total_sequences,"
+            "total_reads,"
+            "dropped_reads,"
+            "avg_divergence_per_nt,"
+            "edit_distances"
+            "\n")
+        f.write(f"{tool_name},"
+                f"{os.path.basename(readm_path)},"
+                f"{nfrags},"
+                f"{fraglen},"
+                f"{len(templates)},"
+                f"{len(reads)},"
+                f"{dropped_reads_cnt},"
+                f"{avg_divergence_per_nt},"
+                f"{edit_dist_string.rstrip()}"
+                )
 
 
 if __name__ == "__main__":
