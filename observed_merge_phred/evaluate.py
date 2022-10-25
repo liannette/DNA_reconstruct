@@ -11,6 +11,11 @@ import numpy as np
 import scipy.stats as st
 
 
+# running this script for with files that have 100 Mio fragments, uses 
+# an insane amount of RAM, up to 120 gb. I could consider rewriting this
+# script to work with less RAM
+
+
 def parse_arguments():
     """
     """
@@ -177,7 +182,7 @@ def main(template_path, readm_path, nfrags, fraglen, qualityshift,
 
     # Check for duplicate fragments
     if len(templates) != nfrags:
-        print(f"ATTENTION: number of total_sequences is {len(templates)}," 
+        print(f"ATTENTION: number of total_sequences is {len(templates)}, " 
               f"but the nfrags is {nfrags}. Possible reason: duplicate "
               "fragments")
 
