@@ -152,7 +152,7 @@ def annotate_heatmap(im, data=None, valfmt="{x:.2f}",
     return texts
 
 
-def create_plots(df_type, program, match_type, outdir):
+def create_plots(df_type, program, match_type, max_new_qs, outdir):
 
     # Get matrices of the new phred value and the new nucleotide
     df_new_qs = df_type.pivot(index='qs2', columns='qs1', values='new_qs') \
@@ -170,9 +170,9 @@ def create_plots(df_type, program, match_type, outdir):
         ax=ax,
         cbarlabel="New phred quality score",
         cbar_kw={"shrink": 0.6}, 
-        cmap="YlGn",
+        cmap="RdYlGn",
         vmin=0, 
-        vmax=41,
+        vmax=max_new_qs,
         )
 
     # Add titel and axes labels
@@ -188,6 +188,7 @@ def create_plots(df_type, program, match_type, outdir):
                             df_new_nt.to_numpy(), 
                             valfmt=None, 
                             #textcolors=("white", "black"),
+                            threshold=max_new_qs
                             )
 
     # Save plot
@@ -215,11 +216,13 @@ def combine_plots(program, outdir):
 def main(infile, outdir):
     
     df = pd.read_csv(infile)
+    max_new_qs = max(df["new_qs"])
+    
     for program in list(df["program"].unique()):
         for match_type in ["match", "mismatch"]:
             mask = (df["program"] == program) & (df["type"] == match_type)
             df_type = df[mask]
-            create_plots(df_type, program, match_type, outdir)
+            create_plots(df_type, program, match_type, max_new_qs, outdir)
         combine_plots(program, outdir)
             
         
