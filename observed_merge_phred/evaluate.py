@@ -114,6 +114,11 @@ def process_merged_reads(merged_reads, templates):
     return phred_counter
 
 
+def phred_2_p_error(q_value):
+    p_error = 10**(-int(q_value)/10)
+    return p_error
+
+
 def p_mismatch(n_total, n_mismatch):
     if n_total == 0:
         p = np.NAN
@@ -122,19 +127,26 @@ def p_mismatch(n_total, n_mismatch):
     return p
 
 
-def margin_of_error(n_total, p, alpha=0.01):
-    """ value of maximum error given alpha for normal distribution """
-    # z score of normal distribution
-    z_value = st.norm.ppf(1 - alpha/2)
-    # standard error of an estimate of a sample proportion
-    stderr = math.sqrt( p*(1-p) / n_total )
-    return z_value * stderr
+def binomial_ci(n, k, alpha):
+    """ 
+    Exact Confidence Interval
+    https://sigmazone.com/binomial-confidence-intervals/ 
+    """
+    if k == 0:
+        p_lower = 0
+    else: 
+        p_lower = 1 - st.beta.ppf(1-(alpha/2), n-k+1 , k)
+    if k == n:
+        p_upper = 1
+    else:
+        p_upper = 1 - st.beta.ppf(alpha/2, n-k , k+1)
+    return p_lower, p_upper
 
 
-def p_error_2_phred(p_err, max_observed_phred=100):
+def p_error_2_phred(p_err, max_phred=100):
     # probability of incorrect base call
     if p_err <= 0:
-        phred_observed = max_observed_phred
+        phred_observed = max_phred
     elif p_err == 1:
         phred_observed = 0
     else: 
@@ -147,44 +159,60 @@ def get_results(phred_counter, alpha):
     # observed error rate is 0
     max_phred = 100
     
-    results = []
-    for phred_value in sorted(phred_counter.keys()):
-        n_matches = phred_counter[phred_value]["match_cnt"]
-        n_mismatches = phred_counter[phred_value]["mismatch_cnt"]
+    results = {'predicted_phred': list(),
+        'predicted_error': list(),
+        'n_matches': list(),
+        'n_mismatches': list(),
+        'n_total': list(),
+        'p_mismatch': list(),
+        'p_mismatch_lower': list(),
+        'p_mismatch_upper': list(),
+        'observed_phred': list(),
+        'observed_phred_lower': list(),
+        'observed_phred_higher': list(),
+        }
+    
+    for q_score in sorted(phred_counter.keys()):
+        
+        predicted_error = phred_2_p_error(q_score)
+        n_matches = phred_counter[q_score]["match_cnt"]
+        n_mismatches = phred_counter[q_score]["mismatch_cnt"]
         n_total = n_mismatches + n_matches
         p_mm = p_mismatch(n_total, n_mismatches)
-        err_margin = margin_of_error(n_total, p_mm)
-        observed_phred_mean = p_error_2_phred(p_mm, max_phred)
-        observed_phred_lower = p_error_2_phred(p_mm+err_margin, max_phred)
-        observed_phred_higher = p_error_2_phred(p_mm-err_margin, max_phred)
-            
-        results.append(
-            [
-                phred_value, 
-                n_matches, 
-                n_mismatches, 
-                n_total, 
-                observed_phred_mean, 
-                observed_phred_lower,
-                observed_phred_higher,
-                alpha
-                ]
-            )
+        p_mm_lower, p_mm_upper = binomial_ci(n_total, n_mismatches, alpha)
+        observed_phred = p_error_2_phred(p_mm, max_phred)
+        observed_phred_lower = p_error_2_phred(p_mm_upper, max_phred)
+        observed_phred_higher = p_error_2_phred(p_mm_lower, max_phred)
+    
+        results["predicted_phred"].append(q_score)
+        results["predicted_error"].append(predicted_error)
+        results["n_matches"].append(n_matches)
+        results["n_mismatches"].append(n_mismatches)
+        results["n_total"].append(n_total)
+        results["p_mismatch"].append(p_mm)
+        results["p_mismatch_lower"].append(p_mm_lower)
+        results["p_mismatch_upper"].append(p_mm_upper)
+        results["observed_phred"].append(observed_phred)
+        results["observed_phred_lower"].append(observed_phred_lower)
+        results["observed_phred_higher"].append(observed_phred_higher)
+    
     return results
 
 
 def main(template_path, readm_path, nfrags, fraglen, qualityshift, 
          export_path=None, tool_name=None):
 
+    alpha = 0.01
+
     # Load files --------------------------------------------------------------
 
     templates = common.load_fasta(template_path)
 
     # Check for duplicate fragments
-    if len(templates) != nfrags:
-        print(f"ATTENTION: number of total_sequences is {len(templates)}, " 
-              f"but the nfrags is {nfrags}. Possible reason: duplicate "
-              "fragments")
+    # if len(templates) != nfrags:
+    #     print(f"ATTENTION: number of total_sequences is {len(templates)}, " 
+    #           f"but the nfrags is {nfrags}. Possible reason: duplicate "
+    #           "fragments")
 
     reads = common.load_fastq(readm_path)
     # seperator: this character and all charaters to the right of it
@@ -196,31 +224,19 @@ def main(template_path, readm_path, nfrags, fraglen, qualityshift,
     # Analysis ----------------------------------------------------------------
 
     phred_counter = process_merged_reads(merged_reads, templates)
-    results = get_results(phred_counter, alpha=0.01)
+    results = get_results(phred_counter, alpha)
 
 
     # Export results ----------------------------------------------------------
     
     if export_path is not None:
 
-        df = pd.DataFrame(
-            results, 
-            columns=[
-                'predicted_phred', 
-                'n_matches', 
-                'n_mismatches', 
-                'n_total', 
-                'observed_phred_mean',
-                'observed_phred_lower',
-                'observed_phred_higher',
-                'alpha',
-                ]
-            )
-        df.set_index('predicted_phred', inplace=True)
+        df = pd.DataFrame.from_dict(results)
         df.insert(0, 'program', tool_name)
         df.insert(1, 'nfrags', nfrags)
         df.insert(2, 'fraglen', fraglen)
         df.insert(3, 'qual_shift', qualityshift)
+        df.insert(4, 'alpha', alpha)
         df.to_csv(export_path, na_rep="NA")
 
 
