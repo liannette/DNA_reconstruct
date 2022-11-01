@@ -179,8 +179,8 @@ def create_plots(df_type, program, match_type, max_new_qs, outdir):
     nt1 = list(df_type["nt1"])[0]
     nt2 = list(df_type["nt2"])[0]
     ax.set_title(f"{program}, {match_type}", fontsize=20)
-    ax.set_xlabel(f"Phred quality score, forward read (nt={nt1})", fontsize=14)
-    ax.set_ylabel(f"Phred quality score, reverse read (rev. compl. nt={nt2})",
+    ax.set_xlabel(f"Phred quality score, forward read (base: {nt1})", fontsize=14)
+    ax.set_ylabel(f"Phred quality score, reverse read (rc base: {nt2})",
                 fontsize=14)
 
     # Add the new nucletide as annotation

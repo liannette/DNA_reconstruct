@@ -33,7 +33,7 @@ SEQPREP = "/home/ctools/SeqPrep-1.3.2/SeqPrep"
 
 # python scripts
 EVAL_SCRIPT = PROJECTDIR + "/evaluate.py"
-PLOT_SCRIPT = PROJECTDIR + "/create_heatmaps.py"
+PLOT_SCRIPT = PROJECTDIR + "/plot.py"
 
 # adapter sequences
 ADPT1 = "AGATCGGAAGAGCACACGTCTGAACTCCAGTCACCGATTCGATCTCGTATGCCGTCTTCTGCTTG"
@@ -328,13 +328,22 @@ rule merge_csv:
 
 rule plot:
     input:
-        OUTDIR_EVA + "/{tool_name}_qs.csv"
+        OUTDIR_EVA + "/all_qs.csv"
     output:
-        OUTDIR_PLOT + "/combined/{tool_name}.png",
-        OUTDIR_PLOT + "/{tool_name}_match.png",
-        OUTDIR_PLOT + "/{tool_name}_mismatch.png"
-    run:
-        shell(
+        expand(
+            OUTDIR_PLOT + "/combined/{tool_name}.png",
+            tool_name=TOOLNAMES,
+        ),
+        expand(
+            OUTDIR_PLOT + "/{tool_name}_match.png",
+            tool_name=TOOLNAMES,
+        ),
+        expand(
+            OUTDIR_PLOT + "/{tool_name}_mismatch.png",
+            tool_name=TOOLNAMES,
+        ),
+    shell:
+        (
             "python3 {PLOT_SCRIPT}"
             " -i {input}"
             " -o {OUTDIR_PLOT}"
