@@ -151,11 +151,17 @@ def plot_phred_calibration(df_qs, program, r2, alpha, outdir, qs=None):
     # Save plot
     fig.tight_layout()
     if outdir is not None:
-        plt.savefig(f"{outdir}/{program}_{qs}.png", 
-                    dpi='figure', 
-                    format="png")
+        if qs is None:
+            plt.savefig(f"{outdir}/{program}_combined.png", 
+                dpi='figure', 
+                format="png")
+        else:
+            plt.savefig(f"{outdir}/{program}_{qs}.png", 
+                        dpi='figure', 
+                        format="png")
     else:
         plt.show()
+    plt.close(fig)
     
     
 def main(infile, outdir):

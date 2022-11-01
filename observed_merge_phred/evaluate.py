@@ -169,7 +169,7 @@ def get_results(phred_counter, alpha):
         'p_mismatch_upper': list(),
         'observed_phred': list(),
         'observed_phred_lower': list(),
-        'observed_phred_higher': list(),
+        'observed_phred_upper': list(),
         }
     
     for q_score in sorted(phred_counter.keys()):
@@ -182,7 +182,7 @@ def get_results(phred_counter, alpha):
         p_mm_lower, p_mm_upper = binomial_ci(n_total, n_mismatches, alpha)
         observed_phred = p_error_2_phred(p_mm, max_phred)
         observed_phred_lower = p_error_2_phred(p_mm_upper, max_phred)
-        observed_phred_higher = p_error_2_phred(p_mm_lower, max_phred)
+        observed_phred_upper = p_error_2_phred(p_mm_lower, max_phred)
     
         results["predicted_phred"].append(q_score)
         results["predicted_error"].append(predicted_error)
@@ -194,7 +194,7 @@ def get_results(phred_counter, alpha):
         results["p_mismatch_upper"].append(p_mm_upper)
         results["observed_phred"].append(observed_phred)
         results["observed_phred_lower"].append(observed_phred_lower)
-        results["observed_phred_higher"].append(observed_phred_higher)
+        results["observed_phred_upper"].append(observed_phred_upper)
     
     return results
 
