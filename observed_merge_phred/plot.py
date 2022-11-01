@@ -106,7 +106,7 @@ def plot_confidence_interval(x, y, lower, upper, color='#2187bb',
     
 def plot_phred_calibration(df_qs, program, r2, alpha, outdir, qs=None):
 
-    fig, ax = plt.subplots(figsize=(12, 8))
+    fig, ax = plt.subplots(figsize=(15, 8))
 
     # Plot the expected line
     ax.plot(df_qs["predicted_phred"], df_qs["predicted_phred"], "--r", lw=0.8)
