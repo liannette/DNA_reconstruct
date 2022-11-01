@@ -114,7 +114,7 @@ rule all:
         OUTDIR_EVA + "/all_merged.csv",
         # Plotting
         expand(
-            OUTDIR_PLOT + "/{tool_name}.png",
+            OUTDIR_PLOT + "/{tool_name}_combined.png",
             tool_name=TOOLNAMES,
         ),
     # run:
@@ -623,7 +623,10 @@ rule plot:
     input:
         OUTDIR_EVA + "/all_merged.csv"
     output:
-        OUTDIR_PLOT + "/{tool_name}.png"
+        expand(
+            OUTDIR_PLOT + "/{tool_name}_combined.png",
+            tool_name=TOOLNAMES,
+        ),
     shell:
         (
             "python3 {PLOT_SCRIPT}"
