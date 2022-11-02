@@ -160,6 +160,12 @@ def create_plots(df_type, program, match_type, max_new_qs, outdir):
     df_new_nt = df_type.pivot(index='qs2', columns='qs1', values='new_nt') \
                         .sort_index(ascending=False)
 
+    # Create own colormap for heatmap
+    cvals  = [0, 20, 40, max_new_qs]
+    colors = ["red", "yellow", "green", "royalblue"]
+    norm = plt.Normalize(min(cvals),max(cvals))
+    tuples = list(zip(map(norm,cvals), colors))
+    cmap = mpl.colors.LinearSegmentedColormap.from_list("", tuples)
 
     # Plot the heatmap with the phred values
     fig, ax = plt.subplots(figsize=(15, 15))
@@ -170,7 +176,7 @@ def create_plots(df_type, program, match_type, max_new_qs, outdir):
         ax=ax,
         cbarlabel="New phred quality score",
         cbar_kw={"shrink": 0.6}, 
-        cmap="RdYlGn",
+        cmap=cmap,
         vmin=0, 
         vmax=max_new_qs,
         )

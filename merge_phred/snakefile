@@ -126,6 +126,7 @@ rule AdapterRemoval:
             " --outputcollapsed {params.out_collapsed}"
             " --seed {SEED}"
             " --minalignmentlength 10"
+            " --qualitymax 93"
         )
         shell(
             "rm"
