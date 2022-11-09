@@ -1,2 +1,0 @@
-program,filename,nfrags,fraglen,total_sequences,total_reads,dropped_reads,avg_divergence_per_nt,edit_distances
-AdapterRemoval,gen_n1000000_l119_merged.fq,1000000,119,999928,1000000,-72,0.023,0:973030 1:26614 2:353 3:3

@@ -1,2 +1,0 @@
-program,filename,nfrags,fraglen,total_sequences,total_reads,dropped_reads,avg_divergence_per_nt,edit_distances
-seqtk_adna_trim,gen_n1000000_l1_merged.fq,1000000,1,999924,57,999867,23852.632,236:3 237:2 238:14 239:38

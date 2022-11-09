@@ -1,2 +1,0 @@
-program,filename,nfrags,fraglen,total_sequences,total_reads,dropped_reads,avg_divergence_per_nt,edit_distances
-fastp,gen_n1000000_l128_merged.fq,1000000,128,999924,1000000,-76,0.113,0:866010 1:124493 2:8870 3:545 4:71 5:9 6:1 7:1

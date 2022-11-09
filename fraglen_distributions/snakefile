@@ -107,15 +107,15 @@ rule all:
             distname=DISTNAME,
             qs=QS,
         ),
-        # # evaluation
-        # expand(
-        #     OUTDIR_EVA + "/{tool_name}/gen_n_{n}_dist_{distname}_qs_{qs}.csv",
-        #     tool_name=["fastp"], #TOOLNAMES,
-        #     n=NUMFRAGS,
-        #     l=LENGTH,
-        #     qs=["0"], #QS,
-        # ),
-        # OUTDIR_EVA + "/all_merged.csv",
+        # evaluation
+        expand(
+            OUTDIR_EVA + "/{tool_name}/gen_n_{n}_dist_{distname}_qs_{qs}.csv",
+            tool_name=["fastp"], #TOOLNAMES,
+            n=NUMFRAGS,
+            distname=["A9180"], #DISTNAME,
+            qs=["0"], #QS,
+        ),
+        OUTDIR_EVA + "/all_merged.csv",
         # # Plotting
         # expand(
         #     OUTDIR_PLOT + "/{tool_name}_combined.png",
@@ -543,7 +543,7 @@ rule evaluate_zipped:
             "python3 {EVAL_SCRIPT}"
             " --out {output}"
             " --nfrags {NUMFRAGS}"
-            " --dist {wildcards.distname}"
+            " --fraglendist {wildcards.distname}"
             " --qualityshift {wildcards.qs}"
             " --tool {wildcards.tool_name}"
             " --templates {input.orig}"
@@ -554,7 +554,7 @@ rule evaluate_zipped:
 rule evaluate_unzipped:
     "Run the evaluation script for unzipped fasta files and then zip them"
     resources:
-        mem_mb = 150000
+        mem_mb = 15000
     input:
         orig=OUTDIR_SIM + "/gen_n_{n}_dist_{distname}_frag.fa",
         rec=OUTDIR_REC + "/{tool_name}/gen_n_{n}_dist_{distname}_qs_{qs}_merged.fq",
@@ -565,7 +565,7 @@ rule evaluate_unzipped:
             "python3 {EVAL_SCRIPT}"
             " --out {output}"
             " --nfrags {NUMFRAGS}"
-            " --dist {wildcards.distname}"
+            " --fraglendist {wildcards.distname}"
             " --qualityshift {wildcards.qs}"
             " --tool {wildcards.tool_name}"
             " --templates {input.orig}"

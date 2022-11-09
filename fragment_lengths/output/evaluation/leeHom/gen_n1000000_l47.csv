@@ -1,2 +1,0 @@
-program,filename,nfrags,fraglen,total_sequences,total_reads,dropped_reads,avg_divergence_per_nt,edit_distances
-leeHom,gen_n1000000_l47_merged.fq.gz,1000000,47,999928,1000000,-72,0.021,0:990215 1:9738 2:47
