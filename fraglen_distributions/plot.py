@@ -20,7 +20,7 @@ def parse_arguments():
         help="path of the output directory")  
 
     args = parser.parse_args()
-    return args.infile, args.outdir
+    return args.infile, args.dist_dir, args.outdir
 
 
 def plot_histogram(dist_dir, outdir):
