@@ -13,11 +13,51 @@ def parse_arguments():
         "-i", action="store", type=str, required=True, dest="infile", 
         help='path for the csv result file')
     parser.add_argument(
+        "-l", action="store", type=str, required=True, dest="dist_dir", 
+        help='directory with the fragment length files')
+    parser.add_argument(
         "-o", action="store", type=str, required=False, dest="outdir",
         help="path of the output directory")  
 
     args = parser.parse_args()
     return args.infile, args.outdir
+
+
+def plot_histogram(dist_dir, outdir):
+    
+    distnames = ["A9180", "cfDNA", "chagyrskaya8", "Vi33.19"]
+
+    fig, axes = plt.subplots(1, 4, figsize=[15, 5])
+
+    for i in range(4):
+        ax = axes[i]
+        distname = distnames[i]
+        infile = dist_dir + f"/{distname}.gz"
+        df = pd.read_csv(infile, header = None) 
+        
+        x_min = 0
+        if distname == "A9180":
+            x_max = 100
+        elif distname == "cfDNA":
+            x_max = 600
+        elif distname == "chagyrskaya8":
+            x_max = 300
+        elif distname == "Vi33.19":
+            x_max = 175
+
+        binwidth = int(x_max/60)
+
+        ax.hist(df, density=1, bins=range(x_min, x_max + 10, binwidth))
+        ax.set_title(f"{distname}")
+        ax.set_xlabel('Fragment length')
+        ax.set_xlim(x_min, x_max)
+        
+    axes[0].set_ylabel('Probability')
+    fig.suptitle(f"Fragment length distributions")
+    fig.tight_layout()
+    plt.savefig(f"{outdir}/fraglen_histograms.png", 
+                dpi='figure', 
+                format="png")
 
 
 def get_edit_distance_matrix(df):
@@ -168,7 +208,9 @@ def plot_edit_distance(program, df_program, outdir):
                 format="png")
 
 
-def main(infile, outdir):
+def main(infile, dist_dir, outdir):
+    
+    plot_histogram(dist_dir, outdir)
     
     df = pd.read_csv(infile)
     df = df.sort_values(by="fraglen_distribution", key=lambda x: x.str.lower())

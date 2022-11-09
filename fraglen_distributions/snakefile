@@ -117,6 +117,7 @@ rule all:
         ),
         OUTDIR_EVA + "/all_merged.csv",
         # Plotting
+        OUTDIR_PLOT + "/fraglen_histograms.png"
         expand(
             OUTDIR_PLOT + "/fraglen_distributions_{tool_name}.png",
             tool_name=TOOLNAMES,
@@ -592,6 +593,7 @@ rule plot:
     input:
         OUTDIR_EVA + "/all_merged.csv"
     output:
+        OUTDIR_PLOT + "/fraglen_histograms.png", 
         expand(
             OUTDIR_PLOT + "/fraglen_distributions_{tool_name}.png",
             tool_name=TOOLNAMES,
@@ -600,5 +602,6 @@ rule plot:
         (
             "python3 {PLOT_SCRIPT}"
             " -i {input}"
+            " -l {DISTDIR}"
             " -o {OUTDIR_PLOT}"
         )
