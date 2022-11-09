@@ -1,2 +1,0 @@
-program,filename,nfrags,fraglen,total_sequences,total_reads,dropped_reads,incorrect_length,correct_len_incorrect_seq,perfectly_reconstructed,dropped_reads_percentage,incorrect_length_percentage,correct_len_incorrect_seq_percentage,perfectly_reconstructed_percentage,divergent_reads,
-SeqPrep,gen_n1000000_l207_merged.fq.gz,1000000,207,999924,812361,187563,288,175242,636831,18.756,0.029,17.524,63.683,175530,

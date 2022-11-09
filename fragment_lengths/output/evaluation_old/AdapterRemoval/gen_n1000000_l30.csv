@@ -1,2 +1,0 @@
-program,filename,nfrags,fraglen,total_sequences,total_reads,dropped_reads,incorrect_length,correct_len_incorrect_seq,perfectly_reconstructed,dropped_reads_percentage,incorrect_length_percentage,correct_len_incorrect_seq_percentage,perfectly_reconstructed_percentage,divergent_reads,
-AdapterRemoval,gen_n1000000_l30_merged.fq,1000000,30,999937,1000000,-63,0,6163,993837,-0.006,0.0,0.616,99.384,6163,

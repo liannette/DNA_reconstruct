@@ -29,7 +29,7 @@ def get_edit_distance_matrix(df_program):
         # create the row of the matrx
         occurences_per_edit_distance = 8 * [0]
         
-        # Skip rows that dont contain a string
+        # Skip rows that dont contain a string -> no merged reads
         if isinstance(row, str):
             for element in row.split():
                 edit_dist, cnt = [int(x) for x in element.split(":")]

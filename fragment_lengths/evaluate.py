@@ -124,7 +124,7 @@ def main(template_path, readm_path, nfrags, fraglen, export_path, tool_name):
         edit_dist_string += f"{edit_dist}:"
         edit_dist_string += f"{edit_dist_list.count(edit_dist)} "
     # Number of dropped reads
-    dropped_reads_cnt = len(templates) - len(reads)
+    dropped_reads_cnt = nfrags - len(reads)
     # NT change per NT (%)
     if len(reads) > 0:
         avg_divergence_per_nt = sum(edit_dist_list) / len(reads) / fraglen * 100
