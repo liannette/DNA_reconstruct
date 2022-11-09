@@ -163,7 +163,7 @@ def plot_edit_distance(program, df_program, outdir):
                 loc='center left', bbox_to_anchor=(1, 0.5))
 
     fig.tight_layout()
-    plt.savefig(f"{outdir}/edit_distances_{program}.png", 
+    plt.savefig(f"{outdir}/fraglen_distributions_{program}.png", 
                 dpi='figure', 
                 format="png")
 

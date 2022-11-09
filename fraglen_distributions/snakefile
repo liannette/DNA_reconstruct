@@ -116,14 +116,14 @@ rule all:
             qs=["0"], #QS,
         ),
         OUTDIR_EVA + "/all_merged.csv",
-        # # Plotting
-        # expand(
-        #     OUTDIR_PLOT + "/{tool_name}_combined.png",
-        #     tool_name=TOOLNAMES,
-        # ),
-    # run:
-    #     shell("gzip {OUTDIR_REC}/*/*")
-    #     shell("gzip {OUTDIR_SIM}/*")
+        # Plotting
+        expand(
+            OUTDIR_PLOT + "/fraglen_distributions_{tool_name}.png",
+            tool_name=TOOLNAMES,
+        ),
+    run:
+        shell("gzip {OUTDIR_REC}/*/*")
+        shell("gzip {OUTDIR_SIM}/*")
 
 
 ### Simulation
@@ -593,7 +593,7 @@ rule plot:
         OUTDIR_EVA + "/all_merged.csv"
     output:
         expand(
-            OUTDIR_PLOT + "/{tool_name}_combined.png",
+            OUTDIR_PLOT + "/fraglen_distributions_{tool_name}.png",
             tool_name=TOOLNAMES,
         ),
     shell:
