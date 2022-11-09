@@ -60,18 +60,18 @@ def weighted_r_squared(df):
     weighted mean: https://www.statisticshowto.com/probability-and-statistics/statistics-definitions/weighted-mean/
     weighted r squared: https://stats.stackexchange.com/questions/83826/is-a-weighted-r2-in-robust-linear-model-meaningful-for-goodness-of-fit-analys/375752#375752 
     """
-    y_hat = df["observed_phred"]
+    y = df["observed_phred"]
     # Weights are the confidence interval
     conf_intervals = df["observed_phred_upper"] - df["observed_phred_lower"]
     weights = [1/w for w in conf_intervals]
     # difference between merged and observed phred
-    residuals = df["observed_phred"] - df["predicted_phred"]
-
+    residuals = y - df["predicted_phred"]
+    
     # weighted residual sum of squared (SSe)
     sse = sum([w * e**2 for w, e in zip(weights, residuals)])
     # weighted total sum of squared (SSt)
-    weighted_mean = sum([w * f for w, f in zip(weights, y_hat)]) / sum(weights)
-    sst = sum([w * (f-weighted_mean)**2 for w, f in zip(weights, y_hat)])
+    weighted_mean = sum([w * f for w, f in zip(weights, y)]) / sum(weights)
+    sst = sum([w * (f-weighted_mean)**2 for w, f in zip(weights, y)])
     # weighted r squared
     r2 = 1 - (sse/sst)
 
