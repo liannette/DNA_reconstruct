@@ -153,8 +153,8 @@ def main(infile, outdir):
     for program in list(df["program"].unique()):
         df_program = df[df["program"] == program]
         
-        nfrags = df_program["nfrags"]
         frag_len = df_program["fraglen"]
+        nfrags = df_program["nfrags"]
         dropped_percent = df_program["dropped_reads"] / nfrags * 100
         edit_distances = get_edit_distance_matrix(df_program)
         

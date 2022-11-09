@@ -3,28 +3,6 @@
 """ 
 This script was initially written by Leonardo and then improved by 
 Annette Lien (a.lien@posteo.de) (12.09.2022)
-
-------------------------------------------------------------------------
-
-
-------------------------------------------------------------------------
-Old comments from Leonardo: 
-
-We report:
-- Are there missing reads? Dropped due to low quality or something?
-- how many times we got the length right?
-- the divergence between original and predicted sequence?
-
-If a program has a high rate of dropping reads, is might be neccessary
-to adjust some parameters of the trimming algorithms.
-
-It might happen that you have a collision i.e. the same sequence got
-sampled twice. It is unlikely but I would not worry about it.
-
-A potential pitfall is that it is possible that certain programs might
-not output the same number of sequences that they take in. If that is 
-the case will have to modify the commands in order to output all of the 
-sequences. 
 """
 
 

@@ -68,55 +68,55 @@ ADPT2 = "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATTT"
 
 rule all:
     input:
-        # # Run the simulations
-        # expand(
-        #     OUTDIR_SIM + "/gen_n{n}_l{l}_s1.fq",
-        #     n=NUMFRAGS,
-        #     l=LENGTH,
-        # ),
-        # # trimming/merging 
-        # expand(
-        #     OUTDIR_REC + "/leeHom/gen_n{n}_l{l}_merged.fq.gz",
-        #     n=NUMFRAGS,
-        #     l=LENGTH,
-        # ),
-        # expand(
-        #     OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_merged.fq",
-        #     n=NUMFRAGS,
-        #     l=LENGTH,
-        # ),
-        # expand(
-        #     OUTDIR_REC + "/ClipAndMerge/gen_n{n}_l{l}_merged.fq",
-        #     n=NUMFRAGS,
-        #     l=LENGTH,
-        # ),
-        # expand(
-        #     OUTDIR_REC + "/seqtk_adna_trim/gen_n{n}_l{l}_merged.fq",
-        #     n=NUMFRAGS,
-        #     l=LENGTH,
-        # ),
-        # expand(
-        #     OUTDIR_REC + "/bbmerge/gen_n{n}_l{l}_merged.fq",
-        #     n=NUMFRAGS,
-        #     l=LENGTH,
-        # ),
-        # expand(
-        #     OUTDIR_REC + "/fastp/gen_n{n}_l{l}_merged.fq",
-        #     n=NUMFRAGS,
-        #     l=LENGTH,
-        # ),
-        # expand(
-        #     OUTDIR_REC + "/SeqPrep/gen_n{n}_l{l}_merged.fq.gz",
-        #     n=NUMFRAGS,
-        #     l=LENGTH,
-        # ),
-        # # evaluation
-        # expand(OUTDIR_EVA + "/{tool_name}/gen_n{n}_l{l}.csv", 
-        #     tool_name=TOOLNAMES,
-        #     n=NUMFRAGS,
-        #     l=LENGTH,
-        # ),
-        # OUTDIR_EVA + "/all_merged.csv",
+        # Run the simulations
+        expand(
+            OUTDIR_SIM + "/gen_n{n}_l{l}_s1.fq",
+            n=NUMFRAGS,
+            l=LENGTH,
+        ),
+        # trimming/merging 
+        expand(
+            OUTDIR_REC + "/leeHom/gen_n{n}_l{l}_merged.fq.gz",
+            n=NUMFRAGS,
+            l=LENGTH,
+        ),
+        expand(
+            OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_merged.fq",
+            n=NUMFRAGS,
+            l=LENGTH,
+        ),
+        expand(
+            OUTDIR_REC + "/ClipAndMerge/gen_n{n}_l{l}_merged.fq",
+            n=NUMFRAGS,
+            l=LENGTH,
+        ),
+        expand(
+            OUTDIR_REC + "/seqtk_adna_trim/gen_n{n}_l{l}_merged.fq",
+            n=NUMFRAGS,
+            l=LENGTH,
+        ),
+        expand(
+            OUTDIR_REC + "/bbmerge/gen_n{n}_l{l}_merged.fq",
+            n=NUMFRAGS,
+            l=LENGTH,
+        ),
+        expand(
+            OUTDIR_REC + "/fastp/gen_n{n}_l{l}_merged.fq",
+            n=NUMFRAGS,
+            l=LENGTH,
+        ),
+        expand(
+            OUTDIR_REC + "/SeqPrep/gen_n{n}_l{l}_merged.fq.gz",
+            n=NUMFRAGS,
+            l=LENGTH,
+        ),
+        # evaluation
+        expand(OUTDIR_EVA + "/{tool_name}/gen_n{n}_l{l}.csv", 
+            tool_name=TOOLNAMES,
+            n=NUMFRAGS,
+            l=LENGTH,
+        ),
+        OUTDIR_EVA + "/all_merged.csv",
         # Plotting
         expand(
             OUTDIR_PLOT + "/edit_distances_{tool_name}.png",
@@ -139,9 +139,9 @@ rule simulate_fragments:
     input:
         IN_FILE,
     output:
-        OUTDIR_SIM + "/gen_n{n}_l{l}.fa",
+        OUTDIR_SIM + "/gen_n{n}_l{l}_frag.fa",
     benchmark:
-        OUTDIR_BEN + "/simulate_fragments/gen_n{n}_l{l}.tsv"
+        OUTDIR_BEN + "/simulate_fragments/gen_n{n}_l{l}_frag.tsv"
     wildcard_constraints:
         n="\d+",
         l="\d+",
@@ -165,7 +165,7 @@ rule add_adapters:
     mode.
     """
     input:
-        OUTDIR_SIM + "/gen_n{n}_l{l}.fa",
+        OUTDIR_SIM + "/gen_n{n}_l{l}_frag.fa",
     output:
         OUTDIR_SIM + "/gen_n{n}_l{l}_adpt.fa",
     benchmark:
@@ -552,12 +552,12 @@ rule evaluate_zipped:
     resources:
         mem_mb = 10000
     input:
-        orig=OUTDIR_SIM + "/gen_n{n}_l{l}.fa",
+        orig=OUTDIR_SIM + "/gen_n{n}_l{l}_frag.fa",
         rec=OUTDIR_REC + "/{tool_name}/gen_n{n}_l{l}_merged.fq.gz",
     output:
         OUTDIR_EVA + "/{tool_name}/gen_n{n}_l{l}.csv"
-    wildcard_constraints:
-        tool_name="(leeHom|SeqPrep)",
+    # wildcard_constraints:
+    #     tool_name="(leeHom|SeqPrep)",
     conda:
         CONDA_ENV
     run:
@@ -577,12 +577,12 @@ rule evaluate_unzipped:
     resources:
         mem_mb = 10000
     input:
-        orig=OUTDIR_SIM + "/gen_n{n}_l{l}.fa",
+        orig=OUTDIR_SIM + "/gen_n{n}_l{l}_frag.fa",
         rec=OUTDIR_REC + "/{tool_name}/gen_n{n}_l{l}_merged.fq",
     output:
         OUTDIR_EVA + "/{tool_name}/gen_n{n}_l{l}.csv"
-    wildcard_constraints:
-        tool_name="(AdapterRemoval|ClipAndMerge|seqtk_adna_trim|bbmerge|fastp)"
+    # wildcard_constraints:
+    #     tool_name="(AdapterRemoval|ClipAndMerge|seqtk_adna_trim|bbmerge|fastp)"
     conda:
         CONDA_ENV
     run:
