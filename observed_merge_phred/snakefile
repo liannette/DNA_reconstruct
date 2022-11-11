@@ -7,11 +7,11 @@ TOOLNAMES = [
     "bbmerge", "fastp", "SeqPrep"
     ]
 QS = ["0", "-10", "-20", "-30"]
-NUMFRAGS = 100000000    # 100 Mio
+NUMFRAGS = 1000000    # 10 Mio
 LENGTH = 120
 
 # project directory
-#PROJECTDIR = "/net/node07/home/projects/DNA_reconstruct/observed_merge_phred"
+# PROJECTDIR = "/net/node07/home/projects/DNA_reconstruct/observed_merge_phred"
 # for node07:
 PROJECTDIR = "/home/projects/DNA_reconstruct/observed_merge_phred"
 
@@ -559,9 +559,9 @@ rule SeqPrep:
 rule evaluate_zipped:
     "Run the evaluation script"
     resources:
-        mem_mb = 150000
+        mem_mb = 15000
     input:
-        orig=OUTDIR_SIM + "/gen_n_n{n}_l_{l}_frag.fa",
+        orig=OUTDIR_SIM + "/gen_n_{n}_l_{l}_frag.fa",
         rec=OUTDIR_REC + "/{tool_name}/gen_n_{n}_l_{l}_qs_{qs}_merged.fq.gz",
     output:
         OUTDIR_EVA + "/{tool_name}/gen_n_{n}_l_{l}_qs_{qs}.csv"
@@ -583,9 +583,9 @@ rule evaluate_zipped:
 rule evaluate_unzipped:
     "Run the evaluation script for unzipped fasta files and then zip them"
     resources:
-        mem_mb = 150000
+        mem_mb = 15000
     input:
-        orig=OUTDIR_SIM + "/gen_n_n{n}_l_{l}_frag.fa",
+        orig=OUTDIR_SIM + "/gen_n_{n}_l_{l}_frag.fa",
         rec=OUTDIR_REC + "/{tool_name}/gen_n_{n}_l_{l}_qs_{qs}_merged.fq",
     output:
         OUTDIR_EVA + "/{tool_name}/gen_n_{n}_l_{l}_qs_{qs}.csv"
