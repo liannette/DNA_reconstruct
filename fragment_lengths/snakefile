@@ -70,48 +70,48 @@ rule all:
     input:
         # Run the simulations
         expand(
-            OUTDIR_SIM + "/gen_n{n}_l{l}_s1.fq",
+            OUTDIR_SIM + "/gen_n_{n}_l_{l}_s1.fq",
             n=NUMFRAGS,
             l=LENGTH,
         ),
         # trimming/merging 
         expand(
-            OUTDIR_REC + "/leeHom/gen_n{n}_l{l}_merged.fq.gz",
+            OUTDIR_REC + "/leeHom/gen_n_{n}_l_{l}_merged.fq.gz",
             n=NUMFRAGS,
             l=LENGTH,
         ),
         expand(
-            OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_merged.fq",
+            OUTDIR_REC + "/AdapterRemoval/gen_n_{n}_l_{l}_merged.fq",
             n=NUMFRAGS,
             l=LENGTH,
         ),
         expand(
-            OUTDIR_REC + "/ClipAndMerge/gen_n{n}_l{l}_merged.fq",
+            OUTDIR_REC + "/ClipAndMerge/gen_n_{n}_l_{l}_merged.fq",
             n=NUMFRAGS,
             l=LENGTH,
         ),
         expand(
-            OUTDIR_REC + "/seqtk_adna_trim/gen_n{n}_l{l}_merged.fq",
+            OUTDIR_REC + "/seqtk_adna_trim/gen_n_{n}_l_{l}_merged.fq",
             n=NUMFRAGS,
             l=LENGTH,
         ),
         expand(
-            OUTDIR_REC + "/bbmerge/gen_n{n}_l{l}_merged.fq",
+            OUTDIR_REC + "/bbmerge/gen_n_{n}_l_{l}_merged.fq",
             n=NUMFRAGS,
             l=LENGTH,
         ),
         expand(
-            OUTDIR_REC + "/fastp/gen_n{n}_l{l}_merged.fq",
+            OUTDIR_REC + "/fastp/gen_n_{n}_l_{l}_merged.fq",
             n=NUMFRAGS,
             l=LENGTH,
         ),
         expand(
-            OUTDIR_REC + "/SeqPrep/gen_n{n}_l{l}_merged.fq.gz",
+            OUTDIR_REC + "/SeqPrep/gen_n_{n}_l_{l}_merged.fq.gz",
             n=NUMFRAGS,
             l=LENGTH,
         ),
         # evaluation
-        expand(OUTDIR_EVA + "/{tool_name}/gen_n{n}_l{l}.csv", 
+        expand(OUTDIR_EVA + "/{tool_name}/gen_n_{n}_l_{l}.csv", 
             tool_name=TOOLNAMES,
             n=NUMFRAGS,
             l=LENGTH,
@@ -139,9 +139,9 @@ rule simulate_fragments:
     input:
         IN_FILE,
     output:
-        OUTDIR_SIM + "/gen_n{n}_l{l}_frag.fa",
+        OUTDIR_SIM + "/gen_n_{n}_l_{l}_frag.fa",
     benchmark:
-        OUTDIR_BEN + "/simulate_fragments/gen_n{n}_l{l}_frag.tsv"
+        OUTDIR_BEN + "/simulate_fragments/gen_n_{n}_l_{l}_frag.tsv"
     wildcard_constraints:
         n="\d+",
         l="\d+",
@@ -165,11 +165,11 @@ rule add_adapters:
     mode.
     """
     input:
-        OUTDIR_SIM + "/gen_n{n}_l{l}_frag.fa",
+        OUTDIR_SIM + "/gen_n_{n}_l_{l}_frag.fa",
     output:
-        OUTDIR_SIM + "/gen_n{n}_l{l}_adpt.fa",
+        OUTDIR_SIM + "/gen_n_{n}_l_{l}_adpt.fa",
     benchmark:
-        OUTDIR_BEN + "/add_adapters/gen_n{n}_l{l}_adpt.tsv"
+        OUTDIR_BEN + "/add_adapters/gen_n_{n}_l_{l}_adpt.tsv"
     wildcard_constraints:
         n="\d+",
         l="\d+",
@@ -191,14 +191,14 @@ rule simulate_reads:
     Illumina HiSeq 2500 (125bp, 150bp)
     """
     input:
-        OUTDIR_SIM + "/gen_n{n}_l{l}_adpt.fa",
+        OUTDIR_SIM + "/gen_n_{n}_l_{l}_adpt.fa",
     output:
-        OUTDIR_SIM + "/gen_n{n}_l{l}_s1.fq",
-        OUTDIR_SIM + "/gen_n{n}_l{l}_s2.fq",
+        OUTDIR_SIM + "/gen_n_{n}_l_{l}_s1.fq",
+        OUTDIR_SIM + "/gen_n_{n}_l_{l}_s2.fq",
     params:
-        out_prefix=OUTDIR_SIM + "/gen_n{n}_l{l}_s",
+        out_prefix=OUTDIR_SIM + "/gen_n_{n}_l_{l}_s",
     benchmark:
-        OUTDIR_BEN + "/simulate_reads/gen_n{n}_l{l}_reads.tsv"
+        OUTDIR_BEN + "/simulate_reads/gen_n_{n}_l_{l}_reads.tsv"
     wildcard_constraints:
         n="\d+",
         l="\d+",
@@ -240,22 +240,22 @@ rule simulate_reads:
 rule leeHom:
     """Reconstruction using leeHom"""
     input:
-        s1=OUTDIR_SIM + "/gen_n{n}_l{l}_s1.fq",
-        s2=OUTDIR_SIM + "/gen_n{n}_l{l}_s2.fq",
+        s1=OUTDIR_SIM + "/gen_n_{n}_l_{l}_s1.fq",
+        s2=OUTDIR_SIM + "/gen_n_{n}_l_{l}_s2.fq",
     output:
-        OUTDIR_REC + "/leeHom/gen_n{n}_l{l}_merged.fq.gz",
+        OUTDIR_REC + "/leeHom/gen_n_{n}_l_{l}_merged.fq.gz",
     wildcard_constraints:
         n="\d+",
         l="\d+",
     params:
-        out_prefix=OUTDIR_REC + "/leeHom/gen_n{n}_l{l}_merged",
-        rm1=OUTDIR_REC + "/leeHom/gen_n{n}_l{l}_merged_r1.fq.gz",
-        rm2=OUTDIR_REC + "/leeHom/gen_n{n}_l{l}_merged_r2.fq.gz",
-        rm3=OUTDIR_REC + "/leeHom/gen_n{n}_l{l}_merged.fail.fq.gz",
-        rm4=OUTDIR_REC + "/leeHom/gen_n{n}_l{l}_merged_r1.fail.fq.gz",
-        rm5=OUTDIR_REC + "/leeHom/gen_n{n}_l{l}_merged_r2.fail.fq.gz",
+        out_prefix=OUTDIR_REC + "/leeHom/gen_n_{n}_l_{l}_merged",
+        rm1=OUTDIR_REC + "/leeHom/gen_n_{n}_l_{l}_merged_r1.fq.gz",
+        rm2=OUTDIR_REC + "/leeHom/gen_n_{n}_l_{l}_merged_r2.fq.gz",
+        rm3=OUTDIR_REC + "/leeHom/gen_n_{n}_l_{l}_merged.fail.fq.gz",
+        rm4=OUTDIR_REC + "/leeHom/gen_n_{n}_l_{l}_merged_r1.fail.fq.gz",
+        rm5=OUTDIR_REC + "/leeHom/gen_n_{n}_l_{l}_merged_r2.fail.fq.gz",
     benchmark:
-        OUTDIR_BEN + "/leeHom/gen_n{n}_l{l}_merged.tsv"
+        OUTDIR_BEN + "/leeHom/gen_n_{n}_l_{l}_merged.tsv"
     run:
         # (default : PHRED33)
         # -t [threads]            Use multiple cores (default : 1)
@@ -281,24 +281,24 @@ rule leeHom:
 rule AdapterRemoval:
     """Reconstruction using AdapterRemoval"""
     input:
-        s1=OUTDIR_SIM + "/gen_n{n}_l{l}_s1.fq",
-        s2=OUTDIR_SIM + "/gen_n{n}_l{l}_s2.fq",
+        s1=OUTDIR_SIM + "/gen_n_{n}_l_{l}_s1.fq",
+        s2=OUTDIR_SIM + "/gen_n_{n}_l_{l}_s2.fq",
     output:
-        OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_merged.fq",
+        OUTDIR_REC + "/AdapterRemoval/gen_n_{n}_l_{l}_merged.fq",
     wildcard_constraints:
         n="\d+",
         l="\d+",
     params:
-        out_collapsed=OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_merged.fq",
-        out_prefix=OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_unmerged",
-        rm1=OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_unmerged.pair1.truncated",
-        rm2=OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_unmerged.pair2.truncated",
-        rm3=OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_unmerged.singleton.truncated",
-        rm4=OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_unmerged.discarded",
-        rm5=OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_unmerged.collapsed.truncated",
-        rm6=OUTDIR_REC + "/AdapterRemoval/gen_n{n}_l{l}_unmerged.settings",
+        out_collapsed=OUTDIR_REC + "/AdapterRemoval/gen_n_{n}_l_{l}_merged.fq",
+        out_prefix=OUTDIR_REC + "/AdapterRemoval/gen_n_{n}_l_{l}_unmerged",
+        rm1=OUTDIR_REC + "/AdapterRemoval/gen_n_{n}_l_{l}_unmerged.pair1.truncated",
+        rm2=OUTDIR_REC + "/AdapterRemoval/gen_n_{n}_l_{l}_unmerged.pair2.truncated",
+        rm3=OUTDIR_REC + "/AdapterRemoval/gen_n_{n}_l_{l}_unmerged.singleton.truncated",
+        rm4=OUTDIR_REC + "/AdapterRemoval/gen_n_{n}_l_{l}_unmerged.discarded",
+        rm5=OUTDIR_REC + "/AdapterRemoval/gen_n_{n}_l_{l}_unmerged.collapsed.truncated",
+        rm6=OUTDIR_REC + "/AdapterRemoval/gen_n_{n}_l_{l}_unmerged.settings",
     benchmark:
-        OUTDIR_BEN + "/AdapterRemoval/gen_n{n}_l{l}_merged.tsv"
+        OUTDIR_BEN + "/AdapterRemoval/gen_n_{n}_l_{l}_merged.tsv"
     run:
         # --minlength LENGTH
         #     Reads shorter than this length are discarded following trimming
@@ -347,17 +347,17 @@ rule AdapterRemoval:
 rule ClipAndMerge:
     """Reconstruction using ClipAndMerge"""
     input:
-        s1=OUTDIR_SIM + "/gen_n{n}_l{l}_s1.fq",
-        s2=OUTDIR_SIM + "/gen_n{n}_l{l}_s2.fq",
+        s1=OUTDIR_SIM + "/gen_n_{n}_l_{l}_s1.fq",
+        s2=OUTDIR_SIM + "/gen_n_{n}_l_{l}_s2.fq",
     output:
-        m=OUTDIR_REC + "/ClipAndMerge/gen_n{n}_l{l}_merged.fq",
-        u1=OUTDIR_REC + "/ClipAndMerge/gen_n{n}_l{l}_unmerged.R1.fq",
-        u2=OUTDIR_REC + "/ClipAndMerge/gen_n{n}_l{l}_unmerged.R2.fq",
+        m=OUTDIR_REC + "/ClipAndMerge/gen_n_{n}_l_{l}_merged.fq",
+        u1=OUTDIR_REC + "/ClipAndMerge/gen_n_{n}_l_{l}_unmerged.R1.fq",
+        u2=OUTDIR_REC + "/ClipAndMerge/gen_n_{n}_l_{l}_unmerged.R2.fq",
     wildcard_constraints:
         n="\d+",
         l="\d+",
     benchmark:
-        OUTDIR_BEN + "/ClipAndMerge/gen_n{n}_l{l}_merged.tsv"
+        OUTDIR_BEN + "/ClipAndMerge/gen_n_{n}_l_{l}_merged.tsv"
     shell:
         # -l INTEGER      : Discard sequences shorter than 
         #                   this number of nucleotides after adapter 
@@ -385,17 +385,17 @@ rule ClipAndMerge:
 rule seqtk_adna_trim:
     """Reconstruction using seqtk and adna-trim"""
     input:
-        s1=OUTDIR_SIM + "/gen_n{n}_l{l}_s1.fq",
-        s2=OUTDIR_SIM + "/gen_n{n}_l{l}_s2.fq",
+        s1=OUTDIR_SIM + "/gen_n_{n}_l_{l}_s1.fq",
+        s2=OUTDIR_SIM + "/gen_n_{n}_l_{l}_s2.fq",
     output:
-        OUTDIR_REC + "/seqtk_adna_trim/gen_n{n}_l{l}_merged.fq",
+        OUTDIR_REC + "/seqtk_adna_trim/gen_n_{n}_l_{l}_merged.fq",
     wildcard_constraints:
         n="\d+",
         l="\d+",
     params:
-        u_prefix=OUTDIR_REC + "/seqtk_adna_trim/gen_n{n}_l{l}_unmerged",
+        u_prefix=OUTDIR_REC + "/seqtk_adna_trim/gen_n_{n}_l_{l}_unmerged",
     benchmark:
-        OUTDIR_BEN + "/seqtk_adna_trim/gen_n{n}_l{l}_merged.tsv"
+        OUTDIR_BEN + "/seqtk_adna_trim/gen_n_{n}_l_{l}_merged.tsv"
     shell:
         # seqtk mergepe: interleave two paired-end FASTA/Q files
         # adna-trim:
@@ -420,17 +420,17 @@ rule seqtk_adna_trim:
 rule bbmerge:
     """Reconstruction using BBMerge"""
     input:
-        s1=OUTDIR_SIM + "/gen_n{n}_l{l}_s1.fq",
-        s2=OUTDIR_SIM + "/gen_n{n}_l{l}_s2.fq",
+        s1=OUTDIR_SIM + "/gen_n_{n}_l_{l}_s1.fq",
+        s2=OUTDIR_SIM + "/gen_n_{n}_l_{l}_s2.fq",
     output:
-        m=OUTDIR_REC + "/bbmerge/gen_n{n}_l{l}_merged.fq",
-        u1=OUTDIR_REC + "/bbmerge/gen_n{n}_l{l}_unmerged.R1.fq",
-        u2=OUTDIR_REC + "/bbmerge/gen_n{n}_l{l}_unmerged.R2.fq",
+        m=OUTDIR_REC + "/bbmerge/gen_n_{n}_l_{l}_merged.fq",
+        u1=OUTDIR_REC + "/bbmerge/gen_n_{n}_l_{l}_unmerged.R1.fq",
+        u2=OUTDIR_REC + "/bbmerge/gen_n_{n}_l_{l}_unmerged.R2.fq",
     wildcard_constraints:
         n="\d+",
         l="\d+",
     benchmark:
-        OUTDIR_BEN + "/bbmerge/gen_n{n}_l{l}_merged.tsv"
+        OUTDIR_BEN + "/bbmerge/gen_n_{n}_l_{l}_merged.tsv"
     shell:
         # t=1             Set threads to 1
         # mininsert=35    Minimum insert size to merge reads.
@@ -459,19 +459,19 @@ rule bbmerge:
 rule fastp:
     """Reconstruction using fastp"""
     input:
-        s1=OUTDIR_SIM + "/gen_n{n}_l{l}_s1.fq",
-        s2=OUTDIR_SIM + "/gen_n{n}_l{l}_s2.fq",
+        s1=OUTDIR_SIM + "/gen_n_{n}_l_{l}_s1.fq",
+        s2=OUTDIR_SIM + "/gen_n_{n}_l_{l}_s2.fq",
     output:
-        m=OUTDIR_REC + "/fastp/gen_n{n}_l{l}_merged.fq",
-        u1=OUTDIR_REC + "/fastp/gen_n{n}_l{l}_unmerged.R1.fq",
-        u2=OUTDIR_REC + "/fastp/gen_n{n}_l{l}_unmerged.R2.fq",
-        #json=OUTDIR_REC + "/fastp/gen_n{n}_l{l}_merged_report.json",
-        #html=OUTDIR_REC + "/fastp/gen_n{n}_l{l}_merged_report.html",
+        m=OUTDIR_REC + "/fastp/gen_n_{n}_l_{l}_merged.fq",
+        u1=OUTDIR_REC + "/fastp/gen_n_{n}_l_{l}_unmerged.R1.fq",
+        u2=OUTDIR_REC + "/fastp/gen_n_{n}_l_{l}_unmerged.R2.fq",
+        #json=OUTDIR_REC + "/fastp/gen_n_{n}_l_{l}_merged_report.json",
+        #html=OUTDIR_REC + "/fastp/gen_n_{n}_l_{l}_merged_report.html",
     wildcard_constraints:
         n="\d+",
         l="\d+",
     benchmark:
-        OUTDIR_BEN + "/fastp/gen_n{n}_l{l}_fp.tsv"
+        OUTDIR_BEN + "/fastp/gen_n_{n}_l_{l}_fp.tsv"
     shell:
         # --overlap_len_require            
         #           the minimum length to detect overlapped region of PE
@@ -510,17 +510,17 @@ rule fastp:
 rule SeqPrep:
     """Reconstruction using SeqPrep"""
     input:
-        s1=OUTDIR_SIM + "/gen_n{n}_l{l}_s1.fq",
-        s2=OUTDIR_SIM + "/gen_n{n}_l{l}_s2.fq",
+        s1=OUTDIR_SIM + "/gen_n_{n}_l_{l}_s1.fq",
+        s2=OUTDIR_SIM + "/gen_n_{n}_l_{l}_s2.fq",
     output:
-        m=OUTDIR_REC + "/SeqPrep/gen_n{n}_l{l}_merged.fq.gz",
-        u1=OUTDIR_REC + "/SeqPrep/gen_n{n}_l{l}_unmerged.R1.fq.gz",
-        u2=OUTDIR_REC + "/SeqPrep/gen_n{n}_l{l}_unmerged.R2.fq.gz",
+        m=OUTDIR_REC + "/SeqPrep/gen_n_{n}_l_{l}_merged.fq.gz",
+        u1=OUTDIR_REC + "/SeqPrep/gen_n_{n}_l_{l}_unmerged.R1.fq.gz",
+        u2=OUTDIR_REC + "/SeqPrep/gen_n_{n}_l_{l}_unmerged.R2.fq.gz",
     wildcard_constraints:
         n="\d+",
         l="\d+",
     benchmark:
-        OUTDIR_BEN + "/SeqPrep/gen_n{n}_l{l}_merged.tsv"
+        OUTDIR_BEN + "/SeqPrep/gen_n_{n}_l_{l}_merged.tsv"
     shell:
         # The output is always gziped compressed.
         # -f <first read input fastq filename>
@@ -553,10 +553,10 @@ rule evaluate_zipped:
     resources:
         mem_mb = 10000
     input:
-        orig=OUTDIR_SIM + "/gen_n{n}_l{l}_frag.fa",
-        rec=OUTDIR_REC + "/{tool_name}/gen_n{n}_l{l}_merged.fq.gz",
+        orig=OUTDIR_SIM + "/gen_n_{n}_l_{l}_frag.fa",
+        rec=OUTDIR_REC + "/{tool_name}/gen_n_{n}_l_{l}_merged.fq.gz",
     output:
-        OUTDIR_EVA + "/{tool_name}/gen_n{n}_l{l}.csv"
+        OUTDIR_EVA + "/{tool_name}/gen_n_{n}_l_{l}.csv"
     # wildcard_constraints:
     #     tool_name="(leeHom|SeqPrep)",
     conda:
@@ -578,10 +578,10 @@ rule evaluate_unzipped:
     resources:
         mem_mb = 10000
     input:
-        orig=OUTDIR_SIM + "/gen_n{n}_l{l}_frag.fa",
-        rec=OUTDIR_REC + "/{tool_name}/gen_n{n}_l{l}_merged.fq",
+        orig=OUTDIR_SIM + "/gen_n_{n}_l_{l}_frag.fa",
+        rec=OUTDIR_REC + "/{tool_name}/gen_n_{n}_l_{l}_merged.fq",
     output:
-        OUTDIR_EVA + "/{tool_name}/gen_n{n}_l{l}.csv"
+        OUTDIR_EVA + "/{tool_name}/gen_n_{n}_l_{l}.csv"
     # wildcard_constraints:
     #     tool_name="(AdapterRemoval|ClipAndMerge|seqtk_adna_trim|bbmerge|fastp)"
     conda:
@@ -601,7 +601,7 @@ rule evaluate_unzipped:
 rule merge_csv:
     input:
         expand(
-            OUTDIR_EVA + "/{tool_name}/gen_n{n}_l{l}.csv",
+            OUTDIR_EVA + "/{tool_name}/gen_n_{n}_l_{l}.csv",
             tool_name=TOOLNAMES,
             n=NUMFRAGS,
             l=LENGTH,
