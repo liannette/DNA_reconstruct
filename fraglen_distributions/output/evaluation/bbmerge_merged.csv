@@ -1,0 +1,125 @@
+program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
+bbmerge,gen_n_10000_dist_A9180_qs_0_merged.fq,10000,A9180,0,10000,9099,901,0:9088 1:11
+bbmerge,gen_n_10000_dist_A9180_qs_-10_merged.fq,10000,A9180,-10,10000,7375,2625,0:7129 1:243 2:3
+bbmerge,gen_n_10000_dist_A9180_qs_-11_merged.fq,10000,A9180,-11,10000,6862,3138,0:6604 1:251 2:7
+bbmerge,gen_n_10000_dist_A9180_qs_-12_merged.fq,10000,A9180,-12,10000,6117,3883,0:5814 1:296 2:6 4:1
+bbmerge,gen_n_10000_dist_A9180_qs_-13_merged.fq,10000,A9180,-13,10000,5366,4634,0:5074 1:284 2:8
+bbmerge,gen_n_10000_dist_A9180_qs_-14_merged.fq,10000,A9180,-14,10000,4432,5568,0:4145 1:275 2:12
+bbmerge,gen_n_10000_dist_A9180_qs_-15_merged.fq,10000,A9180,-15,10000,3524,6476,0:3274 1:243 2:6 3:1
+bbmerge,gen_n_10000_dist_A9180_qs_-16_merged.fq,10000,A9180,-16,10000,2831,7169,0:2570 1:249 2:12
+bbmerge,gen_n_10000_dist_A9180_qs_-17_merged.fq,10000,A9180,-17,10000,2520,7480,0:2273 1:238 2:8 3:1
+bbmerge,gen_n_10000_dist_A9180_qs_-18_merged.fq,10000,A9180,-18,10000,2129,7871,0:1876 1:242 2:11
+bbmerge,gen_n_10000_dist_A9180_qs_-19_merged.fq,10000,A9180,-19,10000,1865,8135,0:1630 1:211 2:21 3:3
+bbmerge,gen_n_10000_dist_A9180_qs_-1_merged.fq,10000,A9180,-1,10000,9061,939,0:9040 1:21
+bbmerge,gen_n_10000_dist_A9180_qs_-20_merged.fq,10000,A9180,-20,10000,1497,8503,0:1281 1:200 2:12 3:4
+bbmerge,gen_n_10000_dist_A9180_qs_-21_merged.fq,10000,A9180,-21,10000,1181,8819,0:982 1:182 2:15 3:2
+bbmerge,gen_n_10000_dist_A9180_qs_-22_merged.fq,10000,A9180,-22,10000,796,9204,0:640 1:141 2:11 3:4
+bbmerge,gen_n_10000_dist_A9180_qs_-23_merged.fq,10000,A9180,-23,10000,516,9484,0:403 1:98 2:12 3:2 6:1
+bbmerge,gen_n_10000_dist_A9180_qs_-24_merged.fq,10000,A9180,-24,10000,304,9696,0:239 1:56 2:9
+bbmerge,gen_n_10000_dist_A9180_qs_-25_merged.fq,10000,A9180,-25,10000,153,9847,0:108 1:38 2:5 3:2
+bbmerge,gen_n_10000_dist_A9180_qs_-26_merged.fq,10000,A9180,-26,10000,69,9931,0:47 1:18 2:3 3:1
+bbmerge,gen_n_10000_dist_A9180_qs_-27_merged.fq,10000,A9180,-27,10000,30,9970,0:16 1:11 2:2 4:1
+bbmerge,gen_n_10000_dist_A9180_qs_-28_merged.fq,10000,A9180,-28,10000,6,9994,0:4 1:2
+bbmerge,gen_n_10000_dist_A9180_qs_-29_merged.fq,10000,A9180,-29,10000,1,9999,1:1
+bbmerge,gen_n_10000_dist_A9180_qs_-2_merged.fq,10000,A9180,-2,10000,9075,925,0:9041 1:34
+bbmerge,gen_n_10000_dist_A9180_qs_-30_merged.fq,10000,A9180,-30,10000,0,10000,
+bbmerge,gen_n_10000_dist_A9180_qs_-3_merged.fq,10000,A9180,-3,10000,8978,1022,0:8930 1:48
+bbmerge,gen_n_10000_dist_A9180_qs_-4_merged.fq,10000,A9180,-4,10000,8916,1084,0:8852 1:63 2:1
+bbmerge,gen_n_10000_dist_A9180_qs_-5_merged.fq,10000,A9180,-5,10000,8831,1169,0:8762 1:69
+bbmerge,gen_n_10000_dist_A9180_qs_-6_merged.fq,10000,A9180,-6,10000,8648,1352,0:8520 1:127 2:1
+bbmerge,gen_n_10000_dist_A9180_qs_-7_merged.fq,10000,A9180,-7,10000,8460,1540,0:8330 1:128 2:2
+bbmerge,gen_n_10000_dist_A9180_qs_-8_merged.fq,10000,A9180,-8,10000,8120,1880,0:7964 1:156
+bbmerge,gen_n_10000_dist_A9180_qs_-9_merged.fq,10000,A9180,-9,10000,7791,2209,0:7561 1:227 2:3
+bbmerge,gen_n_10000_dist_cfDNA_qs_0_merged.fq,10000,cfDNA,0,10000,7371,2629,0:6271 1:996 2:98 3:6
+bbmerge,gen_n_10000_dist_cfDNA_qs_-10_merged.fq,10000,cfDNA,-10,10000,6276,3724,0:1630 1:2040 2:1477 3:707 4:295 5:81 6:34 7:10 8:1 9:1
+bbmerge,gen_n_10000_dist_cfDNA_qs_-11_merged.fq,10000,cfDNA,-11,10000,5600,4400,0:1081 1:1602 2:1333 3:865 4:441 5:161 6:67 7:34 8:10 9:5 12:1
+bbmerge,gen_n_10000_dist_cfDNA_qs_-12_merged.fq,10000,cfDNA,-12,10000,4586,5414,0:607 1:1115 2:1161 3:850 4:464 5:221 6:96 7:48 8:16 9:4 10:2 11:1 13:1
+bbmerge,gen_n_10000_dist_cfDNA_qs_-13_merged.fq,10000,cfDNA,-13,10000,3303,6697,0:318 1:645 2:750 3:621 4:426 5:258 6:160 7:69 8:31 9:15 10:6 11:4
+bbmerge,gen_n_10000_dist_cfDNA_qs_-14_merged.fq,10000,cfDNA,-14,10000,2162,7838,0:135 1:301 2:404 3:418 4:324 5:253 6:145 7:86 8:49 9:24 10:11 11:8 12:2 13:1 14:1
+bbmerge,gen_n_10000_dist_cfDNA_qs_-15_merged.fq,10000,cfDNA,-15,10000,1298,8702,0:44 1:125 2:179 3:217 4:233 5:163 6:122 7:85 8:38 9:41 10:32 11:14 12:3 13:1 16:1
+bbmerge,gen_n_10000_dist_cfDNA_qs_-16_merged.fq,10000,cfDNA,-16,10000,928,9072,0:19 1:58 2:87 3:129 4:144 5:164 6:110 7:67 8:58 9:42 10:19 11:8 12:12 13:2 14:4 15:2 16:2 19:1
+bbmerge,gen_n_10000_dist_cfDNA_qs_-17_merged.fq,10000,cfDNA,-17,10000,738,9262,0:18 1:27 2:80 3:86 4:92 5:103 6:99 7:78 8:54 9:29 10:27 11:16 12:11 13:10 14:2 15:1 16:2 18:1 19:1 20:1
+bbmerge,gen_n_10000_dist_cfDNA_qs_-18_merged.fq,10000,cfDNA,-18,10000,588,9412,0:4 1:26 2:49 3:74 4:81 5:77 6:62 7:64 8:48 9:25 10:23 11:18 12:15 13:5 14:7 15:3 16:5 19:1 20:1
+bbmerge,gen_n_10000_dist_cfDNA_qs_-19_merged.fq,10000,cfDNA,-19,10000,362,9638,0:2 1:9 2:13 3:31 4:47 5:42 6:52 7:47 8:29 9:29 10:24 11:12 12:8 13:10 14:2 15:2 16:2 18:1
+bbmerge,gen_n_10000_dist_cfDNA_qs_-1_merged.fq,10000,cfDNA,-1,10000,7379,2621,0:6096 1:1159 2:116 3:8
+bbmerge,gen_n_10000_dist_cfDNA_qs_-20_merged.fq,10000,cfDNA,-20,10000,238,9762,0:1 1:2 2:13 3:16 4:19 5:31 6:27 7:31 8:24 9:18 10:19 11:17 12:10 13:3 15:4 16:1 17:2
+bbmerge,gen_n_10000_dist_cfDNA_qs_-21_merged.fq,10000,cfDNA,-21,10000,137,9863,1:1 2:4 3:4 4:6 5:12 6:21 7:12 8:16 9:19 10:8 11:8 12:9 13:5 14:4 15:2 16:3 18:1 19:1 21:1
+bbmerge,gen_n_10000_dist_cfDNA_qs_-22_merged.fq,10000,cfDNA,-22,10000,60,9940,2:1 4:4 5:4 6:4 7:6 8:2 9:9 10:8 11:3 12:2 13:6 14:2 15:1 16:2 17:2 18:2 19:1 22:1
+bbmerge,gen_n_10000_dist_cfDNA_qs_-23_merged.fq,10000,cfDNA,-23,10000,30,9970,2:1 3:1 5:1 6:1 7:3 8:1 9:2 10:3 11:4 12:3 13:1 14:2 16:3 18:1 21:1 23:2
+bbmerge,gen_n_10000_dist_cfDNA_qs_-24_merged.fq,10000,cfDNA,-24,10000,7,9993,9:1 15:1 16:1 17:1 20:1 24:1 33:1
+bbmerge,gen_n_10000_dist_cfDNA_qs_-25_merged.fq,10000,cfDNA,-25,10000,3,9997,0:1 13:1 22:1
+bbmerge,gen_n_10000_dist_cfDNA_qs_-26_merged.fq,10000,cfDNA,-26,10000,1,9999,29:1
+bbmerge,gen_n_10000_dist_cfDNA_qs_-27_merged.fq,10000,cfDNA,-27,10000,0,10000,
+bbmerge,gen_n_10000_dist_cfDNA_qs_-28_merged.fq,10000,cfDNA,-28,10000,2,9998,44:1 49:1
+bbmerge,gen_n_10000_dist_cfDNA_qs_-29_merged.fq,10000,cfDNA,-29,10000,0,10000,
+bbmerge,gen_n_10000_dist_cfDNA_qs_-2_merged.fq,10000,cfDNA,-2,10000,7401,2599,0:5848 1:1373 2:161 3:16 4:3
+bbmerge,gen_n_10000_dist_cfDNA_qs_-30_merged.fq,10000,cfDNA,-30,10000,0,10000,
+bbmerge,gen_n_10000_dist_cfDNA_qs_-3_merged.fq,10000,cfDNA,-3,10000,7380,2620,0:5500 1:1603 2:246 3:29 4:1 5:1
+bbmerge,gen_n_10000_dist_cfDNA_qs_-4_merged.fq,10000,cfDNA,-4,10000,7364,2636,0:5059 1:1862 2:370 3:59 4:12 5:2
+bbmerge,gen_n_10000_dist_cfDNA_qs_-5_merged.fq,10000,cfDNA,-5,10000,7309,2691,0:4601 1:2089 2:512 3:93 4:10 5:3 6:1
+bbmerge,gen_n_10000_dist_cfDNA_qs_-6_merged.fq,10000,cfDNA,-6,10000,7245,2755,0:4038 1:2309 2:700 3:167 4:21 5:7 6:3
+bbmerge,gen_n_10000_dist_cfDNA_qs_-7_merged.fq,10000,cfDNA,-7,10000,7158,2842,0:3515 1:2410 2:899 3:262 4:61 5:11
+bbmerge,gen_n_10000_dist_cfDNA_qs_-8_merged.fq,10000,cfDNA,-8,10000,6971,3029,0:2832 1:2470 2:1116 3:422 4:102 5:20 6:8 7:1
+bbmerge,gen_n_10000_dist_cfDNA_qs_-9_merged.fq,10000,cfDNA,-9,10000,6718,3282,0:2219 1:2354 2:1319 3:572 4:192 5:45 6:11 7:5 8:1
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_0_merged.fq,10000,chagyrskaya8,0,10000,9606,394,0:9435 1:167 2:4
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-10_merged.fq,10000,chagyrskaya8,-10,10000,9012,988,0:7417 1:1371 2:182 3:31 4:5 5:5 6:1
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-11_merged.fq,10000,chagyrskaya8,-11,10000,8533,1467,0:6689 1:1541 2:220 3:47 4:19 5:11 6:4 7:2
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-12_merged.fq,10000,chagyrskaya8,-12,10000,7754,2246,0:5868 1:1561 2:255 3:38 4:17 5:9 6:5 8:1
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-13_merged.fq,10000,chagyrskaya8,-13,10000,6590,3410,0:4761 1:1456 2:262 3:72 4:20 5:7 6:4 7:2 8:1 9:3 10:1 11:1
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-14_merged.fq,10000,chagyrskaya8,-14,10000,5177,4823,0:3577 1:1275 2:239 3:56 4:15 5:7 6:4 7:1 8:1 10:1 11:1
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-15_merged.fq,10000,chagyrskaya8,-15,10000,3888,6112,0:2571 1:1022 2:231 3:36 4:11 5:6 6:1 7:4 8:3 10:1 13:1 15:1
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-16_merged.fq,10000,chagyrskaya8,-16,10000,2659,7341,0:1654 1:750 2:184 3:40 4:11 5:9 6:5 7:2 10:2 13:1 15:1
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-17_merged.fq,10000,chagyrskaya8,-17,10000,2285,7715,0:1332 1:697 2:191 3:39 4:14 5:4 6:2 8:2 9:2 10:2
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-18_merged.fq,10000,chagyrskaya8,-18,10000,1801,8199,0:977 1:572 2:191 3:43 4:5 5:2 6:3 7:3 8:2 11:3
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-19_merged.fq,10000,chagyrskaya8,-19,10000,1459,8541,0:718 1:488 2:187 3:39 4:12 5:2 6:2 7:4 8:2 9:1 10:1 11:2 14:1
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-1_merged.fq,10000,chagyrskaya8,-1,10000,9648,352,0:9403 1:238 2:7
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-20_merged.fq,10000,chagyrskaya8,-20,10000,1003,8997,0:424 1:375 2:137 3:45 4:10 5:2 6:3 7:1 8:1 9:3 11:1 18:1
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-21_merged.fq,10000,chagyrskaya8,-21,10000,681,9319,0:280 1:247 2:111 3:33 4:4 5:2 10:2 16:1 19:1
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-22_merged.fq,10000,chagyrskaya8,-22,10000,408,9592,0:143 1:156 2:77 3:22 4:6 5:2 10:1 16:1
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-23_merged.fq,10000,chagyrskaya8,-23,10000,185,9815,0:45 1:88 2:30 3:17 4:3 5:1 6:1
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-24_merged.fq,10000,chagyrskaya8,-24,10000,82,9918,0:17 1:32 2:20 3:9 4:4
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-25_merged.fq,10000,chagyrskaya8,-25,10000,28,9972,0:11 1:6 2:9 3:2
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-26_merged.fq,10000,chagyrskaya8,-26,10000,6,9994,0:3 1:3
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-27_merged.fq,10000,chagyrskaya8,-27,10000,0,10000,
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-28_merged.fq,10000,chagyrskaya8,-28,10000,0,10000,
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-29_merged.fq,10000,chagyrskaya8,-29,10000,0,10000,
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-2_merged.fq,10000,chagyrskaya8,-2,10000,9694,306,0:9346 1:341 2:6 3:1
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-30_merged.fq,10000,chagyrskaya8,-30,10000,0,10000,
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-3_merged.fq,10000,chagyrskaya8,-3,10000,9734,266,0:9327 1:386 2:21
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-4_merged.fq,10000,chagyrskaya8,-4,10000,9751,249,0:9203 1:518 2:26 3:4
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-5_merged.fq,10000,chagyrskaya8,-5,10000,9742,258,0:9059 1:642 2:38 3:2 4:1
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-6_merged.fq,10000,chagyrskaya8,-6,10000,9697,303,0:8879 1:756 2:49 3:10 4:3
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-7_merged.fq,10000,chagyrskaya8,-7,10000,9643,357,0:8650 1:908 2:72 3:11 4:1 5:1
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-8_merged.fq,10000,chagyrskaya8,-8,10000,9490,510,0:8336 1:1038 2:98 3:13 4:4 5:1
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-9_merged.fq,10000,chagyrskaya8,-9,10000,9292,708,0:7915 1:1217 2:127 3:22 4:8 5:2 6:1
+bbmerge,gen_n_10000_dist_Vi33.19_qs_0_merged.fq,10000,Vi33.19,0,10000,9509,491,0:9412 1:96 2:1
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-10_merged.fq,10000,Vi33.19,-10,10000,8925,1075,0:7835 1:1018 2:70 3:2
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-11_merged.fq,10000,Vi33.19,-11,10000,8448,1552,0:7152 1:1181 2:108 3:6 5:1
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-12_merged.fq,10000,Vi33.19,-12,10000,7685,2315,0:6252 1:1299 2:120 3:13 4:1
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-13_merged.fq,10000,Vi33.19,-13,10000,6687,3313,0:5339 1:1193 2:145 3:10
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-14_merged.fq,10000,Vi33.19,-14,10000,5294,4706,0:4010 1:1137 2:131 3:14 4:1 8:1
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-15_merged.fq,10000,Vi33.19,-15,10000,4026,5974,0:2972 1:906 2:124 3:20 4:3 6:1
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-16_merged.fq,10000,Vi33.19,-16,10000,2928,7072,0:2130 1:665 2:115 3:18
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-17_merged.fq,10000,Vi33.19,-17,10000,2554,7446,0:1703 1:698 2:135 3:17 4:1
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-18_merged.fq,10000,Vi33.19,-18,10000,2132,7868,0:1313 1:642 2:149 3:24 4:4
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-19_merged.fq,10000,Vi33.19,-19,10000,1659,8341,0:901 1:550 2:171 3:31 4:4 6:1 7:1
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-1_merged.fq,10000,Vi33.19,-1,10000,9558,442,0:9431 1:127
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-20_merged.fq,10000,Vi33.19,-20,10000,1224,8776,0:636 1:418 2:136 3:30 4:3 5:1
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-21_merged.fq,10000,Vi33.19,-21,10000,846,9154,0:421 1:300 2:97 3:25 4:2 5:1
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-22_merged.fq,10000,Vi33.19,-22,10000,520,9480,0:227 1:202 2:72 3:11 4:7 5:1
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-23_merged.fq,10000,Vi33.19,-23,10000,240,9760,0:81 1:105 2:42 3:9 4:3
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-24_merged.fq,10000,Vi33.19,-24,10000,126,9874,0:45 1:47 2:27 3:7
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-25_merged.fq,10000,Vi33.19,-25,10000,32,9968,0:8 1:16 2:6 3:2
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-26_merged.fq,10000,Vi33.19,-26,10000,13,9987,0:5 1:1 2:4 3:1 4:2
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-27_merged.fq,10000,Vi33.19,-27,10000,0,10000,
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-28_merged.fq,10000,Vi33.19,-28,10000,0,10000,
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-29_merged.fq,10000,Vi33.19,-29,10000,0,10000,
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-2_merged.fq,10000,Vi33.19,-2,10000,9650,350,0:9439 1:211
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-30_merged.fq,10000,Vi33.19,-30,10000,0,10000,
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-3_merged.fq,10000,Vi33.19,-3,10000,9666,334,0:9411 1:251 2:4
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-4_merged.fq,10000,Vi33.19,-4,10000,9702,298,0:9322 1:376 2:4
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-5_merged.fq,10000,Vi33.19,-5,10000,9715,285,0:9263 1:440 2:12
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-6_merged.fq,10000,Vi33.19,-6,10000,9639,361,0:9091 1:534 2:14
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-7_merged.fq,10000,Vi33.19,-7,10000,9589,411,0:8920 1:647 2:22
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-8_merged.fq,10000,Vi33.19,-8,10000,9440,560,0:8583 1:821 2:34 3:2
+bbmerge,gen_n_10000_dist_Vi33.19_qs_-9_merged.fq,10000,Vi33.19,-9,10000,9277,723,0:8266 1:962 2:46 3:3

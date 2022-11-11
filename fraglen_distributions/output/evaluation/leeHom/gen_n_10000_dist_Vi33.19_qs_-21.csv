@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
+leeHom,gen_n_10000_dist_Vi33.19_qs_-21_merged.fq.gz,10000,Vi33.19,-21,10000,9990,10,0:3064 1:3545 2:2110 3:857 4:271 5:98 6:32 7:6 8:4 9:1 14:1 17:1

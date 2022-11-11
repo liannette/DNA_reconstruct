@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
+fastp,gen_n_10000_dist_chagyrskaya8_qs_-21_merged.fq,10000,chagyrskaya8,-21,10000,3712,6288,0:284 1:757 2:878 3:704 4:394 5:252 6:150 7:89 8:45 9:40 10:25 11:21 12:12 13:8 14:3 15:3 16:2 18:2 19:4 20:2 22:1 24:1 25:1 29:2 30:3 33:2 35:3 36:1 38:1 39:1 41:1 42:1 43:1 49:2 50:1 51:1 52:1 54:1 60:2 65:1 66:1 71:1 77:1 80:1 83:1 84:1 91:1 100:1 106:1

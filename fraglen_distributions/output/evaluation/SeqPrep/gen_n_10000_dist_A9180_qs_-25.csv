@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
+SeqPrep,gen_n_10000_dist_A9180_qs_-25_merged.fq.gz,10000,A9180,-25,10000,6519,3481,0:2388 1:2507 2:1198 3:356 4:54 5:15 6:1

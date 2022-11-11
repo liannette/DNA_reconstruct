@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
+bbmerge,gen_n_10000_dist_chagyrskaya8_qs_-22_merged.fq,10000,chagyrskaya8,-22,10000,408,9592,0:143 1:156 2:77 3:22 4:6 5:2 10:1 16:1

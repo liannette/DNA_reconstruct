@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
+seqtk_adna_trim,gen_n_10000_dist_A9180_qs_-20_merged.fq,10000,A9180,-20,10000,8650,1350,0:5929 1:2175 2:431 3:84 4:7 5:2 6:2 7:2 9:2 10:4 12:2 13:2 49:1 50:1 215:1 218:2 220:1 221:1 232:1

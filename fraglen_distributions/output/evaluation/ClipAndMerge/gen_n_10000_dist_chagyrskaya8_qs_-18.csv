@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
+ClipAndMerge,gen_n_10000_dist_chagyrskaya8_qs_-18_merged.fq,10000,chagyrskaya8,-18,10000,8821,1179,0:4291 1:2878 2:1041 3:322 4:108 5:39 6:41 7:26 8:26 9:14 10:13 11:8 13:4 16:5 20:1 24:1 25:1 34:1 39:1

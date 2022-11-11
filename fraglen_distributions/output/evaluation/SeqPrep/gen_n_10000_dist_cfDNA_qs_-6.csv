@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
+SeqPrep,gen_n_10000_dist_cfDNA_qs_-6_merged.fq.gz,10000,cfDNA,-6,10000,7444,2556,0:4280 1:2327 2:658 3:145 4:17 5:8 6:3 96:1 104:1 110:1 116:1 176:1 256:1
