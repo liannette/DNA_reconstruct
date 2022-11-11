@@ -134,6 +134,7 @@ def plot_edit_distance(program, df_program, outdir):
         
 
         # Set y axis limit
+        ax.set_xlim(-30, 0)
         ax.set_ylim(0, max(bottom))
         ax.set_yticks(range(0,101,10))
         # Add grid
