@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen,total_sequences,total_reads,dropped_reads,avg_divergence_per_nt,edit_distances
+fastp,gen_n1000000_l57_merged.fq,1000000,57,999918,1000000,0,0.1,0:946755 1:51253 2:1473 3:44 4:146 5:225 6:52 7:2 8:13 9:3 10:25 11:1 12:6 13:1 14:1

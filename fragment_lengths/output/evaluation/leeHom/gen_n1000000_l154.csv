@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen,total_sequences,total_reads,dropped_reads,avg_divergence_per_nt,edit_distances
+leeHom,gen_n1000000_l154_merged.fq.gz,1000000,154,999919,999975,25,0.069,0:902334 1:92506 2:4820 3:163 4:2 5:1 8:1 12:1 15:1 16:1 17:2 18:1 19:2 20:1 21:3 22:1 23:2 24:20 25:6 26:12 27:9 28:16 29:16 30:21 31:14 32:9 33:9 34:1

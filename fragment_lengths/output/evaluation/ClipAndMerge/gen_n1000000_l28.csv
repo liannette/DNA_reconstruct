@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen,total_sequences,total_reads,dropped_reads,avg_divergence_per_nt,edit_distances
+ClipAndMerge,gen_n1000000_l28_merged.fq,1000000,28,999925,997408,2592,0.02,0:991838 1:5565 4:1 5:2 10:1 14:1
