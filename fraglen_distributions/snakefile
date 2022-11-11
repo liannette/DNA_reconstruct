@@ -6,15 +6,15 @@ TOOLNAMES = [
     "leeHom", "AdapterRemoval", "ClipAndMerge", "seqtk_adna_trim", 
     "bbmerge", "fastp", "SeqPrep"
     ]
-QS = ["0", "-5", "-10", "-15", "-20", "-25", "-30"]
+QS = list(range(0, -31, -1))
 DISTNAME = ["A9180", "cfDNA", "chagyrskaya8", "Vi33.19"]
-NUMFRAGS = 1000000
-LENGTH = 120
+NUMFRAGS = 10000
+
 
 # project directory
-PROJECTDIR = "/net/node07/home/projects/DNA_reconstruct/fraglen_distributions"
+# PROJECTDIR = "/net/node07/home/projects/DNA_reconstruct/fraglen_distributions"
 # for node07:
-# PROJECTDIR = "/home/projects/DNA_reconstruct/fraglen_distributions"
+PROJECTDIR = "/home/projects/DNA_reconstruct/fraglen_distributions"
 
 # Input genome and adapter sequences
 GENOME_FILE = "/home/databases/genomes/Homo_sapiens/CHM13_T2T/CHM13_T2T.fa"
@@ -58,55 +58,55 @@ PLOT_SCRIPT = PROJECTDIR + "/plot.py"
 rule all:
     input:
         # Run the simulations
-        # expand(
-        #     OUTDIR_SIM + "/gen_n_{n}_dist_{distname}_qs_{qs}_s1.fq",
-        #     n=NUMFRAGS,
-        #     distname=DISTNAME,
-        #     qs=QS,
-        # ),
-        # # trimming/merging 
-        # expand(
-        #     OUTDIR_REC + "/leeHom/gen_n_{n}_dist_{distname}_qs_{qs}_merged.fq.gz",
-        #     n=NUMFRAGS,
-        #     distname=DISTNAME,
-        #     qs=QS,
-        # ),
-        # expand(
-        #     OUTDIR_REC + "/AdapterRemoval/gen_n_{n}_dist_{distname}_qs_{qs}_merged.fq",
-        #     n=NUMFRAGS,
-        #     distname=DISTNAME,
-        #     qs=QS,
-        # ),
-        # expand(
-        #     OUTDIR_REC + "/ClipAndMerge/gen_n_{n}_dist_{distname}_qs_{qs}_merged.fq",
-        #     n=NUMFRAGS,
-        #     distname=DISTNAME,
-        #     qs=QS,
-        # ),
-        # expand(
-        #     OUTDIR_REC + "/seqtk_adna_trim/gen_n_{n}_dist_{distname}_qs_{qs}_merged.fq",
-        #     n=NUMFRAGS,
-        #     distname=DISTNAME,
-        #     qs=QS,
-        # ),
-        # expand(
-        #     OUTDIR_REC + "/bbmerge/gen_n_{n}_dist_{distname}_qs_{qs}_merged.fq",
-        #     n=NUMFRAGS,
-        #     distname=DISTNAME,
-        #     qs=QS,
-        # ),
-        # expand(
-        #     OUTDIR_REC + "/fastp/gen_n_{n}_dist_{distname}_qs_{qs}_merged.fq",
-        #     n=NUMFRAGS,
-        #     distname=DISTNAME,
-        #     qs=QS,
-        # ),
-        # expand(
-        #     OUTDIR_REC + "/SeqPrep/gen_n_{n}_dist_{distname}_qs_{qs}_merged.fq.gz",
-        #     n=NUMFRAGS,
-        #     distname=DISTNAME,
-        #     qs=QS,
-        # ),
+        expand(
+            OUTDIR_SIM + "/gen_n_{n}_dist_{distname}_qs_{qs}_s1.fq",
+            n=NUMFRAGS,
+            distname=DISTNAME,
+            qs=QS,
+        ),
+        # trimming/merging 
+        expand(
+            OUTDIR_REC + "/leeHom/gen_n_{n}_dist_{distname}_qs_{qs}_merged.fq.gz",
+            n=NUMFRAGS,
+            distname=DISTNAME,
+            qs=QS,
+        ),
+        expand(
+            OUTDIR_REC + "/AdapterRemoval/gen_n_{n}_dist_{distname}_qs_{qs}_merged.fq",
+            n=NUMFRAGS,
+            distname=DISTNAME,
+            qs=QS,
+        ),
+        expand(
+            OUTDIR_REC + "/ClipAndMerge/gen_n_{n}_dist_{distname}_qs_{qs}_merged.fq",
+            n=NUMFRAGS,
+            distname=DISTNAME,
+            qs=QS,
+        ),
+        expand(
+            OUTDIR_REC + "/seqtk_adna_trim/gen_n_{n}_dist_{distname}_qs_{qs}_merged.fq",
+            n=NUMFRAGS,
+            distname=DISTNAME,
+            qs=QS,
+        ),
+        expand(
+            OUTDIR_REC + "/bbmerge/gen_n_{n}_dist_{distname}_qs_{qs}_merged.fq",
+            n=NUMFRAGS,
+            distname=DISTNAME,
+            qs=QS,
+        ),
+        expand(
+            OUTDIR_REC + "/fastp/gen_n_{n}_dist_{distname}_qs_{qs}_merged.fq",
+            n=NUMFRAGS,
+            distname=DISTNAME,
+            qs=QS,
+        ),
+        expand(
+            OUTDIR_REC + "/SeqPrep/gen_n_{n}_dist_{distname}_qs_{qs}_merged.fq.gz",
+            n=NUMFRAGS,
+            distname=DISTNAME,
+            qs=QS,
+        ),
         # evaluation
         expand(
             OUTDIR_EVA + "/{tool_name}/gen_n_{n}_dist_{distname}_qs_{qs}.csv",
@@ -122,9 +122,9 @@ rule all:
             OUTDIR_PLOT + "/fraglen_distributions_{tool_name}.png",
             tool_name=TOOLNAMES,
         ),
-    # run:
-    #     shell("gzip {OUTDIR_REC}/*/*")
-    #     shell("gzip {OUTDIR_SIM}/*")
+    run:
+        shell("gzip {OUTDIR_REC}/*/*")
+        shell("gzip {OUTDIR_SIM}/*")
 
 
 ### Simulation
@@ -174,7 +174,7 @@ rule add_adapters:
         # -artp     : Output reads as ART with wrap-around
         (
             "{ADPTSIM}" 
-            " -l {LENGTH}" 
+            " -l 125"
             " -artp" 
             " {output}"
             " {input}"

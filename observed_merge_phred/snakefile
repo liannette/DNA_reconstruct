@@ -173,7 +173,7 @@ rule add_adapters:
         # -artp     : Output reads as ART with wrap-around
         (
             "{ADPTSIM}" 
-            " -l {wildcards.l}" 
+            " -l 125"
             " -artp" 
             " {output}"
             " {input}"
