@@ -170,19 +170,21 @@ def main(infile, outdir):
     
     df = pd.read_csv(infile)
     
-    # Only take data for one program and quality shift 
+    # Only take data for one program 
     for program in list(df["program"].unique()):
         df_program = df[df["program"] == program]
+        
+        # For each quality shift
+        for qs in list(df_program["qual_shift"].unique()):
+            df_qs = df_program[df_program["qual_shift"] == qs]
+            r2 = weighted_r_squared(df_qs)
+            plot_phred_calibration(df_qs, program, r2, alpha, outdir, qs=qs)
+        
         # combine the counts from the different quality shifts
         df_combined = combine_quality_scores(df_program, alpha)
         r2 = weighted_r_squared(df_combined)
         plot_phred_calibration(df_combined, program, r2, alpha, outdir, 
                                qs=None)
-        
-        for qs in list(df_program["qual_shift"].unique()):
-            df_qs = df_program[df_program["qual_shift"] == qs]
-            r2 = weighted_r_squared(df_qs)
-            plot_phred_calibration(df_qs, program, r2, alpha, outdir, qs=qs)
 
 
 
