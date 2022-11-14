@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
+ClipAndMerge,gen_n_1000000_dist_A9180_qs_-9_merged.fq,1000000,A9180,-9,999996,960426,39574,0:933984 1:25964 2:383 3:10 4:15 5:44 6:7 7:5 8:8 9:2 10:1 12:1 15:1 27:1

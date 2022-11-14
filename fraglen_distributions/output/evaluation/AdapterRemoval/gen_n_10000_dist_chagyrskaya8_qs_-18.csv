@@ -1,2 +1,0 @@
-program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
-AdapterRemoval,gen_n_10000_dist_chagyrskaya8_qs_-18_merged.fq,10000,chagyrskaya8,-18,10000,9997,3,0:4506 1:3262 2:1447 3:421 4:150 5:63 6:40 7:30 8:23 9:18 10:9 11:11 12:3 13:2 14:1 15:2 16:5 17:1 18:1 20:1 49:1

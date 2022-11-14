@@ -1,2 +1,0 @@
-program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
-bbmerge,gen_n_10000_dist_cfDNA_qs_-3_merged.fq,10000,cfDNA,-3,10000,7380,2620,0:5500 1:1603 2:246 3:29 4:1 5:1

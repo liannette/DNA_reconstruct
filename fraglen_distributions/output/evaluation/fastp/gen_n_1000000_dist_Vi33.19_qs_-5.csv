@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
+fastp,gen_n_1000000_dist_Vi33.19_qs_-5_merged.fq,1000000,Vi33.19,-5,999996,999994,6,0:928233 1:68586 2:2787 3:120 4:119 5:96 6:26 7:6 8:4 9:2 10:6 12:2 15:1 22:1 24:1 45:1 50:1 92:1 106:1

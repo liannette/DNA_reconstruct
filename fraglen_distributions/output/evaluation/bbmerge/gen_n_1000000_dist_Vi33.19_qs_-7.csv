@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
+bbmerge,gen_n_1000000_dist_Vi33.19_qs_-7_merged.fq,1000000,Vi33.19,-7,999996,955490,44510,0:887033 1:65887 2:2486 3:80 4:4

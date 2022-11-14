@@ -1,2 +1,0 @@
-program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
-SeqPrep,gen_n_10000_dist_Vi33.19_qs_-24_merged.fq.gz,10000,Vi33.19,-24,10000,4449,5551,0:850 1:1392 2:1200 3:660 4:236 5:89 6:18 7:3 8:1

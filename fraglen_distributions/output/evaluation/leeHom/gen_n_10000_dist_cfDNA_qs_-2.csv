@@ -1,2 +1,0 @@
-program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
-leeHom,gen_n_10000_dist_cfDNA_qs_-2_merged.fq.gz,10000,cfDNA,-2,10000,7646,2354,0:6075 1:1355 2:157 3:13 4:3 14:1 42:1 43:2 64:1 75:1 84:1 86:1 97:1 100:1 111:1 115:1 116:1 120:1 127:1 128:1 130:1 146:1 147:1 148:1 168:3 169:2 171:1 176:1 182:1 185:1 193:1 207:1 210:1 218:2 252:1 256:1 267:1 294:1 304:1 338:1 498:1 745:1 769:1

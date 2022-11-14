@@ -1,2 +1,0 @@
-program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
-AdapterRemoval,gen_n_10000_dist_Vi33.19_qs_-5_merged.fq,10000,Vi33.19,-5,10000,10000,0,0:9650 1:345 2:4 3:1

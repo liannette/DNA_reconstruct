@@ -1,2 +1,0 @@
-program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
-leeHom,gen_n_10000_dist_A9180_qs_-28_merged.fq.gz,10000,A9180,-28,10000,9010,990,0:891 1:2002 2:2253 3:1793 4:1054 5:534 6:231 7:124 8:60 9:32 10:15 11:13 12:4 13:1 16:2 17:1

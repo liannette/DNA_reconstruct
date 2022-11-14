@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
+SeqPrep,gen_n_1000000_dist_chagyrskaya8_qs_-7_merged.fq.gz,1000000,chagyrskaya8,-7,999998,997088,2912,0:916290 1:73312 2:6084 3:1038 4:253 5:69 6:10 7:2 8:2 22:1 26:1 28:1 29:1 30:3 32:2 33:6 34:3 35:2 36:1 37:1 38:1 39:2 40:1 54:1 76:1

@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
+AdapterRemoval,gen_n_1000000_dist_A9180_qs_-17_merged.fq,1000000,A9180,-17,999996,999999,1,0:799307 1:177128 2:21268 3:2067 4:196 5:27 6:6

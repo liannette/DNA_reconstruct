@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
+ClipAndMerge,gen_n_1000000_dist_Vi33.19_qs_-7_merged.fq,1000000,Vi33.19,-7,999996,998263,1737,0:945143 1:51503 2:1525 3:72 4:8 5:1 6:2 18:1 28:2 49:1 51:1 91:1 96:1 115:1 151:1

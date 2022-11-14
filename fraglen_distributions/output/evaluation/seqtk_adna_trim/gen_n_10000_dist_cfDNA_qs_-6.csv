@@ -1,2 +1,0 @@
-program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
-seqtk_adna_trim,gen_n_10000_dist_cfDNA_qs_-6_merged.fq,10000,cfDNA,-6,10000,7479,2521,0:4275 1:2325 2:677 3:149 4:20 5:8 6:4 75:1 101:1 105:1 116:1 130:1 132:1 166:1 206:1 210:1 249:1 250:1 299:1 304:1 314:1 338:1 340:1 345:1 378:1 472:1 498:1 968:1

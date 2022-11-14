@@ -1,2 +1,0 @@
-program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
-ClipAndMerge,gen_n_10000_dist_cfDNA_qs_-18_merged.fq,10000,cfDNA,-18,10000,5906,4094,0:60 1:181 2:361 3:611 4:755 5:748 6:781 7:646 8:522 9:407 10:266 11:212 12:132 13:65 14:54 15:34 16:20 17:13 18:6 19:3 20:2 22:1 24:1 44:2 54:2 65:1 72:1 74:1 80:1 86:1 94:1 102:1 120:1 122:1 123:1 175:1 177:1 186:1 201:1 221:1 256:1 269:1 294:1 338:1 341:1 373:1

@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
+seqtk_adna_trim,gen_n_1000000_dist_Vi33.19_qs_-3_merged.fq,1000000,Vi33.19,-3,999996,991279,8721,0:970172 1:20836 2:261 3:6 24:1 35:1 42:2

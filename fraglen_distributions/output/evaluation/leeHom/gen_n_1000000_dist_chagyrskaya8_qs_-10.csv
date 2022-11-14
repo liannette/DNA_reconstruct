@@ -1,0 +1,2 @@
+program,filename,nfrags,fraglen_distribution,quality_shift,total_sequences,total_reads,dropped_reads,edit_distances
+leeHom,gen_n_1000000_dist_chagyrskaya8_qs_-10_merged.fq.gz,1000000,chagyrskaya8,-10,999998,998604,1396,0:849225 1:126796 2:16311 3:3897 4:1416 5:569 6:225 7:75 8:27 9:14 10:3 12:3 15:1 19:1 20:1 23:1 26:1 28:2 30:1 32:1 33:1 39:2 41:1 51:2 52:1 53:1 54:1 55:1 60:1 64:2 66:1 67:1 70:1 72:1 74:1 76:1 78:2 79:1 81:1 86:1 87:1 88:1 89:1 90:2 99:1 110:1 149:1 157:1 210:1
