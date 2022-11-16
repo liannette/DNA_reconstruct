@@ -1,0 +1,11 @@
+Building DAG of jobs...
+MissingInputException in line 55 of /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/snakefile:
+Missing input files for rule all:
+/home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_distributions_fastp.png
+/home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_distributions_bbmerge.png
+/home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_histograms.png
+/home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_distributions_seqtk_adna_trim.png
+/home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_distributions_SeqPrep.png
+/home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_distributions_ClipAndMerge.png
+/home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_distributions_AdapterRemoval.png
+/home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_distributions_leeHom.png

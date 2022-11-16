@@ -1,0 +1,366 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 64
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	4	AdapterRemoval
+	4	ClipAndMerge
+	4	SeqPrep
+	1	add_adapters
+	1	all
+	4	bbmerge
+	20	evaluate_unzipped
+	8	evaluate_zipped
+	4	fastp
+	4	leeHom
+	1	merge_csv
+	1	plot
+	4	seqtk_adna_trim
+	1	simulate_fragments
+	4	simulate_reads
+	65
+
+[Wed Nov 16 14:43:48 2022]
+rule simulate_fragments:
+    input: /home/databases/genomes/Homo_sapiens/CHM13_T2T/CHM13_T2T.fa
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_frag.fa
+    jobid: 37
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/simulations/gen_n_1000000_l_120_frag.tsv
+    wildcards: n=1000000, l=120
+
+[Wed Nov 16 14:46:50 2022]
+Finished job 37.
+1 of 65 steps (2%) done
+
+[Wed Nov 16 14:46:50 2022]
+rule add_adapters:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_frag.fa
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_adpt.fa
+    jobid: 36
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/simulations/gen_n_1000000_l_120_adpt.tsv
+    wildcards: n=1000000, l=120
+
+[Wed Nov 16 14:46:57 2022]
+Finished job 36.
+2 of 65 steps (3%) done
+
+[Wed Nov 16 14:46:57 2022]
+rule simulate_reads:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_adpt.fa
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_0_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_0_s2.fq
+    jobid: 1
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/simulations/gen_n_1000000_l_120_qs_0_reads.tsv
+    wildcards: n=1000000, l=120, qs=0
+
+
+[Wed Nov 16 14:46:57 2022]
+rule simulate_reads:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_adpt.fa
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-20_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-20_s2.fq
+    jobid: 3
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/simulations/gen_n_1000000_l_120_qs_-20_reads.tsv
+    wildcards: n=1000000, l=120, qs=-20
+
+
+[Wed Nov 16 14:46:57 2022]
+rule simulate_reads:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_adpt.fa
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-10_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-10_s2.fq
+    jobid: 2
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/simulations/gen_n_1000000_l_120_qs_-10_reads.tsv
+    wildcards: n=1000000, l=120, qs=-10
+
+
+[Wed Nov 16 14:46:57 2022]
+rule simulate_reads:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_adpt.fa
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-30_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-30_s2.fq
+    jobid: 4
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/simulations/gen_n_1000000_l_120_qs_-30_reads.tsv
+    wildcards: n=1000000, l=120, qs=-30
+
+[Wed Nov 16 14:47:31 2022]
+Finished job 2.
+3 of 65 steps (5%) done
+
+[Wed Nov 16 14:47:31 2022]
+rule seqtk_adna_trim:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-10_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-10_s2.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/seqtk_adna_trim/gen_n_1000000_l_120_qs_-10_merged.fq
+    jobid: 18
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/seqtk_adna_trim/gen_n_1000000_l_120_qs_-10_merged.tsv
+    wildcards: n=1000000, l=120, qs=-10
+
+
+[Wed Nov 16 14:47:31 2022]
+rule fastp:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-10_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-10_s2.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/fastp/gen_n_1000000_l_120_qs_-10_merged.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/fastp/gen_n_1000000_l_120_qs_-10_unmerged.R1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/fastp/gen_n_1000000_l_120_qs_-10_unmerged.R2.fq
+    jobid: 26
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/fastp/gen_n_1000000_l_120_qs_-10_merged.tsv
+    wildcards: n=1000000, l=120, qs=-10
+
+
+[Wed Nov 16 14:47:31 2022]
+rule bbmerge:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-10_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-10_s2.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/bbmerge/gen_n_1000000_l_120_qs_-10_merged.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/bbmerge/gen_n_1000000_l_120_qs_-10_unmerged_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/bbmerge/gen_n_1000000_l_120_qs_-10_unmerged_s2.fq
+    jobid: 22
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/bbmerge/gen_n_1000000_l_120_qs_-10_merged.tsv
+    wildcards: n=1000000, l=120, qs=-10
+
+
+[Wed Nov 16 14:47:31 2022]
+rule ClipAndMerge:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-10_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-10_s2.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/ClipAndMerge/gen_n_1000000_l_120_qs_-10_merged.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/ClipAndMerge/gen_n_1000000_l_120_qs_-10_unmerged_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/ClipAndMerge/gen_n_1000000_l_120_qs_-10_unmerged_s2.fq
+    jobid: 14
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/ClipAndMerge/gen_n_1000000_l_120_qs_-10_merged.tsv
+    wildcards: n=1000000, l=120, qs=-10
+
+
+[Wed Nov 16 14:47:31 2022]
+rule leeHom:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-10_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-10_s2.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/leeHom/gen_n_1000000_l_120_qs_-10_merged.fq.gz
+    jobid: 6
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/leeHom/gen_n_1000000_l_120_qs_-10_merged.tsv
+    wildcards: n=1000000, l=120, qs=-10
+
+
+[Wed Nov 16 14:47:31 2022]
+rule AdapterRemoval:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-10_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-10_s2.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/AdapterRemoval/gen_n_1000000_l_120_qs_-10_merged.fq
+    jobid: 10
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/AdapterRemoval/gen_n_1000000_l_120_qs_-10_merged.tsv
+    wildcards: n=1000000, l=120, qs=-10
+
+
+[Wed Nov 16 14:47:31 2022]
+rule SeqPrep:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-10_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-10_s2.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/SeqPrep/gen_n_1000000_l_120_qs_-10_merged.fq.gz, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/SeqPrep/gen_n_1000000_l_120_qs_-10_merged.R1.fq.gz, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/SeqPrep/gen_n_1000000_l_120_qs_-10_merged.R2.fq.gz
+    jobid: 30
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/SeqPrep/gen_n_1000000_l_120_qs_-10_merged.tsv
+    wildcards: n=1000000, l=120, qs=-10
+
+[Wed Nov 16 14:47:32 2022]
+Finished job 1.
+4 of 65 steps (6%) done
+
+[Wed Nov 16 14:47:32 2022]
+rule leeHom:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_0_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_0_s2.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/leeHom/gen_n_1000000_l_120_qs_0_merged.fq.gz
+    jobid: 5
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/leeHom/gen_n_1000000_l_120_qs_0_merged.tsv
+    wildcards: n=1000000, l=120, qs=0
+
+
+[Wed Nov 16 14:47:32 2022]
+rule ClipAndMerge:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_0_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_0_s2.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/ClipAndMerge/gen_n_1000000_l_120_qs_0_merged.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/ClipAndMerge/gen_n_1000000_l_120_qs_0_unmerged_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/ClipAndMerge/gen_n_1000000_l_120_qs_0_unmerged_s2.fq
+    jobid: 13
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/ClipAndMerge/gen_n_1000000_l_120_qs_0_merged.tsv
+    wildcards: n=1000000, l=120, qs=0
+
+
+[Wed Nov 16 14:47:32 2022]
+rule fastp:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_0_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_0_s2.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/fastp/gen_n_1000000_l_120_qs_0_merged.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/fastp/gen_n_1000000_l_120_qs_0_unmerged.R1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/fastp/gen_n_1000000_l_120_qs_0_unmerged.R2.fq
+    jobid: 25
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/fastp/gen_n_1000000_l_120_qs_0_merged.tsv
+    wildcards: n=1000000, l=120, qs=0
+
+
+[Wed Nov 16 14:47:32 2022]
+rule bbmerge:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_0_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_0_s2.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/bbmerge/gen_n_1000000_l_120_qs_0_merged.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/bbmerge/gen_n_1000000_l_120_qs_0_unmerged_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/bbmerge/gen_n_1000000_l_120_qs_0_unmerged_s2.fq
+    jobid: 21
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/bbmerge/gen_n_1000000_l_120_qs_0_merged.tsv
+    wildcards: n=1000000, l=120, qs=0
+
+
+[Wed Nov 16 14:47:32 2022]
+rule seqtk_adna_trim:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_0_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_0_s2.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/seqtk_adna_trim/gen_n_1000000_l_120_qs_0_merged.fq
+    jobid: 17
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/seqtk_adna_trim/gen_n_1000000_l_120_qs_0_merged.tsv
+    wildcards: n=1000000, l=120, qs=0
+
+
+[Wed Nov 16 14:47:32 2022]
+rule SeqPrep:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_0_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_0_s2.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/SeqPrep/gen_n_1000000_l_120_qs_0_merged.fq.gz, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/SeqPrep/gen_n_1000000_l_120_qs_0_merged.R1.fq.gz, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/SeqPrep/gen_n_1000000_l_120_qs_0_merged.R2.fq.gz
+    jobid: 29
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/SeqPrep/gen_n_1000000_l_120_qs_0_merged.tsv
+    wildcards: n=1000000, l=120, qs=0
+
+
+[Wed Nov 16 14:47:32 2022]
+rule AdapterRemoval:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_0_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_0_s2.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/AdapterRemoval/gen_n_1000000_l_120_qs_0_merged.fq
+    jobid: 9
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/AdapterRemoval/gen_n_1000000_l_120_qs_0_merged.tsv
+    wildcards: n=1000000, l=120, qs=0
+
+[Wed Nov 16 14:47:33 2022]
+Finished job 3.
+5 of 65 steps (8%) done
+
+[Wed Nov 16 14:47:33 2022]
+rule SeqPrep:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-20_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-20_s2.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/SeqPrep/gen_n_1000000_l_120_qs_-20_merged.fq.gz, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/SeqPrep/gen_n_1000000_l_120_qs_-20_merged.R1.fq.gz, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/SeqPrep/gen_n_1000000_l_120_qs_-20_merged.R2.fq.gz
+    jobid: 31
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/SeqPrep/gen_n_1000000_l_120_qs_-20_merged.tsv
+    wildcards: n=1000000, l=120, qs=-20
+
+
+[Wed Nov 16 14:47:33 2022]
+rule ClipAndMerge:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-20_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-20_s2.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/ClipAndMerge/gen_n_1000000_l_120_qs_-20_merged.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/ClipAndMerge/gen_n_1000000_l_120_qs_-20_unmerged_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/ClipAndMerge/gen_n_1000000_l_120_qs_-20_unmerged_s2.fq
+    jobid: 15
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/ClipAndMerge/gen_n_1000000_l_120_qs_-20_merged.tsv
+    wildcards: n=1000000, l=120, qs=-20
+
+
+[Wed Nov 16 14:47:34 2022]
+rule AdapterRemoval:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-20_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-20_s2.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/AdapterRemoval/gen_n_1000000_l_120_qs_-20_merged.fq
+    jobid: 11
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/AdapterRemoval/gen_n_1000000_l_120_qs_-20_merged.tsv
+    wildcards: n=1000000, l=120, qs=-20
+
+
+[Wed Nov 16 14:47:34 2022]
+rule fastp:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-20_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-20_s2.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/fastp/gen_n_1000000_l_120_qs_-20_merged.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/fastp/gen_n_1000000_l_120_qs_-20_unmerged.R1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/fastp/gen_n_1000000_l_120_qs_-20_unmerged.R2.fq
+    jobid: 27
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/fastp/gen_n_1000000_l_120_qs_-20_merged.tsv
+    wildcards: n=1000000, l=120, qs=-20
+
+
+[Wed Nov 16 14:47:34 2022]
+rule leeHom:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-20_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-20_s2.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/leeHom/gen_n_1000000_l_120_qs_-20_merged.fq.gz
+    jobid: 7
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/leeHom/gen_n_1000000_l_120_qs_-20_merged.tsv
+    wildcards: n=1000000, l=120, qs=-20
+
+
+[Wed Nov 16 14:47:34 2022]
+rule bbmerge:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-20_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-20_s2.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/bbmerge/gen_n_1000000_l_120_qs_-20_merged.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/bbmerge/gen_n_1000000_l_120_qs_-20_unmerged_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/bbmerge/gen_n_1000000_l_120_qs_-20_unmerged_s2.fq
+    jobid: 23
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/bbmerge/gen_n_1000000_l_120_qs_-20_merged.tsv
+    wildcards: n=1000000, l=120, qs=-20
+
+
+[Wed Nov 16 14:47:34 2022]
+rule seqtk_adna_trim:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-20_s1.fq, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_qs_-20_s2.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/seqtk_adna_trim/gen_n_1000000_l_120_qs_-20_merged.fq
+    jobid: 19
+    benchmark: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/benchmarks/seqtk_adna_trim/gen_n_1000000_l_120_qs_-20_merged.tsv
+    wildcards: n=1000000, l=120, qs=-20
+
+[Wed Nov 16 14:47:38 2022]
+Finished job 18.
+6 of 65 steps (9%) done
+
+[Wed Nov 16 14:47:38 2022]
+rule evaluate_unzipped:
+    input: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_frag.fa, /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/seqtk_adna_trim/gen_n_1000000_l_120_qs_-10_merged.fq
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/evaluation/seqtk_adna_trim/gen_n_1000000_l_120_qs_-10.csv
+    jobid: 51
+    wildcards: tool_name=seqtk_adna_trim, n=1000000, l=120, qs=-10
+    resources: mem_mb=15000
+
+[Wed Nov 16 14:47:38 2022]
+Error in rule evaluate_unzipped:
+    jobid: 51
+    output: /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/evaluation/seqtk_adna_trim/gen_n_1000000_l_120_qs_-10.csv
+    shell:
+        python3 /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/evaluate.py --out /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/evaluation/seqtk_adna_trim/gen_n_1000000_l_120_qs_-10.csv --nfrags 1000000 --fraglen 120 --qualityshift -10 --tool seqtk_adna_trim --templates /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/simulations/gen_n_1000000_l_120_frag.fa --mreads /home/projects/DNA_reconstruct/observe_merge_phred/check_bias/output/reconstructions/seqtk_adna_trim/gen_n_1000000_l_120_qs_-10_merged.fq
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Wed Nov 16 14:47:38 2022]
+Finished job 17.
+7 of 65 steps (11%) done
+[Wed Nov 16 14:47:40 2022]
+Finished job 4.
+8 of 65 steps (12%) done
+[Wed Nov 16 14:47:44 2022]
+Finished job 19.
+9 of 65 steps (14%) done
+[Wed Nov 16 14:47:44 2022]
+Finished job 25.
+10 of 65 steps (15%) done
+[Wed Nov 16 14:47:45 2022]
+Finished job 26.
+11 of 65 steps (17%) done
+[Wed Nov 16 14:47:46 2022]
+Finished job 10.
+12 of 65 steps (18%) done
+[Wed Nov 16 14:47:47 2022]
+Finished job 9.
+13 of 65 steps (20%) done
+[Wed Nov 16 14:47:48 2022]
+Finished job 11.
+14 of 65 steps (22%) done
+[Wed Nov 16 14:47:51 2022]
+Finished job 23.
+15 of 65 steps (23%) done
+[Wed Nov 16 14:47:53 2022]
+Finished job 27.
+16 of 65 steps (25%) done
+[Wed Nov 16 14:47:57 2022]
+Finished job 21.
+17 of 65 steps (26%) done
+[Wed Nov 16 14:48:08 2022]
+Finished job 22.
+18 of 65 steps (28%) done
+[Wed Nov 16 14:49:42 2022]
+Finished job 14.
+19 of 65 steps (29%) done
+[Wed Nov 16 14:49:43 2022]
+Finished job 5.
+20 of 65 steps (31%) done
+[Wed Nov 16 14:49:44 2022]
+Finished job 6.
+21 of 65 steps (32%) done
+[Wed Nov 16 14:49:48 2022]
+Finished job 15.
+22 of 65 steps (34%) done
+[Wed Nov 16 14:49:51 2022]
+Finished job 7.
+23 of 65 steps (35%) done
+[Wed Nov 16 14:49:56 2022]
+Finished job 13.
+24 of 65 steps (37%) done
+[Wed Nov 16 14:52:26 2022]
+Finished job 31.
+25 of 65 steps (38%) done
+[Wed Nov 16 14:54:22 2022]
+Finished job 29.
+26 of 65 steps (40%) done
+[Wed Nov 16 14:54:31 2022]
+Finished job 30.
+27 of 65 steps (42%) done
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/.snakemake/log/2022-11-16T144348.219748.snakemake.log

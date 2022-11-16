@@ -1,0 +1,27 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 64
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	all
+	1	plot
+	2
+
+[Wed Nov 16 15:39:37 2022]
+rule plot:
+    input: /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/evaluation/all_merged.csv
+    output: /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_histograms.png, /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_distributions_leeHom.png, /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_distributions_AdapterRemoval.png, /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_distributions_ClipAndMerge.png, /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_distributions_seqtk_adna_trim.png, /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_distributions_bbmerge.png, /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_distributions_fastp.png, /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_distributions_SeqPrep.png
+    jobid: 35
+
+[Wed Nov 16 15:39:38 2022]
+Error in rule plot:
+    jobid: 35
+    output: /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_histograms.png, /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_distributions_leeHom.png, /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_distributions_AdapterRemoval.png, /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_distributions_ClipAndMerge.png, /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_distributions_seqtk_adna_trim.png, /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_distributions_bbmerge.png, /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_distributions_fastp.png, /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots/fraglen_distributions_SeqPrep.png
+    shell:
+        python3 /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/plot.py -i /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/evaluation/all_merged.csv -o /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/output/plots
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /home/projects/DNA_reconstruct/observed_merge_phred/check_bias/.snakemake/log/2022-11-16T153937.112518.snakemake.log
