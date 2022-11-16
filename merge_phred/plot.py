@@ -161,8 +161,8 @@ def create_plots(df_type, program, match_type, max_new_qs, outdir):
                         .sort_index(ascending=False)
 
     # Create own colormap for heatmap
-    cvals  = [0, 20, 40, max_new_qs]
-    colors = ["red", "yellow", "green", "royalblue"]
+    cvals  = [0, 20, 40, 60, max_new_qs]
+    colors = ["red", "yellow", "green", "royalblue", "rebeccapurple"]
     norm = plt.Normalize(min(cvals),max(cvals))
     tuples = list(zip(map(norm,cvals), colors))
     cmap = mpl.colors.LinearSegmentedColormap.from_list("", tuples)
