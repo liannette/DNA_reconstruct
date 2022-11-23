@@ -15,11 +15,6 @@ LENGTH = 120
 # for node07:
 PROJECTDIR = "/home/projects/DNA_reconstruct/merged_phred_calibration"
 
-# Input genome and adapter sequences
-IN_FILE = "/home/databases/genomes/Homo_sapiens/CHM13_T2T/CHM13_T2T.fa"
-ADPT1 = "AGATCGGAAGAGCACACGTCTGAACTCCAGTCACCGATTCGATCTCGTATGCCGTCTTCTGCTTG"
-ADPT2 = "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATTT"
-
 # output directories
 OUTDIR = PROJECTDIR + "/output"
 OUTDIR_BEN = OUTDIR + "/benchmarks"
@@ -31,6 +26,14 @@ OUTDIR_PLOT = OUTDIR + "/plots"
 EVAL_SCRIPT = PROJECTDIR + "/evaluate.py"
 MERGE_SCRIPT = PROJECTDIR + "/merge_csv.sh"
 PLOT_SCRIPT = PROJECTDIR + "/plot.py"
+
+# Input genome and adapter sequences
+IN_FILE = "/home/databases/genomes/Homo_sapiens/CHM13_T2T/CHM13_T2T.fa"
+ADPT1 = "AGATCGGAAGAGCACACGTCTGAACTCCAGTCACCGATTCGATCTCGTATGCCGTCTTCTGCTTG"
+ADPT2 = "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATTT"
+
+# File containing merge behavior for all tools
+MERGECSV = PROJECTDIR + "/input/all_qs.csv"
 
 
 ### Run all
@@ -45,23 +48,23 @@ rule all:
             l=LENGTH,
             qs=QS,
         ),
-        # # evaluation
-        # expand(
-        #     OUTDIR_EVA + "/{tool_name}/gen_n_{n}_l_{l}_qs_{qs}.csv",
-        #     tool_name=["fastp"], #TOOLNAMES,
-        #     n=NUMFRAGS,
-        #     l=LENGTH,
-        #     qs=["0"], #QS,
-        # ),
-        # OUTDIR_EVA + "/all_merged.csv",
-        # # Plotting
-        # expand(
-        #     OUTDIR_PLOT + "/{tool_name}_combined.png",
-        #     tool_name=TOOLNAMES,
-        # ),
-    # run:
-    #     shell("gzip {OUTDIR_REC}/*/*")
-    #     shell("gzip {OUTDIR_SIM}/*")
+        # evaluation
+        expand(
+            OUTDIR_EVA + "/{tool_name}/gen_n_{n}_l_{l}_qs_{qs}.csv",
+            tool_name=["fastp"], #TOOLNAMES,
+            n=NUMFRAGS,
+            l=LENGTH,
+            qs=["0"], #QS,
+        ),
+        OUTDIR_EVA + "/all_merged.csv",
+        # Plotting
+        expand(
+            OUTDIR_PLOT + "/{tool_name}_combined.png",
+            tool_name=TOOLNAMES,
+        ),
+    run:
+        shell("gzip {OUTDIR_REC}/*/*")
+        shell("gzip {OUTDIR_SIM}/*")
 
 
 ### Simulation
@@ -208,6 +211,7 @@ rule evaluate:
             " --templates {input.orig}"
             " --s1 {input.s1}"
             " --s2 {input.s2}"
+            " --mergecsv {MERGECSV}" 
         )
 
 
