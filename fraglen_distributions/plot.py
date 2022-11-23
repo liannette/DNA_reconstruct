@@ -22,9 +22,7 @@ def parse_arguments():
     return args.infile, args.dist_dir, args.outdir
 
 
-def plot_histogram(dist_dir, outdir):
-    
-    distnames = ["A9180", "cfDNA", "chagyrskaya8", "Vi33.19"]
+def plot_histogram(dist_dir, distnames, outdir):
 
     fig, axes = plt.subplots(1, 4, figsize=[15, 5])
 
@@ -77,7 +75,7 @@ def get_edit_distance_matrix(df):
                     occurences_per_edit_distance[int(edit_dist)] = percent
                 elif edit_dist <= 10:
                     occurences_per_edit_distance[-3] += percent
-                elif edit_dist <= 20:
+                elif edit_dist <= 25:
                     occurences_per_edit_distance[-2] += percent
                 else:
                     occurences_per_edit_distance[-1] += percent
@@ -86,9 +84,9 @@ def get_edit_distance_matrix(df):
     return list(enumerate(zip(*edit_distance_matrix)))
 
 
-def plot_edit_distance(program, df_program, outdir):
+def plot_edit_distance(program, df_program, distnames, outdir):
+    
     fig, axes = plt.subplots(1, 4, figsize=[15, 7]) #, gridspec_kw={'width_ratios': [0.98, 0.02]})
-    distnames = list(df_program["fraglen_distribution"].unique())
     for ax, distname in zip(axes, distnames):
         
         # get data
@@ -104,8 +102,8 @@ def plot_edit_distance(program, df_program, outdir):
             "edit distance: 3",
             "edit distance: 4",
             "edit distance: 5-10",
-            "edit distance: 11-20",
-            "edit distance: >20",
+            "edit distance: 11-25",
+            "edit distance: >25",
             "not merged",
             ]
         colors = [
@@ -164,12 +162,14 @@ def plot_edit_distance(program, df_program, outdir):
 
 def main(infile, dist_dir, outdir):
     
-    plot_histogram(dist_dir, outdir)
+    distnames = ["A9180", "Vi33.19", "chagyrskaya8", "cfDNA"]
+    
+    plot_histogram(dist_dir, distnames, outdir)
     
     df = pd.read_csv(infile)
     for program in list(df["program"].unique()):
         df_program = df[df["program"] == program]
-        plot_edit_distance(program, df_program, outdir)
+        plot_edit_distance(program, df_program, distnames, outdir)
     
             
 if __name__ == "__main__":

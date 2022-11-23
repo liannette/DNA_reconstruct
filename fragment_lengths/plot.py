@@ -39,7 +39,7 @@ def get_edit_distance_matrix(df_program):
                     occurences_per_edit_distance[int(edit_dist)] = percent
                 elif edit_dist <= 10:
                     occurences_per_edit_distance[-3] += percent
-                elif edit_dist <= 20:
+                elif edit_dist <= 25:
                     occurences_per_edit_distance[-2] += percent
                 else:
                     occurences_per_edit_distance[-1] += percent
@@ -84,8 +84,8 @@ def plot_edit_distance_plot(program, frag_len, dropped_percent, edit_distances,
         "edit distance: 3",
         "edit distance: 4",
         "edit distance: 5-10",
-        "edit distance: 11-20",
-        "edit distance: >20",
+        "edit distance: 11-25",
+        "edit distance: >25",
         "not merged",
         ]
     colors = [
