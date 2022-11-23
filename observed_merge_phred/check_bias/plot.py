@@ -19,43 +19,6 @@ def parse_arguments():
     return args.infile, args.outdir
 
 
-def plot_histogram(dist_dir, outdir):
-    
-    distnames = ["A9180", "cfDNA", "chagyrskaya8", "Vi33.19"]
-
-    fig, axes = plt.subplots(1, 4, figsize=[15, 5])
-
-    for i in range(4):
-        ax = axes[i]
-        distname = distnames[i]
-        infile = dist_dir + f"/{distname}.gz"
-        df = pd.read_csv(infile, header = None) 
-        
-        x_min = 0
-        if distname == "A9180":
-            x_max = 100
-        elif distname == "cfDNA":
-            x_max = 600
-        elif distname == "chagyrskaya8":
-            x_max = 300
-        elif distname == "Vi33.19":
-            x_max = 175
-
-        binwidth = int(x_max/60)
-
-        ax.hist(df, density=1, bins=range(x_min, x_max + 10, binwidth))
-        ax.set_title(f"{distname}")
-        ax.set_xlabel('Fragment length')
-        ax.set_xlim(x_min, x_max)
-        
-    axes[0].set_ylabel('Probability')
-    fig.suptitle(f"Fragment length distributions")
-    fig.tight_layout()
-    plt.savefig(f"{outdir}/fraglen_histograms.png", 
-                dpi='figure', 
-                format="png")
-
-
 def get_edit_distance_matrix(df):
     # convert the edit_distance strings to a matrix for bar plotting
     nfrags = list(df["nfrags"])[0]
@@ -73,11 +36,11 @@ def get_edit_distance_matrix(df):
                 if edit_dist < 5:
                     occurences_per_edit_distance[int(edit_dist)] = percent
                 elif edit_dist <= 10:
-                    occurences_per_edit_distance[-1] += percent
-                elif edit_dist <= 20:
+                    occurences_per_edit_distance[-3] += percent
+                elif edit_dist <= 25:
                     occurences_per_edit_distance[-2] += percent
                 else:
-                    occurences_per_edit_distance[-3] += percent
+                    occurences_per_edit_distance[-1] += percent
                     
         edit_distance_matrix.append(occurences_per_edit_distance)
     return list(enumerate(zip(*edit_distance_matrix)))
@@ -103,7 +66,7 @@ def plot_edit_distance(df, outdir):
             "edit distance: 4",
             "edit distance: 5-10",
             "edit distance: 11-20",
-            "edit distance: >20",
+            "edit distance: >25",
             "not merged",
             ]
         colors = [
@@ -132,7 +95,7 @@ def plot_edit_distance(df, outdir):
         
 
         # Set y axis limit
-        ax.set_xlim(-30, 0)
+        ax.set_xlim(-33, 5)
         ax.set_ylim(0, max(bottom))
         ax.set_yticks(range(0,101,10))
         # Add grid

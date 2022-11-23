@@ -55,69 +55,69 @@ PLOT_SCRIPT = PROJECTDIR + "/plot.py"
 rule all:
     input:
         # Run the simulations
-        expand(
-            OUTDIR_SIM + "/gen_n_{n}_l_{l}_qs_{qs}_s1.fq",
-            n=NUMFRAGS,
-            l=LENGTH,
-            qs=QS,
-        ),
-        # trimming/merging 
-        expand(
-            OUTDIR_REC + "/leeHom/gen_n_{n}_l_{l}_qs_{qs}_merged.fq.gz",
-            n=NUMFRAGS,
-            l=LENGTH,
-            qs=QS,
-        ),
-        expand(
-            OUTDIR_REC + "/AdapterRemoval/gen_n_{n}_l_{l}_qs_{qs}_merged.fq",
-            n=NUMFRAGS,
-            l=LENGTH,
-            qs=QS,
-        ),
-        expand(
-            OUTDIR_REC + "/ClipAndMerge/gen_n_{n}_l_{l}_qs_{qs}_merged.fq",
-            n=NUMFRAGS,
-            l=LENGTH,
-            qs=QS,
-        ),
-        expand(
-            OUTDIR_REC + "/seqtk_adna_trim/gen_n_{n}_l_{l}_qs_{qs}_merged.fq",
-            n=NUMFRAGS,
-            l=LENGTH,
-            qs=QS,
-        ),
-        expand(
-            OUTDIR_REC + "/bbmerge/gen_n_{n}_l_{l}_qs_{qs}_merged.fq",
-            n=NUMFRAGS,
-            l=LENGTH,
-            qs=QS,
-        ),
-        expand(
-            OUTDIR_REC + "/fastp/gen_n_{n}_l_{l}_qs_{qs}_merged.fq",
-            n=NUMFRAGS,
-            l=LENGTH,
-            qs=QS,
-        ),
-        expand(
-            OUTDIR_REC + "/SeqPrep/gen_n_{n}_l_{l}_qs_{qs}_merged.fq.gz",
-            n=NUMFRAGS,
-            l=LENGTH,
-            qs=QS,
-        ),
-        # evaluation
-        expand(
-            OUTDIR_EVA + "/{tool_name}/gen_n_{n}_l_{l}_qs_{qs}.csv",
-            tool_name=["fastp"], #TOOLNAMES,
-            n=NUMFRAGS,
-            l=LENGTH,
-            qs=["0"], #QS,
-        ),
-        OUTDIR_EVA + "/all_merged.csv",
+        # expand(
+        #     OUTDIR_SIM + "/gen_n_{n}_l_{l}_qs_{qs}_s1.fq",
+        #     n=NUMFRAGS,
+        #     l=LENGTH,
+        #     qs=QS,
+        # ),
+        # # trimming/merging 
+        # expand(
+        #     OUTDIR_REC + "/leeHom/gen_n_{n}_l_{l}_qs_{qs}_merged.fq.gz",
+        #     n=NUMFRAGS,
+        #     l=LENGTH,
+        #     qs=QS,
+        # ),
+        # expand(
+        #     OUTDIR_REC + "/AdapterRemoval/gen_n_{n}_l_{l}_qs_{qs}_merged.fq",
+        #     n=NUMFRAGS,
+        #     l=LENGTH,
+        #     qs=QS,
+        # ),
+        # expand(
+        #     OUTDIR_REC + "/ClipAndMerge/gen_n_{n}_l_{l}_qs_{qs}_merged.fq",
+        #     n=NUMFRAGS,
+        #     l=LENGTH,
+        #     qs=QS,
+        # ),
+        # expand(
+        #     OUTDIR_REC + "/seqtk_adna_trim/gen_n_{n}_l_{l}_qs_{qs}_merged.fq",
+        #     n=NUMFRAGS,
+        #     l=LENGTH,
+        #     qs=QS,
+        # ),
+        # expand(
+        #     OUTDIR_REC + "/bbmerge/gen_n_{n}_l_{l}_qs_{qs}_merged.fq",
+        #     n=NUMFRAGS,
+        #     l=LENGTH,
+        #     qs=QS,
+        # ),
+        # expand(
+        #     OUTDIR_REC + "/fastp/gen_n_{n}_l_{l}_qs_{qs}_merged.fq",
+        #     n=NUMFRAGS,
+        #     l=LENGTH,
+        #     qs=QS,
+        # ),
+        # expand(
+        #     OUTDIR_REC + "/SeqPrep/gen_n_{n}_l_{l}_qs_{qs}_merged.fq.gz",
+        #     n=NUMFRAGS,
+        #     l=LENGTH,
+        #     qs=QS,
+        # ),
+        # # evaluation
+        # expand(
+        #     OUTDIR_EVA + "/{tool_name}/gen_n_{n}_l_{l}_qs_{qs}.csv",
+        #     tool_name=["fastp"], #TOOLNAMES,
+        #     n=NUMFRAGS,
+        #     l=LENGTH,
+        #     qs=["0"], #QS,
+        # ),
+        # OUTDIR_EVA + "/all_merged.csv",
         # Plotting
         OUTDIR_PLOT + "/droprate_qualityscores.png"
-    run:
-        shell("gzip {OUTDIR_REC}/*/*")
-        shell("gzip {OUTDIR_SIM}/*")
+    # run:
+    #     shell("gzip {OUTDIR_REC}/*/*")
+    #     shell("gzip {OUTDIR_SIM}/*")
 
 
 ### Simulation
