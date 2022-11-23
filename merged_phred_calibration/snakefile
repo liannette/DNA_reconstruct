@@ -15,6 +15,11 @@ LENGTH = 120
 # for node07:
 PROJECTDIR = "/home/projects/DNA_reconstruct/merged_phred_calibration"
 
+# tools
+FRAGSIM = "/home/ctools/gargammel/src/fragSim"
+ADPTSIM = "/home/ctools/gargammel/src/adptSim"
+ART = "/home/ctools/gargammel/art_src_MountRainier_Linux/art_illumina"
+
 # output directories
 OUTDIR = PROJECTDIR + "/output"
 OUTDIR_BEN = OUTDIR + "/benchmarks"
