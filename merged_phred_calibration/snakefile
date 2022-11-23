@@ -11,9 +11,9 @@ NUMFRAGS = 100000000    # 100 Mio
 LENGTH = 120
 
 # project directory
-# PROJECTDIR = "/net/node07/home/projects/DNA_reconstruct/merged_phred_calibration"
+PROJECTDIR = "/net/node07/home/projects/DNA_reconstruct/merged_phred_calibration"
 # for node07:
-PROJECTDIR = "/home/projects/DNA_reconstruct/merged_phred_calibration"
+# PROJECTDIR = "/home/projects/DNA_reconstruct/merged_phred_calibration"
 
 # tools
 FRAGSIM = "/home/ctools/gargammel/src/fragSim"
@@ -61,7 +61,7 @@ rule all:
             l=LENGTH,
             qs=["0"], #QS,
         ),
-        OUTDIR_EVA + "/all_merged.csv",
+        OUTDIR_EVA + "/all.csv",
         # Plotting
         expand(
             OUTDIR_PLOT + "/{tool_name}_combined.png",
@@ -198,14 +198,12 @@ rule simulate_reads:
 
 rule evaluate:
     "Run the evaluation script"
-    resources:
-        mem_mb = 150000
     input:
         orig=OUTDIR_SIM + "/gen_n_{n}_l_{l}_frag.fa",
         s1=OUTDIR_SIM + "/gen_n_{n}_l_{l}_qs_{qs}_s1.fq",
         s2=OUTDIR_SIM + "/gen_n_{n}_l_{l}_qs_{qs}_s2.fq",
     output:
-        OUTDIR_EVA + "/gen_n_{n}_l_{l}_qs_{qs}.csv"
+        OUTDIR_EVA + "/{tool_name}/gen_n_{n}_l_{l}_qs_{qs}.csv"
     shell:
         (
             "python3 {EVAL_SCRIPT}"
@@ -214,6 +212,7 @@ rule evaluate:
             " --fraglen {wildcards.l}"
             " --qualityshift {wildcards.qs}"
             " --templates {input.orig}"
+            " --tool {wildcards.tool_name}"
             " --s1 {input.s1}"
             " --s2 {input.s2}"
             " --mergecsv {MERGECSV}" 
@@ -223,7 +222,8 @@ rule evaluate:
 rule merge_csv:
     input:
         expand(
-            OUTDIR_EVA + "/gen_n_{n}_l_{l}_qs_{qs}.csv",
+            OUTDIR_EVA + "/{tool_name}/gen_n_{n}_l_{l}_qs_{qs}.csv",
+            tool_name=TOOLNAMES,
             n=NUMFRAGS,
             l=LENGTH,
             qs=QS,

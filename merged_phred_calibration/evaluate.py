@@ -27,34 +27,34 @@ def parse_arguments():
     
     # required arguments
     parser.add_argument(
-        "-t", "--templates", action="store", type=str, required=True, 
+        "--templates", action="store", type=str, required=True, 
         dest="templates_path", help='gzipped or unzipped fasta file of '
                                     'the simulated DNA templates. ')
     parser.add_argument(
-        "-1", "--s1", action="store", type=str,  required=True, 
+        "--s1", action="store", type=str,  required=True, 
         dest="s1_path", help='gzipped or unzipped fastq file of the simulated '
                              's1 reads')
     parser.add_argument(
-        "-2", "--s2", action="store", type=str,  required=True, 
+        "--s2", action="store", type=str,  required=True, 
         dest="s2_path", help='gzipped or unzipped fastq file of the simulated '
                              's2 reads')
     parser.add_argument(
-        "-m", "--mergecsv", action="store", type=str,  required=True, 
+        "--mergecsv", action="store", type=str,  required=True, 
         dest="merge_info_path", help='csv containing merge information')
     parser.add_argument(
-        "-l", "--fraglen", action="store", type=int, required=True,
+        "--fraglen", action="store", type=int, required=True,
         help="fraglen") 
     parser.add_argument(
-        "-n", "--nfrags", action="store", type=int, required=True,
+        "--nfrags", action="store", type=int, required=True,
         help="nfrags")  
     parser.add_argument(
-        "-qs", "--qualityshift", action="store", type=int, required=True,
+        "--tool", action="store", type=str, required=True,
+        dest="tool_name", help="Name of the program used for trimming")
+    parser.add_argument(
+        "--qualityshift", action="store", type=int, required=True,
         help="the quality shift used when simulating the reads (when shifting "
              "scores by x, the error rate is 1/(10^(x/10)) of the default "
              "profile.") 
-    parser.add_argument(
-        "-t", "--tool", action="store", type=str, required=True,
-        dest="tool_name", help="Name of the program used for trimming")
 
     # optional arguments, only needed if exporting the results
     parser.add_argument(
@@ -288,3 +288,4 @@ if __name__ == "__main__":
 
     args = parse_arguments()
     main(*args)
+    
