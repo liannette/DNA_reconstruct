@@ -125,14 +125,14 @@ def plot_edit_distance_plot(program, frag_len, dropped_percent, edit_distances,
     ax1.set_yticks(range(0,101,10))
     # Add a line at the read length
     ax1.plot([125.5, 125.5], [0, 100], color='green', linestyle='--', lw=1)
-    ax1.text(124, 80, f"raw read length", color='green', fontsize=7,
+    ax1.text(124, 80, f"read length", color='green', fontsize=7,
              rotation=90, rotation_mode='anchor')
     # Add grid
     ax1.grid(alpha=0.5)
     ax2.grid(alpha=0.5)
     # Add labels, title
     ax1.set_xlabel('Fragment lengths')
-    ax1.set_ylabel('Percentage')
+    ax1.set_ylabel('Percentage of simulated fragments')
     ax1.set_title(f"{program}, merged reads")
     # Add legend and change order
     handles, labels = plt.gca().get_legend_handles_labels()

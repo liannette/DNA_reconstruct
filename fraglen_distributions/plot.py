@@ -50,8 +50,8 @@ def plot_histogram(dist_dir, outdir):
         ax.set_title(f"{distname}")
         ax.set_xlabel('Fragment length')
         ax.set_xlim(x_min, x_max)
+        ax.set_ylabel('Probability')
         
-    axes[0].set_ylabel('Probability')
     fig.suptitle(f"Fragment length distributions")
     fig.tight_layout()
     plt.savefig(f"{outdir}/fraglen_histograms.png", 
@@ -76,11 +76,11 @@ def get_edit_distance_matrix(df):
                 if edit_dist < 5:
                     occurences_per_edit_distance[int(edit_dist)] = percent
                 elif edit_dist <= 10:
-                    occurences_per_edit_distance[-1] += percent
+                    occurences_per_edit_distance[-3] += percent
                 elif edit_dist <= 20:
                     occurences_per_edit_distance[-2] += percent
                 else:
-                    occurences_per_edit_distance[-3] += percent
+                    occurences_per_edit_distance[-1] += percent
                     
         edit_distance_matrix.append(occurences_per_edit_distance)
     return list(enumerate(zip(*edit_distance_matrix)))
