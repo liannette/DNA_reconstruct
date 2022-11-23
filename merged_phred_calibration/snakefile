@@ -1,0 +1,241 @@
+### Set global variables
+
+SEED = 2718
+
+TOOLNAMES = [
+    "leeHom", "AdapterRemoval", "ClipAndMerge", "seqtk_adna_trim", 
+    "bbmerge", "fastp", "SeqPrep"
+    ]
+QS = ["0", "-10", "-20"]
+NUMFRAGS = 100000000    # 100 Mio
+LENGTH = 120
+
+# project directory
+# PROJECTDIR = "/net/node07/home/projects/DNA_reconstruct/merged_phred_calibration"
+# for node07:
+PROJECTDIR = "/home/projects/DNA_reconstruct/merged_phred_calibration"
+
+# Input genome and adapter sequences
+IN_FILE = "/home/databases/genomes/Homo_sapiens/CHM13_T2T/CHM13_T2T.fa"
+ADPT1 = "AGATCGGAAGAGCACACGTCTGAACTCCAGTCACCGATTCGATCTCGTATGCCGTCTTCTGCTTG"
+ADPT2 = "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATTT"
+
+# output directories
+OUTDIR = PROJECTDIR + "/output"
+OUTDIR_BEN = OUTDIR + "/benchmarks"
+OUTDIR_SIM = OUTDIR + "/simulations"
+OUTDIR_EVA = OUTDIR + "/evaluation"
+OUTDIR_PLOT = OUTDIR + "/plots"
+
+# scripts
+EVAL_SCRIPT = PROJECTDIR + "/evaluate.py"
+MERGE_SCRIPT = PROJECTDIR + "/merge_csv.sh"
+PLOT_SCRIPT = PROJECTDIR + "/plot.py"
+
+
+### Run all
+
+
+rule all:
+    input:
+        # Run the simulations
+        expand(
+            OUTDIR_SIM + "/gen_n_{n}_l_{l}_qs_{qs}_s1.fq",
+            n=NUMFRAGS,
+            l=LENGTH,
+            qs=QS,
+        ),
+        # # evaluation
+        # expand(
+        #     OUTDIR_EVA + "/{tool_name}/gen_n_{n}_l_{l}_qs_{qs}.csv",
+        #     tool_name=["fastp"], #TOOLNAMES,
+        #     n=NUMFRAGS,
+        #     l=LENGTH,
+        #     qs=["0"], #QS,
+        # ),
+        # OUTDIR_EVA + "/all_merged.csv",
+        # # Plotting
+        # expand(
+        #     OUTDIR_PLOT + "/{tool_name}_combined.png",
+        #     tool_name=TOOLNAMES,
+        # ),
+    # run:
+    #     shell("gzip {OUTDIR_REC}/*/*")
+    #     shell("gzip {OUTDIR_SIM}/*")
+
+
+### Simulation
+
+
+rule simulate_fragments:
+    """
+    gargammel fragSim:
+    simulation of ancient DNA fragments being retrieved at random from 
+    the genome.
+    """
+    input:
+        IN_FILE,
+    output:
+        OUTDIR_SIM + "/gen_n_{n}_l_{l}_frag.fa",
+    benchmark:
+        OUTDIR_BEN + "/simulations/gen_n_{n}_l_{l}_frag.tsv"
+    wildcard_constraints:
+        n="\d+",
+        l="\d+",
+    shell:
+        (
+            "{FRAGSIM}"
+            " -n {wildcards.n}"
+            " -l {wildcards.l}"
+            " {input}"
+            " > {output}"
+            )
+
+
+rule add_adapters:
+    """
+    gargammel adptSim:
+    adding adapters to create raw Illumina reads (without errors and
+    quality scores)
+
+    Output reads as ART (unzipped fasta) with wrap-around for paired-end
+    mode.
+    """
+    input:
+        OUTDIR_SIM + "/gen_n_{n}_l_{l}_frag.fa",
+    output:
+        OUTDIR_SIM + "/gen_n_{n}_l_{l}_adpt.fa",
+    benchmark:
+        OUTDIR_BEN + "/simulations/gen_n_{n}_l_{l}_adpt.tsv"
+    wildcard_constraints:
+        n="\d+",
+        l="\d+",
+    shell:
+        # -l        : Desired read length
+        # -artp     : Output reads as ART with wrap-around
+        (
+            "{ADPTSIM}" 
+            " -l 125"
+            " -artp" 
+            " {output}"
+            " {input}"
+        )
+
+
+rule simulate_reads:
+    """
+    add sequencing errors and corresponding quality scores
+    Illumina HiSeq 2500 (125bp, 150bp)
+    """
+    input:
+        OUTDIR_SIM + "/gen_n_{n}_l_{l}_adpt.fa",
+    output:
+        OUTDIR_SIM + "/gen_n_{n}_l_{l}_qs_{qs}_s1.fq",
+        OUTDIR_SIM + "/gen_n_{n}_l_{l}_qs_{qs}_s2.fq",
+    params:
+        out_prefix=OUTDIR_SIM + "/gen_n_{n}_l_{l}_qs_{qs}_s",
+    benchmark:
+        OUTDIR_BEN + "/simulations/gen_n_{n}_l_{l}_qs_{qs}_reads.tsv"
+    wildcard_constraints:
+        n="\d+",
+        l="\d+",
+    shell:
+        # --insRate     : insertion rate
+        # -dr           : deletion rate
+        # -qs           : the amount to shift every first-read quality 
+        #                 score by 
+        # -qs2          : the amount to shift every second-read quality
+        #                 score by
+        #                 For -qs/-qs2 option, a positive number will
+        #                 shift up quality scores (the max is 93) that
+        #                 reduce substitution sequencing errors and a 
+        #                 negative number will shift down quality scores
+        #                 that increase sequencing errors. If shifting
+        #                 scores by x, the error rate will be
+        #                 1/(10^(x/10)) of the default profile.
+        # --seqSys      : HS25: Illumina HiSeq 2500
+        # --len         : read length
+        # --rcount      : number of read pairs to be generated per sequence
+        # --paired      : paired-end read simulation
+        # --amplicon    : amplicon sequencing simulation
+        # --noALN       : do not output ALN alignment file
+        # --quiet       : turn off end of run summary
+        # --rndSeed     : the seed for random number generator, use a
+        #                 fixed seed to generate two identical datasets
+        #                 from different runs
+        (
+            "{ART}"
+            " --insRate 0"
+            " --insRate2 0"
+            " -dr 0"
+            " -dr2 0"
+            " -qs {wildcards.qs}"
+            " -qs2 {wildcards.qs}"
+            " --seqSys HS25"
+            " --len 125"
+            " --rcount 1"
+            " --paired"
+            " --amplicon"
+            " --noALN"
+            " --quiet"
+            " --rndSeed {SEED}"
+            " -i {input}"
+            " -o {params.out_prefix}"
+        )
+
+
+
+### Evaluation 
+
+
+rule evaluate:
+    "Run the evaluation script"
+    resources:
+        mem_mb = 150000
+    input:
+        orig=OUTDIR_SIM + "/gen_n_{n}_l_{l}_frag.fa",
+        s1=OUTDIR_SIM + "/gen_n_{n}_l_{l}_qs_{qs}_s1.fq",
+        s2=OUTDIR_SIM + "/gen_n_{n}_l_{l}_qs_{qs}_s2.fq",
+    output:
+        OUTDIR_EVA + "/gen_n_{n}_l_{l}_qs_{qs}.csv"
+    shell:
+        (
+            "python3 {EVAL_SCRIPT}"
+            " --out {output}"
+            " --nfrags {wildcards.n}"
+            " --fraglen {wildcards.l}"
+            " --qualityshift {wildcards.qs}"
+            " --templates {input.orig}"
+            " --s1 {input.s1}"
+            " --s2 {input.s2}"
+        )
+
+
+rule merge_csv:
+    input:
+        expand(
+            OUTDIR_EVA + "/gen_n_{n}_l_{l}_qs_{qs}.csv",
+            n=NUMFRAGS,
+            l=LENGTH,
+            qs=QS,
+        ),
+    output:  
+        OUTDIR_EVA + "/all.csv",
+    shell:
+        ("{MERGE_SCRIPT}")
+
+
+rule plot:
+    input:
+        OUTDIR_EVA + "/all.csv"
+    output:
+        expand(
+            OUTDIR_PLOT + "/{tool_name}_combined.png",
+            tool_name=TOOLNAMES,
+        ),
+    shell:
+        (
+            "python3 {PLOT_SCRIPT}"
+            " -i {input}"
+            " -o {OUTDIR_PLOT}"
+        )
