@@ -88,6 +88,16 @@ def parse_arguments():
         sys.exit(2)
 
 
+def get_merge_dict(merge_info_path, tool_name):
+    merge_dict = dict()
+    df = pd.read_csv(merge_info_path)
+    df = df[df["program"] == tool_name].reset_index()
+    for index, row in df.iterrows():
+        key = (row["type"], row["qs1"], row["qs2"])
+        merge_dict[key] = (int(row["new_nt"][1]), row["new_qs"])
+    return merge_dict
+
+
 def _next_fastq_entry(fastq_file, fraglen):
     entry = dict()
     entry["name"] = fastq_file.readline().rstrip()[1:-4]
@@ -104,8 +114,14 @@ def _next_fasta_entry(fasta_file):
     return entry
 
 
-def get_next_entries(fragments_file, s1_file,s2_file, fraglen, dna_complement):
-    
+def get_next_entries(fragments_file, s1_file, s2_file, fraglen, dna_complement):
+    """
+    Returns the next fasta entry of the file with the original 
+    fragments, and the next fastq entries of the simulated reads. For 
+    the mate2 read, the reverse complement sequence and the reverse 
+    quality score line will be returned. Furthermore, the function will 
+    raise an Assertion error, if the names of all sequences don't align.
+    """
     orig = _next_fasta_entry(fragments_file)
     read1 = _next_fastq_entry(s1_file, fraglen)
     read2 = _next_fastq_entry(s2_file, fraglen)
@@ -116,54 +132,50 @@ def get_next_entries(fragments_file, s1_file,s2_file, fraglen, dna_complement):
     return orig, read1, read2
 
 
-def merged_base_and_qual(merge_df, base1, base2, qual1, qual2):
+def merged_base_and_qual(merge_dict, base1, base2, qual1, qual2):
     # find out if the base matches in read1 and read2
     if base1 == base2:
         match_type = "match"
     else:
         match_type = "mismatch"
-    # get the right row of the data frame
-    mask = (merge_df["type"] == match_type) \
-        & (merge_df["qs1"] == qual1) \
-        & (merge_df["qs2"] == qual2)
-    row = merge_df[mask]
-    # get the merged base
-    if row["new_nt"].iloc[0] == "s1":
-        merged_base = base1
-    else: 
-        merged_base = base2
-    # get merged quality score
-    merged_qual = row["new_qs"].iloc[0]
+    # get the merged base and quality score
+    new_nt, merged_qual = merge_dict[(match_type, qual1, qual2)]
+    merged_base = (base1, base2)[new_nt-1]
     return merged_base, merged_qual
 
 
 def add_to_phred_counter(phred_counter, merged_qual, merged_base, orig_base):
-    # make sure the merged phred is in the dict
-    if merged_qual not in phred_counter:
+    # add to total count
+    try:
+        phred_counter[merged_qual]["total_cnt"] += 1
+    except KeyError:
+        # phred score not in dict, create key/value pair
         phred_counter[merged_qual] = {
-            "total_cnt": 0, 
+            "total_cnt": 1, 
             "error_cnt": 0
             }
     # add to counter
-    phred_counter[merged_qual]["total_cnt"] += 1
     if merged_base != orig_base:
         phred_counter[merged_qual]["error_cnt"] += 1
 
 
-def process_reads(orig, read1, read2, merge_df, phred_counter):
+def process_reads(orig, read1, read2, merge_dict, phred_counter):
     for pos in range(len(orig["sequence"])):
-        orig_base = orig["sequence"][pos]
-        base1 = read1["sequence"][pos]
-        base2 = read2["sequence"][pos]
-        # get the quality score of read1 and read2
-        qual1 = read1["quality"][pos] - 33
-        qual2 = read2["quality"][pos] - 33
         # get merged base and quality
-        merged_base, merged_qual = merged_base_and_qual(merge_df, 
-                                                        base1, base2, 
-                                                        qual1, qual2)
+        merged_base, merged_qual = merged_base_and_qual(
+            merge_dict, 
+            read1["sequence"][pos], 
+            read2["sequence"][pos], 
+            read1["quality"][pos] - 33, 
+            read2["quality"][pos] - 33,
+            )
         # add count for the quality score
-        add_to_phred_counter(phred_counter, merged_qual, merged_base, orig_base)
+        add_to_phred_counter(
+            phred_counter,
+            merged_qual,
+            merged_base,
+            orig["sequence"][pos]
+            )
 
 
 def phred_2_p_error(q_value):
@@ -259,15 +271,14 @@ def main(template_path, s1_path, s2_path, merge_info_path, nfrags, fraglen, qual
     templates_file = gzip.open(template_path, "rb") if common._is_gzipped(template_path) else open(template_path, "rb")
     s1_file = gzip.open(s1_path, "rb") if common._is_gzipped(s1_path) else open(s1_path, "rb")
     s2_file = gzip.open(s2_path, "rb") if common._is_gzipped(s2_path) else open(s2_path, "rb")
-    merge_df = pd.read_csv(merge_info_path)
-    merge_df = merge_df[merge_df["program"] == tool_name]
+    merge_dict = get_merge_dict(merge_info_path, tool_name)
 
     # Analysis
     phred_counter = dict()
     dna_complement = bytes.maketrans(b"ACTG", b"TGAC")
     for _ in range(nfrags):
         orig, read1, read2 = get_next_entries(templates_file, s1_file, s2_file, fraglen, dna_complement)
-        process_reads(orig, read1, read2, merge_df, phred_counter)
+        process_reads(orig, read1, read2, merge_dict, phred_counter)
     
     results = get_results(phred_counter, alpha)
 
@@ -281,6 +292,7 @@ def main(template_path, s1_path, s2_path, merge_info_path, nfrags, fraglen, qual
         df.insert(3, 'qual_shift', qualityshift)
         df.insert(4, 'alpha', alpha)
         df.to_csv(export_path, na_rep="NA")
+    
 
 
 if __name__ == "__main__":
