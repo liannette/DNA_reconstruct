@@ -227,9 +227,8 @@ def get_results(phred_counter, alpha):
     for q_score in sorted(phred_counter.keys()):
         
         predicted_error = phred_2_p_error(q_score)
-        n_matches = phred_counter[q_score]["match_cnt"]
-        n_mismatches = phred_counter[q_score]["mismatch_cnt"]
-        n_total = n_mismatches + n_matches
+        n_total = phred_counter[q_score]["total_cnt"]
+        n_mismatches = phred_counter[q_score]["error_cnt"]
         p_mm = p_mismatch(n_total, n_mismatches)
         p_mm_lower, p_mm_upper = binomial_ci(n_total, n_mismatches, alpha)
         observed_phred = p_error_2_phred(p_mm, max_phred)
@@ -238,7 +237,7 @@ def get_results(phred_counter, alpha):
     
         results["predicted_phred"].append(q_score)
         results["predicted_error"].append(predicted_error)
-        results["n_matches"].append(n_matches)
+        results["n_matches"].append(n_total - n_mismatches)
         results["n_mismatches"].append(n_mismatches)
         results["n_total"].append(n_total)
         results["p_mismatch"].append(p_mm)
