@@ -61,14 +61,13 @@ rule all:
             l=LENGTH,
             qs=["0"], #QS,
         ),
-        OUTDIR_EVA + "/all.csv",
+        OUTDIR_EVA + "/all_merged.csv",
         # Plotting
         expand(
             OUTDIR_PLOT + "/{tool_name}_combined.png",
             tool_name=TOOLNAMES,
         ),
     run:
-        shell("gzip {OUTDIR_REC}/*/*")
         shell("gzip {OUTDIR_SIM}/*")
 
 
@@ -229,14 +228,14 @@ rule merge_csv:
             qs=QS,
         ),
     output:  
-        OUTDIR_EVA + "/all.csv",
+        OUTDIR_EVA + "/all_merged.csv",
     shell:
         ("{MERGE_SCRIPT}")
 
 
 rule plot:
     input:
-        OUTDIR_EVA + "/all.csv"
+        OUTDIR_EVA + "/all_merged.csv"
     output:
         expand(
             OUTDIR_PLOT + "/{tool_name}_combined.png",
