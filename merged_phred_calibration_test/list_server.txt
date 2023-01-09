@@ -1,7 +1,0 @@
-node05
-node06
-node08
-node09
-node10
-node12
-node13
