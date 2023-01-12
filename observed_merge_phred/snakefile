@@ -6,8 +6,8 @@ TOOLNAMES = [
     "leeHom", "AdapterRemoval", "ClipAndMerge", "seqtk_adna_trim", 
     "bbmerge", "fastp", "SeqPrep"
     ]
-QS = ["0", "-10", "-20", "-30"]
-NUMFRAGS = 100000000    # 100 Mio
+QS = ["0", "-5", "-10", "-15", "-20"]
+NUMFRAGS = 100000000    # 100,000,000
 LENGTH = 120
 
 # project directory
