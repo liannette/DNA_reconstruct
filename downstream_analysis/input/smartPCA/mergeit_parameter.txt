@@ -1,0 +1,10 @@
+geno1:      /home/projects/DNA_reconstruct/downstream_analysis/input/genotypes/data.geno
+snp1:       /home/projects/DNA_reconstruct/downstream_analysis/input/genotypes/data.snp
+ind1:       /home/projects/DNA_reconstruct/downstream_analysis/input/genotypes/data.ind
+geno2:      /home/projects/DNA_reconstruct/downstream_analysis/output/eigenstrat/HG002_HG005.geno
+snp2:       /home/projects/DNA_reconstruct/downstream_analysis/input/genotypes/data.snp
+ind2:       /home/projects/DNA_reconstruct/downstream_analysis/output/eigenstrat/HG002_HG005.ind
+genooutfilename:    /home/projects/DNA_reconstruct/downstream_analysis/output/eigenstrat/HO_HG002_HG005.geno
+snpoutfilename:     /home/projects/DNA_reconstruct/downstream_analysis/output/eigenstrat/HO_HG002_HG005.snp
+indoutfilename:     /home/projects/DNA_reconstruct/downstream_analysis/output/eigenstrat/HO_HG002_HG005.ind
+outputformat: EIGENSTRAT

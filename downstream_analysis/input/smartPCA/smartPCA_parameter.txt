@@ -1,0 +1,9 @@
+genotypename: /home/projects/DNA_reconstruct/downstream_analysis/output/eigenstrat/HO_HG002_HG005.geno
+snpname: /home/projects/DNA_reconstruct/downstream_analysis/output/eigenstrat/HO_HG002_HG005.snp
+indivname: /home/projects/DNA_reconstruct/downstream_analysis/output/eigenstrat/HO_HG002_HG005.ind
+evecoutname: /home/projects/DNA_reconstruct/downstream_analysis/output/smartPCA/eurasia.evec
+evaloutname: /home/projects/DNA_reconstruct/downstream_analysis/output/smartPCA/eurasia.eval
+poplistname: /home/projects/DNA_reconstruct/downstream_analysis/input/smartPCA/poplist_eurasia.txt
+lsqproject: YES
+numoutevec: 4
+numthreads: 20
