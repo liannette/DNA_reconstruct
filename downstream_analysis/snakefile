@@ -51,7 +51,7 @@ SEQPREP = "/home/ctools/SeqPrep-1.3.2/SeqPrep"
 BWA = "/home/ctools/bwa-0.7.17/bwa"
 PICARD = "/home/ctools/picard_2.27.5/picard.jar" 
 GATK = "/home/ctools/gatk-4.2.1.0/gatk"
-samtools = "/net/node07/storage/ctools/samtools-1.13/samtools"
+samtools = "/home/ctools/samtools-1.13/samtools"
 # scripts
 EVAL_SCRIPT = PROJECTDIR + "/evaluate.py"
 MERGE_SCRIPT = PROJECTDIR + "/merge_csv.sh"
@@ -680,6 +680,7 @@ rule create_eigenstrat_files:
         OUTDIR_EIG + "/{tool_name}/{sample}_{fraction}_{seed}.geno",
     params:
         samplename="{sample}-{tool_name}-{fraction}-{seed}",
+        popname="{sample}-{tool_name}-{fraction}",
         basename=OUTDIR_EIG + "/{tool_name}/{sample}_{fraction}_{seed}",
     conda:
         "envs/sequencetools.yml"
@@ -737,7 +738,7 @@ rule create_eigenstrat_files:
             " | pileupCaller"
             " --randomHaploid"
             " --sampleNames {params.samplename}"
-            " --samplePopName {wildcards.sample}-{wildcards.tool_name}-{wildcards.fraction}"
+            " --samplePopName {params.popname}"
             " --snpFile {snp}"
             " --seed {SEED}"
             " --eigenstratOut {params.basename}"
