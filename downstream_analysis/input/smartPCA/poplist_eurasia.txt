@@ -71,9 +71,8 @@ Lezgin
 Lithuanian
 Maltese
 Mansi
-Mende
 Miao
-Mongola
+MongolaStre
 Mordovian
 Naxi
 Nganasan
