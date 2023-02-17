@@ -745,54 +745,92 @@ rule pileupCaller:
         )
 
 
-rule vcf2eigenstrat_hg002:
+rule vcf2eigenstrat_hg002_all:
     input:
-        hg2=INDIR + "/genotypes/giab/HG002_GRCh37_1_22_v4.2.1_all.vcf.gz",
-        hg2_idx=INDIR + "/genotypes/giab/HG002_GRCh37_1_22_v4.2.1_all.vcf.gz.tbi",
+        hg2=INDIR + "/genotypes/reference_giab/HG002_GRCh37_1_22_v4.2.1_all.vcf.gz",
+        hg2_idx=INDIR + "/genotypes/reference_giab/HG002_GRCh37_1_22_v4.2.1_all.vcf.gz.tbi",
     output:
-        OUTDIR_EIG + "/giab/{sample}.geno",
-        OUTDIR_EIG + "/giab/{sample}.ind",
-        OUTDIR_EIG + "/giab/{sample}.snp.txt",
+        OUTDIR_EIG + "/reference_giab/HG002_all.geno",
+        OUTDIR_EIG + "/reference_giab/HG002_all.ind",
+        OUTDIR_EIG + "/reference_giab/HG002_all.snp.txt",
     params:
-        OUTDIR_EIG + "/giab/HG002",
+        OUTDIR_EIG + "/reference_giab/HG002_all",
     conda:
         "envs/downstream_analysis.yml"
     run:
         shell("zcat {input.hg2} | vcf2eigenstrat -f {snp} -e {params}")
         shell("mv {params}.geno.txt {params}.geno")
-        shell("echo 'HG002-giab U HG002-giab' > {params}.ind")
+        shell("echo 'HG002_giab-all U HG002_giab-all' > {params}.ind")
         shell("rm {params}.ind.txt")
 
 
-rule vcf2eigenstrat_hg005:
+rule vcf2eigenstrat_hg005_all:
     input:
-        hg5=INDIR + "/genotypes/giab/HG005_GRCh37_1_22_v4_all.vcf.gz",
-        hg5_idx=INDIR + "/genotypes/giab/HG005_GRCh37_1_22_v4_all.vcf.gz.tbi",
+        hg5=INDIR + "/genotypes/reference_giab/HG005_GRCh37_1_22_v4_all.vcf.gz",
+        hg5_idx=INDIR + "/genotypes/reference_giab/HG005_GRCh37_1_22_v4_all.vcf.gz.tbi",
     output:
-        OUTDIR_EIG + "/giab/HG005.geno",
-        OUTDIR_EIG + "/giab/HG005.ind",
-        OUTDIR_EIG + "/giab/HG005.snp.txt",
+        OUTDIR_EIG + "/reference_giab/HG005_all.geno",
+        OUTDIR_EIG + "/reference_giab/HG005_all.ind",
+        OUTDIR_EIG + "/reference_giab/HG005_all.snp.txt",
     params:
-        OUTDIR_EIG + "/giab/HG005",
+        OUTDIR_EIG + "/reference_giab/HG005_all",
     conda:
         "envs/downstream_analysis.yml"
     run:
-        shell("zcat {input} | vcf2eigenstrat -f {snp} -e {params}")
+        shell("zcat {input.hg5} | vcf2eigenstrat -f {snp} -e {params}")
         shell("mv {params}.geno.txt {params}.geno")
-        shell("echo 'HG005-giab U HG005-giab' > {params}.ind")
+        shell("echo 'HG005_giab-all U HG005_giab-all' > {params}.ind")
+        shell("rm {params}.ind.txt")
+
+
+rule vcf2eigenstrat_hg002:
+        input:
+            hg2=INDIR + "/genotypes/reference_giab/HG002_GRCh37_1_22_v4.2.1_benchmark.vcf.gz",
+            hg2_idx=INDIR + "/genotypes/reference_giab/HG002_GRCh37_1_22_v4.2.1_benchmark.vcf.gz.tbi",
+        output:
+            OUTDIR_EIG + "/reference_giab/HG002_benchmark.geno",
+            OUTDIR_EIG + "/reference_giab/HG002_benchmark.ind",
+            OUTDIR_EIG + "/reference_giab/HG002_benchmark.snp.txt",
+        params:
+            OUTDIR_EIG + "/reference_giab/HG002_benchmark",
+        conda:
+            "envs/downstream_analysis.yml"
+        run:
+            shell("zcat {input.hg2} | vcf2eigenstrat -f {snp} -e {params}")
+            shell("mv {params}.geno.txt {params}.geno")
+            shell("echo 'HG002_giab-benchmark U HG002_giab-benchmark' > {params}.ind")
+            shell("rm {params}.ind.txt")
+    
+    
+rule vcf2eigenstrat_hg005:
+    input:
+        hg5=INDIR + "/genotypes/reference_giab/HG005_GRCh37_1_22_v4.2.1_benchmark.vcf.gz",
+        hg5_idx=INDIR + "/genotypes/reference_giab/HG005_GRCh37_1_22_v4.2.1_benchmark.vcf.gz.tbi",
+    output:
+        OUTDIR_EIG + "/reference_giab/HG005_benchmark.geno",
+        OUTDIR_EIG + "/reference_giab/HG005_benchmark.ind",
+        OUTDIR_EIG + "/reference_giab/HG005_benchmark.snp.txt",
+    params:
+        OUTDIR_EIG + "/reference_giab/HG005_benchmark",
+    conda:
+        "envs/downstream_analysis.yml"
+    run:
+        shell("zcat {input.hg5} | vcf2eigenstrat -f {snp} -e {params}")
+        shell("mv {params}.geno.txt {params}.geno")
+        shell("echo 'HG005_giab-benchmark U HG005_giab-benchmark' > {params}.ind")
         shell("rm {params}.ind.txt")
 
 
 rule combine_eigenstrat_files:
     input:
-        expand(
-            OUTDIR_EIG + "/giab/{sample}.geno",
-            sample=SAMPLES,
-        ),
-        expand(
-            OUTDIR_EIG + "/giab/{sample}.ind",
-            sample=SAMPLES,
-        ),
+        OUTDIR_EIG + "/reference_giab/HG002_all.geno",
+        OUTDIR_EIG + "/reference_giab/HG002_all.ind",
+        OUTDIR_EIG + "/reference_giab/HG005_all.geno",
+        OUTDIR_EIG + "/reference_giab/HG005_all.ind",
+        OUTDIR_EIG + "/reference_giab/HG002_benchmark.geno",
+        OUTDIR_EIG + "/reference_giab/HG002_benchmark.ind",
+        OUTDIR_EIG + "/reference_giab/HG005_benchmark.geno",
+        OUTDIR_EIG + "/reference_giab/HG005_benchmark.ind",
         expand(
             OUTDIR_EIG + "/{tool_name}/{sample}_{fraction}_{seed}.geno",
             tool_name=TOOLNAMES,
