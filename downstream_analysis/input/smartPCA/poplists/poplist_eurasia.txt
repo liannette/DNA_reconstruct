@@ -1,7 +1,6 @@
 Abkhasian
 Adygei
 Albanian
-Aleut
 Altaian
 Ami
 Armenian
@@ -15,6 +14,7 @@ Bengali
 Bergamo
 Bulgarian
 Cambodian
+Canary_Islanders
 Chechen
 Chukchi
 Chuvash
@@ -24,7 +24,6 @@ Czech
 Dai
 Daur
 Dolgan
-Egyptian
 English
 Eskimo
 Estonian
@@ -56,7 +55,6 @@ Jew_Tunisian
 Jew_Turkish
 Jew_Yemenite
 Jordanian
-Ju_hoan_North
 Kalash
 Kalmyk
 Kinh
@@ -72,7 +70,7 @@ Lithuanian
 Maltese
 Mansi
 Miao
-MongolaStre
+Mongola
 Mordovian
 Naxi
 Nganasan
