@@ -675,16 +675,16 @@ rule pileupCaller:
     input:
         OUTDIR_ALI + "/{tool_name}/subsample/{sample}_{fraction}_{seed}.bam"
     output:
-        OUTDIR_EIG + "/{tool_name}/{sample}_{fraction}_{seed}.snp",
-        OUTDIR_EIG + "/{tool_name}/{sample}_{fraction}_{seed}.ind",
-        OUTDIR_EIG + "/{tool_name}/{sample}_{fraction}_{seed}.geno",
+        ind=OUTDIR_EIG + "/{tool_name}/{sample}_{fraction}_{seed}.ind",
+        geno=OUTDIR_EIG + "/{tool_name}/{sample}_{fraction}_{seed}.geno",
     params:
         samplename="{sample}-{tool_name}-{fraction}-{seed}",
         popname="{sample}-{tool_name}-{fraction}",
         basename=OUTDIR_EIG + "/{tool_name}/{sample}_{fraction}_{seed}",
+        snp=OUTDIR_EIG + "/{tool_name}/{sample}_{fraction}_{seed}.snp",
     conda:
         "envs/downstream_analysis.yml"
-    shell:
+    run:
         # samtools
         # -B    disables base alignment quality recalibration. This mechanism
         #       is turned on by default and causes huge reference bias with 
@@ -729,7 +729,7 @@ rule pileupCaller:
         #       correctly aligned to pileup data with actual
         #       chromosome names X, Y and MT (or chrX, chrY and
         #       chrMT, respectively).
-        (
+        shell(
             "{samtools} mpileup"
             " -R -B"
             " -l {pos}"
@@ -743,6 +743,8 @@ rule pileupCaller:
             " --seed {SEED}"
             " --eigenstratOut {params.basename}"
         )
+        shell("rm {params.snp}")
+        shell("echo '{params.samplename} M {params.popname}' > {output.ind}")
 
 
 rule vcf2eigenstrat_hg002_all:
@@ -752,7 +754,6 @@ rule vcf2eigenstrat_hg002_all:
     output:
         OUTDIR_EIG + "/reference_giab/HG002_all.geno",
         OUTDIR_EIG + "/reference_giab/HG002_all.ind",
-        OUTDIR_EIG + "/reference_giab/HG002_all.snp.txt",
     params:
         OUTDIR_EIG + "/reference_giab/HG002_all",
     conda:
@@ -760,8 +761,9 @@ rule vcf2eigenstrat_hg002_all:
     run:
         shell("zcat {input.hg2} | vcf2eigenstrat -f {snp} -e {params}")
         shell("mv {params}.geno.txt {params}.geno")
-        shell("echo 'HG002_giab-all U HG002_giab-all' > {params}.ind")
+        shell("echo 'HG002_giab-all M HG002_giab-all' > {params}.ind")
         shell("rm {params}.ind.txt")
+        shell("rm {params}.snp.txt")
 
 
 rule vcf2eigenstrat_hg005_all:
@@ -771,7 +773,6 @@ rule vcf2eigenstrat_hg005_all:
     output:
         OUTDIR_EIG + "/reference_giab/HG005_all.geno",
         OUTDIR_EIG + "/reference_giab/HG005_all.ind",
-        OUTDIR_EIG + "/reference_giab/HG005_all.snp.txt",
     params:
         OUTDIR_EIG + "/reference_giab/HG005_all",
     conda:
@@ -779,8 +780,9 @@ rule vcf2eigenstrat_hg005_all:
     run:
         shell("zcat {input.hg5} | vcf2eigenstrat -f {snp} -e {params}")
         shell("mv {params}.geno.txt {params}.geno")
-        shell("echo 'HG005_giab-all U HG005_giab-all' > {params}.ind")
+        shell("echo 'HG005_giab-all M HG005_giab-all' > {params}.ind")
         shell("rm {params}.ind.txt")
+        shell("rm {params}.snp.txt")
 
 
 rule vcf2eigenstrat_hg002:
@@ -790,7 +792,6 @@ rule vcf2eigenstrat_hg002:
         output:
             OUTDIR_EIG + "/reference_giab/HG002_benchmark.geno",
             OUTDIR_EIG + "/reference_giab/HG002_benchmark.ind",
-            OUTDIR_EIG + "/reference_giab/HG002_benchmark.snp.txt",
         params:
             OUTDIR_EIG + "/reference_giab/HG002_benchmark",
         conda:
@@ -798,8 +799,9 @@ rule vcf2eigenstrat_hg002:
         run:
             shell("zcat {input.hg2} | vcf2eigenstrat -f {snp} -e {params}")
             shell("mv {params}.geno.txt {params}.geno")
-            shell("echo 'HG002_giab-benchmark U HG002_giab-benchmark' > {params}.ind")
+            shell("echo 'HG002_giab-benchmark M HG002_giab-benchmark' > {params}.ind")
             shell("rm {params}.ind.txt")
+            shell("rm {params}.snp.txt")
     
     
 rule vcf2eigenstrat_hg005:
@@ -809,7 +811,6 @@ rule vcf2eigenstrat_hg005:
     output:
         OUTDIR_EIG + "/reference_giab/HG005_benchmark.geno",
         OUTDIR_EIG + "/reference_giab/HG005_benchmark.ind",
-        OUTDIR_EIG + "/reference_giab/HG005_benchmark.snp.txt",
     params:
         OUTDIR_EIG + "/reference_giab/HG005_benchmark",
     conda:
@@ -817,8 +818,9 @@ rule vcf2eigenstrat_hg005:
     run:
         shell("zcat {input.hg5} | vcf2eigenstrat -f {snp} -e {params}")
         shell("mv {params}.geno.txt {params}.geno")
-        shell("echo 'HG005_giab-benchmark U HG005_giab-benchmark' > {params}.ind")
+        shell("echo 'HG005_giab-benchmark M HG005_giab-benchmark' > {params}.ind")
         shell("rm {params}.ind.txt")
+        shell("rm {params}.snp.txt")
 
 
 rule combine_eigenstrat_files:
@@ -876,11 +878,11 @@ rule smartPCA:
         OUTDIR_EIG + "/HO_HG002_HG005.geno",
         OUTDIR_EIG + "/HO_HG002_HG005.ind",
         OUTDIR_EIG + "/HO_HG002_HG005.snp",
-        INDIR + "/smartPCA/poplist_eurasia.txt",
+        INDIR + "/smartPCA/poplists/poplist_eurasia.txt",
         paramsfile=INDIR + "/smartPCA/smartPCA_parameter.txt",
     output:
-        OUTDIR + "/smartPCA/eurasia.evec",
-        OUTDIR + "/smartPCA/eurasia.eval",
+        evec=OUTDIR + "/smartPCA/eurasia.evec",
+        eval=OUTDIR + "/smartPCA/eurasia.eval",
         log=OUTDIR + "/smartPCA/eurasia.log",
     threads:
         22

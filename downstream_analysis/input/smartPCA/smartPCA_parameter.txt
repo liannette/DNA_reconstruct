@@ -5,5 +5,6 @@ evecoutname: /home/projects/DNA_reconstruct/downstream_analysis/output/smartPCA/
 evaloutname: /home/projects/DNA_reconstruct/downstream_analysis/output/smartPCA/eurasia.eval
 poplistname: /home/projects/DNA_reconstruct/downstream_analysis/input/smartPCA/poplists/poplist_eurasia.txt
 lsqproject: YES
-numoutevec: 4
+numoutevec: 10
 numthreads: 20
+badsnpname: /home/projects/DNA_reconstruct/downstream_analysis/input/genotypes/human_origins/exclude.snp
