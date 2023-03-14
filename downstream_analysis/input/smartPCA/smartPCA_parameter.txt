@@ -4,6 +4,7 @@ indivname: /home/projects/DNA_reconstruct/downstream_analysis/output/eigenstrat/
 evecoutname: /home/projects/DNA_reconstruct/downstream_analysis/output/smartPCA/eurasia.evec
 evaloutname: /home/projects/DNA_reconstruct/downstream_analysis/output/smartPCA/eurasia.eval
 poplistname: /home/projects/DNA_reconstruct/downstream_analysis/input/smartPCA/poplists/poplist_eurasia.txt
+badsnpname: /home/projects/DNA_reconstruct/downstream_analysis/input/genotypes/human_origins/exclude.snp
 lsqproject: YES
 newshrink:  YES
 numoutevec: 10
