@@ -184,15 +184,15 @@ def create_plots(df_type, program, match_type, max_new_qs, outdir):
     # Add titel and axes labels
     ax.set_title(f"{program}", fontsize=30)
     if match_type == "match":
-        ax.set_xlabel(f"Phred quality score on forward read", fontsize=14)
-        ax.set_ylabel(f"Phred quality score on reverse read", fontsize=14)
+        ax.set_xlabel(f"Phred quality score on forward read", fontsize=18)
+        ax.set_ylabel(f"Phred quality score on reverse read", fontsize=18)
     else:
         nt1 = list(df_type["nt1"])[0]
         nt2 = list(df_type["nt2"])[0]
         ax.set_xlabel(f"Phred quality score on forward read (nucleotide: {nt1})", 
-                      fontsize=20)
+                      fontsize=18)
         ax.set_ylabel(f"Phred quality score on reverse read (nucleotide: {nt2})", 
-                      fontsize=20)
+                      fontsize=18)
 
     # Add the new nucletide as annotation
     if match_type == "mismatch":
