@@ -156,9 +156,9 @@ def create_plots(df_type, program, match_type, max_new_qs, outdir):
 
     # Get matrices of the new phred value and the new nucleotide
     df_new_qs = df_type.pivot(index='qs2', columns='qs1', values='new_qs') \
-                        .sort_index(ascending=False)
+                       .sort_index(ascending=False)
     df_new_nt = df_type.pivot(index='qs2', columns='qs1', values='new_nt') \
-                        .sort_index(ascending=False)
+                       .sort_index(ascending=False)
 
     # Create own colormap for heatmap
     cvals  = [0, 20, 40, 60, 80, max_new_qs]
@@ -182,20 +182,26 @@ def create_plots(df_type, program, match_type, max_new_qs, outdir):
         )
 
     # Add titel and axes labels
-    nt1 = list(df_type["nt1"])[0]
-    nt2 = list(df_type["nt2"])[0]
-    ax.set_title(f"{program}, {match_type}", fontsize=20)
-    ax.set_xlabel(f"Phred quality score, forward read (base: {nt1})", fontsize=14)
-    ax.set_ylabel(f"Phred quality score, reverse read (rc base: {nt2})",
-                fontsize=14)
+    ax.set_title(f"{program}", fontsize=20)
+    if match_type == "match":
+        ax.set_xlabel(f"Phred quality score on forward read", fontsize=14)
+        ax.set_ylabel(f"Phred quality score on reverse read", fontsize=14)
+    else:
+        nt1 = list(df_type["nt1"])[0]
+        nt2 = list(df_type["nt2"])[0]
+        ax.set_xlabel(f"Phred quality score on forward read (nucleotide: {nt1})", 
+                      fontsize=14)
+        ax.set_ylabel(f"Phred quality score on reverse read (nucleotide: {nt2})", 
+                      fontsize=14)
 
     # Add the new nucletide as annotation
-    texts = annotate_heatmap(im, 
-                            df_new_nt.to_numpy(), 
-                            valfmt=None, 
-                            #textcolors=("white", "black"),
-                            threshold=max_new_qs
-                            )
+    if match_type == "mismatch":
+        annotate_heatmap(im, 
+                         df_new_nt.to_numpy(), 
+                         valfmt=None, 
+                         #textcolors=("white", "black"),
+                         threshold=max_new_qs
+                         )
 
     # Save plot
     fig.tight_layout()

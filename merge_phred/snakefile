@@ -219,6 +219,7 @@ rule bbmerge:
             " mininsert=1"
             " mininsert0=1"
             " minoverlap=10"
+            " minoverlap=0"
             " efilter=-1"
             " ratiomargin=1"
         )
@@ -242,7 +243,6 @@ rule fastp:
             " --adapter_sequence_r2 {ADPT2}"
             " --merged_out {output}"
             " --disable_length_filtering"
-            " --length_required 1"
             " --json /dev/null"
             " --html /dev/null"
         )

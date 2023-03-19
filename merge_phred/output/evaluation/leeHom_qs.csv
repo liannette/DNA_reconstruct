@@ -2021,7 +2021,7 @@ d_G6_T2,leeHom,mismatch,G,T,G,6,2,5
 d_G6_T3,leeHom,mismatch,G,T,G,6,3,4
 d_G6_T4,leeHom,mismatch,G,T,G,6,4,4
 d_G6_T5,leeHom,mismatch,G,T,G,6,5,3
-d_G6_T6,leeHom,mismatch,G,T,G,6,6,3
+d_G6_T6,leeHom,mismatch,G,T,T,6,6,3
 d_G6_T7,leeHom,mismatch,G,T,T,6,7,3
 d_G6_T8,leeHom,mismatch,G,T,T,6,8,4
 d_G6_T9,leeHom,mismatch,G,T,T,6,9,5
@@ -2064,7 +2064,7 @@ d_G7_T3,leeHom,mismatch,G,T,G,7,3,5
 d_G7_T4,leeHom,mismatch,G,T,G,7,4,5
 d_G7_T5,leeHom,mismatch,G,T,G,7,5,4
 d_G7_T6,leeHom,mismatch,G,T,G,7,6,3
-d_G7_T7,leeHom,mismatch,G,T,T,7,7,3
+d_G7_T7,leeHom,mismatch,G,T,G,7,7,3
 d_G7_T8,leeHom,mismatch,G,T,T,7,8,3
 d_G7_T9,leeHom,mismatch,G,T,T,7,9,4
 d_G7_T10,leeHom,mismatch,G,T,T,7,10,5
@@ -2107,7 +2107,7 @@ d_G8_T4,leeHom,mismatch,G,T,G,8,4,5
 d_G8_T5,leeHom,mismatch,G,T,G,8,5,5
 d_G8_T6,leeHom,mismatch,G,T,G,8,6,4
 d_G8_T7,leeHom,mismatch,G,T,G,8,7,3
-d_G8_T8,leeHom,mismatch,G,T,G,8,8,3
+d_G8_T8,leeHom,mismatch,G,T,T,8,8,3
 d_G8_T9,leeHom,mismatch,G,T,T,8,9,3
 d_G8_T10,leeHom,mismatch,G,T,T,8,10,4
 d_G8_T11,leeHom,mismatch,G,T,T,8,11,5
@@ -2365,7 +2365,7 @@ d_G14_T10,leeHom,mismatch,G,T,G,14,10,5
 d_G14_T11,leeHom,mismatch,G,T,G,14,11,5
 d_G14_T12,leeHom,mismatch,G,T,G,14,12,4
 d_G14_T13,leeHom,mismatch,G,T,G,14,13,3
-d_G14_T14,leeHom,mismatch,G,T,T,14,14,3
+d_G14_T14,leeHom,mismatch,G,T,G,14,14,3
 d_G14_T15,leeHom,mismatch,G,T,T,14,15,3
 d_G14_T16,leeHom,mismatch,G,T,T,14,16,4
 d_G14_T17,leeHom,mismatch,G,T,T,14,17,5
@@ -2451,7 +2451,7 @@ d_G16_T12,leeHom,mismatch,G,T,G,16,12,5
 d_G16_T13,leeHom,mismatch,G,T,G,16,13,5
 d_G16_T14,leeHom,mismatch,G,T,G,16,14,4
 d_G16_T15,leeHom,mismatch,G,T,G,16,15,4
-d_G16_T16,leeHom,mismatch,G,T,T,16,16,3
+d_G16_T16,leeHom,mismatch,G,T,G,16,16,3
 d_G16_T17,leeHom,mismatch,G,T,T,16,17,4
 d_G16_T18,leeHom,mismatch,G,T,T,16,18,4
 d_G16_T19,leeHom,mismatch,G,T,T,16,19,5
@@ -2623,7 +2623,7 @@ d_G20_T16,leeHom,mismatch,G,T,G,20,16,5
 d_G20_T17,leeHom,mismatch,G,T,G,20,17,5
 d_G20_T18,leeHom,mismatch,G,T,G,20,18,4
 d_G20_T19,leeHom,mismatch,G,T,G,20,19,4
-d_G20_T20,leeHom,mismatch,G,T,T,20,20,3
+d_G20_T20,leeHom,mismatch,G,T,G,20,20,3
 d_G20_T21,leeHom,mismatch,G,T,T,20,21,4
 d_G20_T22,leeHom,mismatch,G,T,T,20,22,4
 d_G20_T23,leeHom,mismatch,G,T,T,20,23,5
@@ -2709,7 +2709,7 @@ d_G22_T18,leeHom,mismatch,G,T,G,22,18,5
 d_G22_T19,leeHom,mismatch,G,T,G,22,19,5
 d_G22_T20,leeHom,mismatch,G,T,G,22,20,4
 d_G22_T21,leeHom,mismatch,G,T,G,22,21,4
-d_G22_T22,leeHom,mismatch,G,T,T,22,22,3
+d_G22_T22,leeHom,mismatch,G,T,G,22,22,3
 d_G22_T23,leeHom,mismatch,G,T,T,22,23,4
 d_G22_T24,leeHom,mismatch,G,T,T,22,24,4
 d_G22_T25,leeHom,mismatch,G,T,T,22,25,5
@@ -2795,7 +2795,7 @@ d_G24_T20,leeHom,mismatch,G,T,G,24,20,5
 d_G24_T21,leeHom,mismatch,G,T,G,24,21,5
 d_G24_T22,leeHom,mismatch,G,T,G,24,22,4
 d_G24_T23,leeHom,mismatch,G,T,G,24,23,4
-d_G24_T24,leeHom,mismatch,G,T,T,24,24,3
+d_G24_T24,leeHom,mismatch,G,T,G,24,24,3
 d_G24_T25,leeHom,mismatch,G,T,T,24,25,4
 d_G24_T26,leeHom,mismatch,G,T,T,24,26,4
 d_G24_T27,leeHom,mismatch,G,T,T,24,27,5
@@ -2838,7 +2838,7 @@ d_G25_T21,leeHom,mismatch,G,T,G,25,21,5
 d_G25_T22,leeHom,mismatch,G,T,G,25,22,5
 d_G25_T23,leeHom,mismatch,G,T,G,25,23,4
 d_G25_T24,leeHom,mismatch,G,T,G,25,24,4
-d_G25_T25,leeHom,mismatch,G,T,T,25,25,3
+d_G25_T25,leeHom,mismatch,G,T,G,25,25,3
 d_G25_T26,leeHom,mismatch,G,T,T,25,26,4
 d_G25_T27,leeHom,mismatch,G,T,T,25,27,4
 d_G25_T28,leeHom,mismatch,G,T,T,25,28,5
@@ -2881,7 +2881,7 @@ d_G26_T22,leeHom,mismatch,G,T,G,26,22,5
 d_G26_T23,leeHom,mismatch,G,T,G,26,23,5
 d_G26_T24,leeHom,mismatch,G,T,G,26,24,4
 d_G26_T25,leeHom,mismatch,G,T,G,26,25,4
-d_G26_T26,leeHom,mismatch,G,T,T,26,26,3
+d_G26_T26,leeHom,mismatch,G,T,G,26,26,3
 d_G26_T27,leeHom,mismatch,G,T,T,26,27,4
 d_G26_T28,leeHom,mismatch,G,T,T,26,28,4
 d_G26_T29,leeHom,mismatch,G,T,T,26,29,5
@@ -2967,7 +2967,7 @@ d_G28_T24,leeHom,mismatch,G,T,G,28,24,5
 d_G28_T25,leeHom,mismatch,G,T,G,28,25,5
 d_G28_T26,leeHom,mismatch,G,T,G,28,26,4
 d_G28_T27,leeHom,mismatch,G,T,G,28,27,4
-d_G28_T28,leeHom,mismatch,G,T,T,28,28,3
+d_G28_T28,leeHom,mismatch,G,T,G,28,28,3
 d_G28_T29,leeHom,mismatch,G,T,T,28,29,4
 d_G28_T30,leeHom,mismatch,G,T,T,28,30,4
 d_G28_T31,leeHom,mismatch,G,T,T,28,31,5
@@ -3010,7 +3010,7 @@ d_G29_T25,leeHom,mismatch,G,T,G,29,25,5
 d_G29_T26,leeHom,mismatch,G,T,G,29,26,5
 d_G29_T27,leeHom,mismatch,G,T,G,29,27,4
 d_G29_T28,leeHom,mismatch,G,T,G,29,28,4
-d_G29_T29,leeHom,mismatch,G,T,G,29,29,3
+d_G29_T29,leeHom,mismatch,G,T,T,29,29,3
 d_G29_T30,leeHom,mismatch,G,T,T,29,30,4
 d_G29_T31,leeHom,mismatch,G,T,T,29,31,4
 d_G29_T32,leeHom,mismatch,G,T,T,29,32,5
@@ -3182,7 +3182,7 @@ d_G33_T29,leeHom,mismatch,G,T,G,33,29,5
 d_G33_T30,leeHom,mismatch,G,T,G,33,30,5
 d_G33_T31,leeHom,mismatch,G,T,G,33,31,4
 d_G33_T32,leeHom,mismatch,G,T,G,33,32,4
-d_G33_T33,leeHom,mismatch,G,T,T,33,33,3
+d_G33_T33,leeHom,mismatch,G,T,G,33,33,3
 d_G33_T34,leeHom,mismatch,G,T,T,33,34,4
 d_G33_T35,leeHom,mismatch,G,T,T,33,35,4
 d_G33_T36,leeHom,mismatch,G,T,T,33,36,5
@@ -3225,7 +3225,7 @@ d_G34_T30,leeHom,mismatch,G,T,G,34,30,5
 d_G34_T31,leeHom,mismatch,G,T,G,34,31,5
 d_G34_T32,leeHom,mismatch,G,T,G,34,32,4
 d_G34_T33,leeHom,mismatch,G,T,G,34,33,4
-d_G34_T34,leeHom,mismatch,G,T,T,34,34,3
+d_G34_T34,leeHom,mismatch,G,T,G,34,34,3
 d_G34_T35,leeHom,mismatch,G,T,T,34,35,4
 d_G34_T36,leeHom,mismatch,G,T,T,34,36,4
 d_G34_T37,leeHom,mismatch,G,T,T,34,37,5
@@ -3268,7 +3268,7 @@ d_G35_T31,leeHom,mismatch,G,T,G,35,31,5
 d_G35_T32,leeHom,mismatch,G,T,G,35,32,5
 d_G35_T33,leeHom,mismatch,G,T,G,35,33,4
 d_G35_T34,leeHom,mismatch,G,T,G,35,34,4
-d_G35_T35,leeHom,mismatch,G,T,G,35,35,3
+d_G35_T35,leeHom,mismatch,G,T,T,35,35,3
 d_G35_T36,leeHom,mismatch,G,T,T,35,36,4
 d_G35_T37,leeHom,mismatch,G,T,T,35,37,4
 d_G35_T38,leeHom,mismatch,G,T,T,35,38,5
@@ -3397,7 +3397,7 @@ d_G38_T34,leeHom,mismatch,G,T,G,38,34,5
 d_G38_T35,leeHom,mismatch,G,T,G,38,35,5
 d_G38_T36,leeHom,mismatch,G,T,G,38,36,4
 d_G38_T37,leeHom,mismatch,G,T,G,38,37,4
-d_G38_T38,leeHom,mismatch,G,T,T,38,38,3
+d_G38_T38,leeHom,mismatch,G,T,G,38,38,3
 d_G38_T39,leeHom,mismatch,G,T,T,38,39,4
 d_G38_T40,leeHom,mismatch,G,T,T,38,40,4
 d_G38_T41,leeHom,mismatch,G,T,T,38,41,5
@@ -3526,4 +3526,4 @@ d_G41_T37,leeHom,mismatch,G,T,G,41,37,5
 d_G41_T38,leeHom,mismatch,G,T,G,41,38,5
 d_G41_T39,leeHom,mismatch,G,T,G,41,39,4
 d_G41_T40,leeHom,mismatch,G,T,G,41,40,4
-d_G41_T41,leeHom,mismatch,G,T,G,41,41,3
+d_G41_T41,leeHom,mismatch,G,T,T,41,41,3
