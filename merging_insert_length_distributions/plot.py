@@ -46,13 +46,12 @@ def plot_histogram(dist_dir, distnames, outdir):
 
         ax.hist(df, density=1, bins=range(x_min, x_max + 10, binwidth))
         ax.set_title(f"{distname}")
-        ax.set_xlabel('Fragment length')
+        ax.set_xlabel('DNA molecule length')
         ax.set_xlim(x_min, x_max)
-        ax.set_ylabel('Probability')
+        ax.set_ylabel('Frequency')
         
-    fig.suptitle(f"Fragment length distributions")
     fig.tight_layout()
-    plt.savefig(f"{outdir}/fraglen_histograms.png", 
+    plt.savefig(f"{outdir}/insert_length_distributions_histograms.png", 
                 dpi='figure', 
                 format="png")
 
