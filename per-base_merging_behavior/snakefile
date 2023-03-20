@@ -213,7 +213,7 @@ rule bbmerge:
             " mininsert=1"
             " mininsert0=1"
             " minoverlap=10"
-            " minoverlap=0"
+            " minoverlap=1"
             " efilter=-1"
             " ratiomargin=1"
         )
@@ -277,6 +277,8 @@ rule evaluate_zipped:
         OUTDIR_EVA + "/{tool_name}_qs.csv"
     wildcard_constraints:
         tool_name="(leeHom|SeqPrep)",
+    conda:
+        PROJECTDIR + "/environment.yaml"
     run:
         shell(
             "python3 {EVAL_SCRIPT}"
@@ -296,6 +298,8 @@ rule evaluate_unzipped:
         OUTDIR_EVA + "/{tool_name}_qs.csv",
     wildcard_constraints:
         tool_name="(AdapterRemoval|ClipAndMerge|seqtk_adna_trim|bbmerge|fastp)"
+    conda:
+        PROJECTDIR + "/environment.yaml"
     run:
         shell(
             "python3 {EVAL_SCRIPT}"
@@ -339,6 +343,8 @@ rule plot:
             OUTDIR_PLOT + "/{tool_name}_mismatch.png",
             tool_name=TOOLNAMES,
         ),
+    conda:
+        PROJECTDIR + "/environment.yaml"
     shell:
         (
             "python3 {PLOT_SCRIPT}"

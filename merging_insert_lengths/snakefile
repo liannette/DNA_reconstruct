@@ -52,7 +52,7 @@ ADPT2 = "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATTT"
 
 rule all:
     input:
-        OUTDIR_PLOT + "/final/edit_distances.png",
+        OUTDIR_PLOT + "/final/merging_insert_lengths.png",
     run:
         shell("gzip {OUTDIR_REC}/*/*")
         shell("gzip {OUTDIR_SIM}/*")
@@ -517,6 +517,6 @@ rule create_final_plots:
             tool_name=TOOLNAMES,
         ),
     output:
-        OUTDIR_PLOT + "/final/edit_distances.png",
+        OUTDIR_PLOT + "/final/merging_insert_lengths.png"
     shell:
         ("bash create_final_plots.sh")
